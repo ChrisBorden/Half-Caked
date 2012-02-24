@@ -103,6 +103,10 @@ namespace Half_Caked
                         throw E;
                 }
             }
+            else if (!IsActive && !ScreenManager.isActive(typeof(PauseMenuScreen)) )
+            {
+                ScreenManager.AddScreen(new PauseMenuScreen(mLevel), ControllingPlayer);
+            }
         }
 
         /// <summary>
