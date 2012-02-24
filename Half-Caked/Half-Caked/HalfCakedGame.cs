@@ -53,12 +53,14 @@ namespace Half_Caked
         {
             // TODO: Add your initialization logic here
             base.Initialize();
-
-            IAsyncResult  result = StorageDevice.BeginShowSelector(PlayerIndex.One, null, null);
-            result.AsyncWaitHandle.WaitOne();
-            Device = StorageDevice.EndShowSelector(result);
-            CurrentProfile = Profile.Load(-1, Device);
-
+            try
+            {
+                IAsyncResult result = StorageDevice.BeginShowSelector(PlayerIndex.One, null, null);
+                result.AsyncWaitHandle.WaitOne();
+                Device = StorageDevice.EndShowSelector(result);
+                CurrentProfile = Profile.Load(-1, Device);
+            }
+            catch { }
             if (CurrentProfile == null)
                 CurrentProfile = new Profile();//screenManager.AddScreen(new ProfileSelectionScreen(Device), null);
 
