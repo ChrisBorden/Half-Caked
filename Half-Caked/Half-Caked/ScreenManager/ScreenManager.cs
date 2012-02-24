@@ -300,5 +300,17 @@ namespace Half_Caked
 
 
         #endregion
+    
+        internal bool isActive(Type type)
+        {
+            foreach (GameScreen screen in screens)
+            {
+                if (screen.GetType().Equals(type))
+                {
+                    return screen.ScreenState == ScreenState.Active || screen.ScreenState == ScreenState.TransitionOn;
+                }
+            }
+            return false;
+        }
     }
 }
