@@ -29,7 +29,9 @@ namespace Half_Caked
             new Guid("05159D8A-B739-4AA4-9F6D-3FF5CB29572D");
 
         const string ASSETNAME= "Sprites\\Stickman";
-        const int DEFAULT_SPEED = 160;
+        const int DEFAULT_SPEED = 250;
+        const int DEFAULT_JUMP = 200;
+        const int JUMP_HEIGHT_MAX = 500;
         const int MOVE_UP = -1;
         const int MOVE_DOWN = 1;
         const int MOVE_LEFT = -1;
@@ -49,6 +51,10 @@ namespace Half_Caked
         ContentManager mContentManager;
 
         bool mIsDucking = false, mForcedDucking;
+
+        bool stillJumping = false;
+        TimeSpan jumpTimer = TimeSpan.Zero;
+
         float mCurrentFriction;
         Rectangle[] mCollisions = new Rectangle[5];
 
@@ -86,15 +92,22 @@ namespace Half_Caked
 
             var curstate = mCurrentState;
             CheckCollisions(level, inputState.IsInteracting(null));
+
+            //play sound effect for landing
             if (curstate == State.Air && (mCurrentState == State.Ground || mCurrentState == State.Platform))
                 level.PlaySoundEffect(mLandingEffect);
 
             UpdateMovement(inputState);
-            if (UpdateJump(inputState))
+
+            //play sound effect for jumping
+            if (UpdateJump(inputState, theGameTime))
                 level.PlaySoundEffect(mJumpEffect);
+
             UpdateDuck(inputState);
 
+            //falling
             Acceleration.Y = (mCurrentState == State.Air || mCurrentState == State.GravityPortal  || mCurrentState == State.Portal ? 1 : 0) * level.Gravity * Level.METERS_TO_UNITS;
+
             if (Angle != 0)
             {
                 if(Angle > 0)
@@ -343,34 +356,65 @@ namespace Half_Caked
                 {
                     Acceleration.X = DYNAMIC_ACCEL_AIR * (Math.Abs(Velocity.X) <= STATIC_ACCEL_AIR ? 0 : 1) * (-Math.Sign(Velocity.X));
                 }
-                    if (inputState.IsMovingBackwards(null))
-                    {
-                        //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_LEFT / 4;
-                        Velocity.X = Math.Min(Velocity.X, DEFAULT_SPEED / 2f * MOVE_LEFT * (mIsDucking ? .5f : 1));
-                    }
-                    else if (inputState.IsMovingForward(null))
-                    {
-                        //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_RIGHT / 4;
-                        Velocity.X = Math.Max(Velocity.X, DEFAULT_SPEED / 2f * MOVE_RIGHT * (mIsDucking ? .5f : 1));
-                    }
 
-                    //if (mIsDucking)
-                    //    Acceleration.X *= .75f;
-                //}
+                if (inputState.IsMovingBackwards(null))
+                {
+                    //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_LEFT / 4;
+                    Velocity.X = Math.Min(Velocity.X, DEFAULT_SPEED / 2f * MOVE_LEFT * (mIsDucking ? .5f : 1));
+                }
+                else if (inputState.IsMovingForward(null))
+                {
+                    //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_RIGHT / 4;
+                    Velocity.X = Math.Max(Velocity.X, DEFAULT_SPEED / 2f * MOVE_RIGHT * (mIsDucking ? .5f : 1));
+                }
+
+                //if (mIsDucking)
+                //    Acceleration.X *= .75f;
+            //}
             }
         }
 
-        private bool UpdateJump(InputState inputState)
+        private bool UpdateJump(InputState inputState, GameTime theGameTime)
         {
+            //start jump
             if ((mCurrentState == State.Ground || mCurrentState == State.Platform || mCurrentState == State.Portal) && Velocity.Y == 0)
             {
                 if (inputState.IsJumping(null))
                 {
                     mCurrentState = State.Air;
-                    Velocity.Y = -DEFAULT_SPEED;
+                    Velocity.Y = -DEFAULT_JUMP;
+                    stillJumping = true;
                     return true;
                 }
             }
+
+            //variable height jump (IN PROGRESS)
+            if (inputState.IsJumping(null) && stillJumping)
+            {
+                mCurrentState = State.Air;
+                Velocity.Y = -DEFAULT_JUMP + (jumpTimer.Milliseconds/5);
+                jumpTimer += theGameTime.ElapsedGameTime;
+
+                if (jumpTimer > TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX))
+                {
+                    stillJumping = false;
+                    jumpTimer = TimeSpan.Zero;
+                }
+
+                return false;
+            }
+            else //player let go of jump key
+            {
+                stillJumping = false;
+                return false;
+            }
+
+            //wall jumping (IN PROGRESS)
+            if (false)
+            {
+                return false;
+            }
+
             return false;
         }
 

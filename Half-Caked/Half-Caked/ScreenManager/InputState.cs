@@ -415,7 +415,7 @@ namespace Half_Caked
             bool returnValue = false;
 
             foreach (Keybinding input in ControlMap.Jump)
-                returnValue |= IsNewKeybindingPress(controllingPlayer, input);
+                returnValue |= IsKeybindingPressed(controllingPlayer, input);
 
             return returnValue;
         }
