@@ -105,7 +105,7 @@ namespace Half_Caked
                     if (mProfiles[mSelectedButton].Name.Length > 0)
                         mProfiles[mSelectedButton].Name = mProfiles[mSelectedButton].Name.Remove(mProfiles[mSelectedButton].Name.Length - 1) + text.Substring(1);
                     else
-                        text = text.Substring(1);
+                        mProfiles[mSelectedButton].Name = text.Substring(1);
                 }
                 else
                     mProfiles[mSelectedButton].Name += text;

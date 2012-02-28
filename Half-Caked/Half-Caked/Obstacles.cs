@@ -283,6 +283,7 @@ namespace Half_Caked
 
         #region Constants
         const float SPEED_Y = 50;
+        const float DOOR_HEIGHT = 200;
         #endregion
 
         #region Initialization
@@ -316,15 +317,15 @@ namespace Half_Caked
         public override void Update(GameTime theGameTime)
         {
             if ((Source.Height <= 0   && mState == (int)DoorState.Opening) ||
-                (Source.Height >= 200 && mState == (int)DoorState.Closing))
+                (Source.Height >= DOOR_HEIGHT && mState == (int)DoorState.Closing))
             {
                 mState = (int)DoorState.Stationary;
             }
 
-            Source = new Rectangle(Source.X, Source.Y, Source.Width, (int)MathHelper.Clamp(Source.Height - Velocity.Y * (float) theGameTime.ElapsedGameTime.TotalSeconds, 0, 200));
             Velocity = ((int)(DoorState)mState) * Vector2.UnitY * SPEED_Y;
-
             base.Update(theGameTime);
+
+            Source = new Rectangle(Source.X, Source.Y, Source.Width, (int)MathHelper.Clamp(DOOR_HEIGHT - (Position.Y - InitialPosition.Y), 0, DOOR_HEIGHT));
         }
         #endregion
     }
