@@ -57,9 +57,14 @@ namespace Half_Caked
 
         void ProfileMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            var scrn = new ProfileSelectionScreen((ScreenManager.Game as HalfCakedGame).Device);
+            var device = (ScreenManager.Game as HalfCakedGame).Device;
+            MessageBoxScreen msgbox;
+            if (device != null)
+                msgbox = new ProfileSelectionScreen((ScreenManager.Game as HalfCakedGame).Device);
+            else
+                msgbox = new MessageBoxScreen("Unable to write to your documents folder. Cannot save profiles.", new string[]{"Ok"}, 0);
 
-            ScreenManager.AddScreen(scrn, null);
+            ScreenManager.AddScreen(msgbox, null);
         }
 
         void KeybindingsMenuEntrySelected(object sender, PlayerIndexEventArgs e)

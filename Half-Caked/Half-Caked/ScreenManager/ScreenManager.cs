@@ -156,7 +156,7 @@ namespace Half_Caked
             foreach (GameScreen screen in screens)
                 screensToUpdate.Add(screen);
 
-            bool otherScreenHasFocus = !Game.IsActive;
+            bool topScreen = true;
             bool coveredByOtherScreen = false;
 
             if ((Game as HalfCakedGame).CurrentProfile != null)
@@ -171,18 +171,18 @@ namespace Half_Caked
                 screensToUpdate.RemoveAt(screensToUpdate.Count - 1);
 
                 // Update the screen.
-                screen.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+                screen.Update(gameTime, topScreen, coveredByOtherScreen);
 
                 if (screen.ScreenState == ScreenState.TransitionOn ||
                     screen.ScreenState == ScreenState.Active)
                 {
                     // If this is the first active screen we came across,
                     // give it a chance to handle input.
-                    if (!otherScreenHasFocus)
+                    if (topScreen)
                     {
                         screen.HandleInput(input);
 
-                        otherScreenHasFocus = true;
+                        topScreen = false;
                     }
 
                     // If this is an active non-popup, inform any subsequent
@@ -301,7 +301,7 @@ namespace Half_Caked
 
         #endregion
     
-        internal bool isActive(Type type)
+        internal bool IsActive(Type type)
         {
             foreach (GameScreen screen in screens)
             {

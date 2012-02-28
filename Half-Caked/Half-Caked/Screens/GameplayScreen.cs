@@ -78,18 +78,20 @@ namespace Half_Caked
 
         #region Update and Draw
 
-
         /// <summary>
         /// Updates the state of the game. This method checks the GameScreen.IsActive
         /// property, so the game will stop updating when the pause menu is active,
         /// or if you tab away to a different application.
         /// </summary>
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus,
+        public override void Update(GameTime gameTime, bool topScreen,
                                                        bool coveredByOtherScreen)
         {
-            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
-            if (IsActive && mInputState != null)
+            base.Update(gameTime, topScreen, coveredByOtherScreen);
+
+            if (IsActive)
             {
+                if(mInputState == null)
+                    return;
                 this.ScreenManager.Game.IsMouseVisible = false;
                 try
                 {
@@ -103,7 +105,7 @@ namespace Half_Caked
                         throw E;
                 }
             }
-            else if (!IsActive && !ScreenManager.isActive(typeof(PauseMenuScreen)) )
+            else if (!ScreenManager.Game.IsActive && topScreen)
             {
                 ScreenManager.AddScreen(new PauseMenuScreen(mLevel), ControllingPlayer);
             }

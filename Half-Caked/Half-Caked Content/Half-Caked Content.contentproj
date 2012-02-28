@@ -42,6 +42,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Sounds\Level.mp3">
+      <Name>Level</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
     <Compile Include="Sprites\Gunarm.png">
       <Name>Gunarm</Name>
       <Importer>TextureImporter</Importer>
@@ -178,11 +183,6 @@
       <Name>PortalFire</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-    <Compile Include="Sounds\Level.mp3">
-      <Name>Level</Name>
-      <Importer>Mp3Importer</Importer>
-      <Processor>SongProcessor</Processor>
     </Compile>
     <Compile Include="Sounds\PlayerJump.wav">
       <Name>PlayerJump</Name>
