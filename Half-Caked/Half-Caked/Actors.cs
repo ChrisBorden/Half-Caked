@@ -96,11 +96,6 @@ namespace Half_Caked
         {
             CheckCollisions(lvl);
 
-            if (!Visible)
-                return;
-
-            base.Update(theGameTime);
-
             foreach (EnemyBullet bullet in mBullets)
             {
                 if (bullet.Visible)
@@ -108,6 +103,12 @@ namespace Half_Caked
                     bullet.Update(theGameTime);
                 }
             }
+
+            if (!Visible)
+                return;
+
+            base.Update(theGameTime);
+
 
             Vector2 offset = lvl.Player.Position + SPRITE_BODY_TARGET - Position;
             if (offset.Length() < Range)

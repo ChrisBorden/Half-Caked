@@ -142,13 +142,13 @@ namespace Half_Caked
         {
             get
             {
-                return !otherScreenHasFocus &&
+                return topScreen && ScreenManager.Game.IsActive &&
                        (screenState == ScreenState.TransitionOn ||
                         screenState == ScreenState.Active);
             }
         }
 
-        bool otherScreenHasFocus;
+        bool topScreen;
 
 
         /// <summary>
@@ -210,10 +210,10 @@ namespace Half_Caked
         /// Unlike HandleInput, this method is called regardless of whether the screen
         /// is active, hidden, or in the middle of a transition.
         /// </summary>
-        public virtual void Update(GameTime gameTime, bool otherScreenHasFocus,
+        public virtual void Update(GameTime gameTime, bool topScreen,
                                                       bool coveredByOtherScreen)
         {
-            this.otherScreenHasFocus = otherScreenHasFocus;
+            this.topScreen = topScreen;
 
             if (isExiting)
             {

@@ -85,10 +85,10 @@ namespace Half_Caked
         /// <summary>
         /// Updates the loading screen.
         /// </summary>
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus,
+        public override void Update(GameTime gameTime, bool topScreen,
                                                        bool coveredByOtherScreen)
         {
-            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+            base.Update(gameTime, topScreen, coveredByOtherScreen);
 
             // If all the previous screens have finished transitioning
             // off, it is time to actually perform the load.

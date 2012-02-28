@@ -49,6 +49,7 @@ namespace Half_Caked
         private Song mExitReached;
         private Song mBackgroundMusic;
         private SoundEffect mCheckpointSound;
+        private bool mCanPlayerMusic = true;
 
         private Sprite mBackground;        
         private SpriteFont mGameFont;
@@ -104,8 +105,12 @@ namespace Half_Caked
         #region Update and Draw
         public void Update(GameTime theGameTime, InputState inputState)
         {
-            if (MediaPlayer.State == MediaState.Stopped)
-                MediaPlayer.Play(mBackgroundMusic);
+            if (MediaPlayer.State == MediaState.Stopped && mCanPlayerMusic)
+                try
+                {
+                    MediaPlayer.Play(mBackgroundMusic);
+                }
+                catch { mCanPlayerMusic = false;  }
 
             KeyboardState aCurrentKeyboardState = Keyboard.GetState();
             MouseState aCurrentMouseState = Mouse.GetState();
