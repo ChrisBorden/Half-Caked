@@ -140,7 +140,6 @@ namespace Half_Caked
         /// </summary>
         static void Main(string[] args)
         {
-            LevelCreator.CreateAndSaveLevel(1);
             using (HalfCakedGame game = new HalfCakedGame())
             {
                 game.Run();

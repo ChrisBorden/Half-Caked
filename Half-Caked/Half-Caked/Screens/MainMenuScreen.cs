@@ -71,7 +71,7 @@ namespace Half_Caked
         /// </summary>
         protected override void OnCancel(PlayerIndex playerIndex)
         {
-            if ((ScreenManager.Game as HalfCakedGame).CurrentProfile.Name.Length < 1)
+            if ((ScreenManager.Game as HalfCakedGame).CurrentProfile.Name.Length < 1 && (ScreenManager.Game as HalfCakedGame).Device != null)
             {
                 const string message = "You have currently unsaved game progress.\nWould you like to save before you exit?";
                 MessageBoxScreen confirmExitMessageBox = new MessageBoxScreen(message, new string[]{"Yes", "No", "Cancel"}, 0);

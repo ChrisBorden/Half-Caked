@@ -164,10 +164,10 @@ namespace Half_Caked
         /// <summary>
         /// Updates the menu.
         /// </summary>
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus,
+        public override void Update(GameTime gameTime, bool topScreen,
                                                        bool coveredByOtherScreen)
         {
-            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+            base.Update(gameTime, topScreen, coveredByOtherScreen);
 
             ScreenManager.Game.IsMouseVisible = true;
 
