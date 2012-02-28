@@ -128,8 +128,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Levels\Level0.png">
-      <Name>Level0</Name>
+    <Compile Include="Levels\Level0_backup.png">
+      <Name>Level0_backup</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -140,8 +140,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Levels\Level0b.png">
-      <Name>Level0b</Name>
+    <Compile Include="Levels\Level0b_backup.png">
+      <Name>Level0b_backup</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -161,6 +161,16 @@
       <Name>ExitReached</Name>
       <Importer>WmaImporter</Importer>
       <Processor>SongProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Level0b.png">
+      <Name>Level0b</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Level0.png">
+      <Name>Level0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
     <Content Include="Levels\Level0.xml">
       <Name>Level0</Name>
