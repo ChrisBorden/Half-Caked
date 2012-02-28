@@ -133,11 +133,11 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Levels\Level0_backup.png">
+    <None Include="Levels\Level0_backup.png">
       <Name>Level0_backup</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
+    </None>
     <Compile Include="Sprites\Switch.png">
       <Name>Switch</Name>
       <Importer>TextureImporter</Importer>
@@ -145,11 +145,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Levels\Level0b_backup.png">
+    <None Include="Levels\Level0b_backup.png">
       <Name>Level0b_backup</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UI\Buttons.png">
@@ -239,16 +239,16 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Levels\Level1b_backup.png">
+    <None Include="Levels\Level1b_backup.png">
       <Name>Level1b_backup</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Level1_backup.png">
+    </None>
+    <None Include="Levels\Level1_backup.png">
       <Name>Level1_backup</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

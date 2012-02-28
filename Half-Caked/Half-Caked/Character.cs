@@ -260,7 +260,11 @@ namespace Half_Caked
                             if (first)
                                 Velocity.Y = Math.Min(Velocity.Y, 0);
                             else
+                            {
                                 Velocity.Y = Math.Max(Velocity.Y, 0);
+                                mCurrentState = State.GravityPortal;
+                                stillJumping = false;
+                            }
 
                             Position = new Vector2(Position.X, MathHelper.Clamp(Position.Y, Portal.CollisionSurface.Y + Center.Y, Portal.CollisionSurface.Bottom - Center.Y));
                         }
@@ -298,11 +302,13 @@ namespace Half_Caked
                     mCurrentFriction = friction * MASS;
                     mCurrentState = State.Ground;
                     Velocity.Y = 0;
+                    stillJumping = false;
                     Position = new Vector2(Position.X, obj.Top - Center.Y + 1);
                     mCollisions[(int)Orientation.Down] = obj;
                 }
                 else
                 {
+                    stillJumping = false;
                     Velocity.Y = Math.Min(Velocity.Y, 0);
                     Position = new Vector2(Position.X, obj.Bottom + Center.Y + 1);
                     mCollisions[(int)Orientation.Up] = obj;
@@ -401,20 +407,12 @@ namespace Half_Caked
                     jumpTimer = TimeSpan.Zero;
                 }
 
-                return false;
             }
             else //player let go of jump key
             {
                 stillJumping = false;
-                return false;
             }
-
-            //wall jumping (IN PROGRESS)
-            if (false)
-            {
-                return false;
-            }
-
+            
             return false;
         }
 

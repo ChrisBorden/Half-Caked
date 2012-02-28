@@ -155,8 +155,13 @@ namespace Half_Caked
 
         protected void Amplify(Rectangle target, Rectangle result, Level level, Vector2 targetVelocity)
         {
-            Scale *= 2; //Special effect
+            //Scale = 2; Special effect
+            (mPortalNumber == 0 ? level.Portals.Portal1 : level.Portals.Portal2).Scale=1.5f;
+            PortalGroup.PORTAL_WIDTH *= 1.5f;
+            PortalGroup.PORTAL_HEIGHT *= 1.5f;
             Act(target, result, level, targetVelocity);
+            PortalGroup.PORTAL_WIDTH  = 5;
+            PortalGroup.PORTAL_HEIGHT = 150;
         }
 
         protected void Absorb()

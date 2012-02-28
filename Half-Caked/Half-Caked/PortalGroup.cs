@@ -92,8 +92,9 @@ namespace Half_Caked
         {
             Sprite chosenOne = portalNumber == 1 ? Portal2 : Portal1;
             chosenOne.Angle = 0;
-
+            chosenOne.Position = new Vector2(-50, -50);
             chosenOne.Visible = false;
+            chosenOne.Scale = 1f;
             mState = PortalState.Closed;
         }
 

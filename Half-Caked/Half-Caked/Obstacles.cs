@@ -321,8 +321,8 @@ namespace Half_Caked
                 mState = (int)DoorState.Stationary;
             }
 
-            Velocity = ((int)(DoorState)mState) * Vector2.UnitY * SPEED_Y;
             Source = new Rectangle(Source.X, Source.Y, Source.Width, (int)MathHelper.Clamp(Source.Height - Velocity.Y * (float) theGameTime.ElapsedGameTime.TotalSeconds, 0, 200));
+            Velocity = ((int)(DoorState)mState) * Vector2.UnitY * SPEED_Y;
 
             base.Update(theGameTime);
         }
