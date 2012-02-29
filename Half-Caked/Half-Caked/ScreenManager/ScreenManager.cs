@@ -178,7 +178,7 @@ namespace Half_Caked
                 {
                     // If this is the first active screen we came across,
                     // give it a chance to handle input.
-                    if (topScreen)
+                    if (topScreen && Game.IsActive)
                     {
                         screen.HandleInput(input);
 
