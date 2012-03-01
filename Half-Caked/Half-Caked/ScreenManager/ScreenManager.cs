@@ -181,9 +181,8 @@ namespace Half_Caked
                     if (topScreen && Game.IsActive)
                     {
                         screen.HandleInput(input);
-
-                        topScreen = false;
                     }
+                    topScreen = false;
 
                     // If this is an active non-popup, inform any subsequent
                     // screens that they are covered by it.

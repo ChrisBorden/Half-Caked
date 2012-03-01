@@ -100,10 +100,16 @@ namespace Half_Caked
             Profile defProf = Load(-1, device);
             int index = -1;
                         
-            if(defProf != null)
+            if(defProf != null && !defProf.Name.Equals(""))
             {
-                for(int i = 0; i < PROFILE_COUNT; i++)
+                for (int i = 0; i < PROFILE_COUNT; i++)
+                {
                     profArray[i] = Load(i, device);
+                    if (profArray[i] != null && profArray[i].Name.Equals(""))
+                    {
+                        profArray[i] = null;
+                    }
+                }
                 profArray[defProf.ProfileNumber] = defProf;
                 index = defProf.ProfileNumber;
             }
