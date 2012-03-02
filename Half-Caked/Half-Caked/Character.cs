@@ -30,8 +30,8 @@ namespace Half_Caked
 
         const string ASSETNAME= "Sprites\\Stickman";
         const int DEFAULT_SPEED = 250;
-        const int DEFAULT_JUMP = 200;
-        const int JUMP_HEIGHT_MAX = 500;
+        const int DEFAULT_JUMP = 250;
+        const int JUMP_HEIGHT_MAX = 350;
         const int MOVE_UP = -1;
         const int MOVE_DOWN = 1;
         const int MOVE_LEFT = -1;
@@ -329,9 +329,12 @@ namespace Half_Caked
 
             return type == Surface.Death;
         }
-                                                    
+
+
+         //UNDER CONSTRUCTION                                   
         private void UpdateMovement(InputState inputState)
         {
+            //Movement while on the ground is UNDER CONSTRUCTION (values are hardcoded) 
             if (mCurrentState == State.Ground || mCurrentState == State.Platform || mCurrentState == State.Portal)
             {
                 if (Math.Abs(Velocity.X) <= STATIC_ACCEL_GND)
@@ -351,6 +354,8 @@ namespace Half_Caked
                     Velocity.X = DEFAULT_SPEED * MOVE_RIGHT * (mIsDucking ? .5f : 1);
                 }
             }
+
+                //Movement while in the air is UNDER CONSTRUCTION (values are hardcoded)
             else if(mCurrentState == State.Air || mCurrentState == State.GravityPortal)
             {
                 if (Math.Abs(Velocity.X) <= STATIC_ACCEL_AIR)
@@ -366,12 +371,34 @@ namespace Half_Caked
                 if (inputState.IsMovingBackwards(null))
                 {
                     //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_LEFT / 4;
-                    Velocity.X = Math.Min(Velocity.X, DEFAULT_SPEED / 2f * MOVE_LEFT * (mIsDucking ? .5f : 1));
+                    //Velocity.X = Math.Min(Velocity.X, DEFAULT_SPEED / 2f * MOVE_LEFT * (mIsDucking ? .5f : 1));
+                    if (Velocity.X >= DEFAULT_SPEED * -1)
+                    {
+                        if (Velocity.X > 0)
+                        {
+                            Velocity.X -= 50;
+                        }
+                        else
+                        {
+                            Velocity.X -= 25;
+                        }
+                    }
                 }
                 else if (inputState.IsMovingForward(null))
                 {
                     //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_RIGHT / 4;
-                    Velocity.X = Math.Max(Velocity.X, DEFAULT_SPEED / 2f * MOVE_RIGHT * (mIsDucking ? .5f : 1));
+                    //Velocity.X = Math.Max(Velocity.X, DEFAULT_SPEED / 2f * MOVE_RIGHT * (mIsDucking ? .5f : 1));
+                    if (Velocity.X <= DEFAULT_SPEED)
+                    {
+                        if (Velocity.X < 0)
+                        {
+                            Velocity.X += 50;
+                        }
+                        else
+                        {
+                            Velocity.X += 25;
+                        }
+                    }
                 }
 
                 //if (mIsDucking)
@@ -383,9 +410,9 @@ namespace Half_Caked
         private bool UpdateJump(InputState inputState, GameTime theGameTime)
         {
             //start jump
-            if ((mCurrentState == State.Ground || mCurrentState == State.Platform || mCurrentState == State.Portal) && Velocity.Y == 0)
+            if ((mCurrentState == State.Ground || mCurrentState == State.Platform) && Velocity.Y == 0)
             {
-                if (inputState.IsJumping(null))
+                if (inputState.IsNewJump(null))
                 {
                     mCurrentState = State.Air;
                     Velocity.Y = -DEFAULT_JUMP;
@@ -394,11 +421,11 @@ namespace Half_Caked
                 }
             }
 
-            //variable height jump (IN PROGRESS)
+            //variable height jump
             if (inputState.IsJumping(null) && stillJumping)
             {
                 mCurrentState = State.Air;
-                Velocity.Y = -DEFAULT_JUMP + (jumpTimer.Milliseconds/5);
+                Velocity.Y = -DEFAULT_JUMP;
                 jumpTimer += theGameTime.ElapsedGameTime;
 
                 if (jumpTimer > TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX))
@@ -406,14 +433,14 @@ namespace Half_Caked
                     stillJumping = false;
                     jumpTimer = TimeSpan.Zero;
                 }
-
+                return false;
             }
-            else //player let go of jump key
+
+            else //player let go of jump key early for a short jump
             {
                 stillJumping = false;
+                return false;
             }
-            
-            return false;
         }
 
         private void UpdateDuck(InputState inputState)

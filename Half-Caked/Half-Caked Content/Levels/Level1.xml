@@ -5,7 +5,7 @@
     <X>0</X>
     <Y>-100</Y>
   </InitialPosition>
-  <Gravity>20</Gravity>
+  <Gravity>40</Gravity>
   <LevelIdentifier>1</LevelIdentifier>
   <Tiles>
     <Tile>

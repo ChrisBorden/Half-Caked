@@ -420,6 +420,16 @@ namespace Half_Caked
             return returnValue;
         }
 
+        public bool IsNewJump(PlayerIndex? controllingPlayer)
+        {
+            bool returnValue = false;
+
+            foreach (Keybinding input in ControlMap.Jump)
+                returnValue |= IsNewKeybindingPress(controllingPlayer, input);
+
+            return returnValue;
+        }
+
         public bool IsPausingGame(PlayerIndex? controllingPlayer)
         {
             bool returnValue = false;
