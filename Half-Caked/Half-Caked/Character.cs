@@ -52,8 +52,14 @@ namespace Half_Caked
 
         bool mIsDucking = false, mForcedDucking;
 
-        bool stillJumping = false;
+        bool stillJumping = false; //currently performing normal jump
+        bool wallJumpLeft = false; //walljump from right wall to left direction is available to player
+        bool wallJumpRight = false; //walljump from left wall to right direction is available to player
+        bool stillWallJumpingLeft = false; //currently walljumping left
+        bool stillWallJumpingRight = false; //currently walljumping right
+        int tempJumpHeight;
         TimeSpan jumpTimer = TimeSpan.Zero;
+        TimeSpan wallJumpTimer = TimeSpan.Zero;
 
         float mCurrentFriction;
         Rectangle[] mCollisions = new Rectangle[5];
@@ -302,28 +308,35 @@ namespace Half_Caked
                     mCurrentFriction = friction * MASS;
                     mCurrentState = State.Ground;
                     Velocity.Y = 0;
-                    stillJumping = false;
                     Position = new Vector2(Position.X, obj.Top - Center.Y + 1);
                     mCollisions[(int)Orientation.Down] = obj;
                 }
+                else if (CollisionSurface.Center.Y > obj.Center.Y) // hit the roof
+                {
+                    if (Velocity.Y < 5)
+                    { Velocity.Y = 5; }
+                }
                 else
                 {
-                    stillJumping = false;
                     Velocity.Y = Math.Min(Velocity.Y, 0);
                     Position = new Vector2(Position.X, obj.Bottom + Center.Y + 1);
                     mCollisions[(int)Orientation.Up] = obj;
                 }
+                stillJumping = false;
             }
             else
             {
                 if (Position.X > result.X)
                 {
                     mCollisions[(int)Orientation.Left] = obj;
+                    wallJumpRight = true; //walljump from left wall to right direction is available to player
                 }
-                else
+                else if (Position.X < result.X)
                 {
                     mCollisions[(int)Orientation.Right] = obj;
+                    wallJumpLeft = true; //walljump from right wall to left direction is available to player
                 }
+
                 Position = new Vector2(result.X - (Position.X - result.X < 0 ? CollisionSurface.Width - Center.X + 1 : -result.Width - 1 - Center.X), Position.Y);
             }
 
@@ -372,7 +385,7 @@ namespace Half_Caked
                 {
                     //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_LEFT / 4;
                     //Velocity.X = Math.Min(Velocity.X, DEFAULT_SPEED / 2f * MOVE_LEFT * (mIsDucking ? .5f : 1));
-                    if (Velocity.X >= DEFAULT_SPEED * -1)
+                    if (Velocity.X >= -DEFAULT_SPEED)
                     {
                         if (Velocity.X > 0)
                         {
@@ -407,6 +420,7 @@ namespace Half_Caked
             }
         }
 
+        //UNDER CONSTRUCTION
         private bool UpdateJump(InputState inputState, GameTime theGameTime)
         {
             //start jump
@@ -417,30 +431,118 @@ namespace Half_Caked
                     mCurrentState = State.Air;
                     Velocity.Y = -DEFAULT_JUMP;
                     stillJumping = true;
+                    jumpTimer = TimeSpan.Zero;
+                    tempJumpHeight = DEFAULT_JUMP;
                     return true;
                 }
             }
 
-            //variable height jump
-            if (inputState.IsJumping(null) && stillJumping)
+            //walljumping
+            if (mCurrentState == State.Air)
             {
-                mCurrentState = State.Air;
-                Velocity.Y = -DEFAULT_JUMP;
-                jumpTimer += theGameTime.ElapsedGameTime;
+                if (wallJumpRight) //walljump from left wall to right direction is available to player
+                {
+                    if (inputState.IsNewJump(null))
+                    {
+                        tempJumpHeight = DEFAULT_JUMP / 2;
 
-                if (jumpTimer > TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX))
+                        Velocity.X = DEFAULT_SPEED * MOVE_LEFT;
+                        //Velocity.Y = -DEFAULT_JUMP / 2;
+                        Velocity.Y = -tempJumpHeight;
+
+                        stillJumping = true;
+                        stillWallJumpingRight = true;
+                        jumpTimer = TimeSpan.Zero;
+                        wallJumpTimer = TimeSpan.Zero;
+                        return true;
+                    }
+                }
+                else if (wallJumpLeft) //walljump from right wall to left direction is available to player
+                {
+                    if (inputState.IsNewJump(null))
+                    {
+                        tempJumpHeight = DEFAULT_JUMP / 2;
+
+                        Velocity.X = DEFAULT_SPEED * MOVE_LEFT;
+                        //Velocity.Y = -DEFAULT_JUMP / 2;
+                        Velocity.Y = -tempJumpHeight;
+
+                        stillJumping = true;
+                        stillWallJumpingLeft = true;
+                        jumpTimer = TimeSpan.Zero;
+                        wallJumpTimer = TimeSpan.Zero;
+                        return true;
+                    }
+                }
+
+                if (stillWallJumpingRight)
+                {
+                    wallJumpTimer += theGameTime.ElapsedGameTime;
+                    if (wallJumpTimer < TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX/2))
+                    {
+                        Velocity.X = DEFAULT_SPEED * MOVE_RIGHT + 100;
+                        //Velocity.Y = -DEFAULT_JUMP/2;
+                        Velocity.Y = -tempJumpHeight;
+                    }
+                    else
+                    { 
+                        stillWallJumpingRight = false;
+                        stillJumping = false;
+                    }
+                }
+                else if (stillWallJumpingLeft)
+                {
+                    wallJumpTimer += theGameTime.ElapsedGameTime;
+                    if (wallJumpTimer < TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX/2))
+                    {
+                        Velocity.X = DEFAULT_SPEED * MOVE_LEFT * 2;
+                        //Velocity.Y = -DEFAULT_JUMP/2;
+                        Velocity.Y = -tempJumpHeight;
+                    }
+                    else
+                    { 
+                        stillWallJumpingLeft = false;
+                        stillJumping = false;                
+                    }
+                }
+            }
+            else 
+            {
+                stillWallJumpingRight = false;
+                stillWallJumpingLeft = false;
+                stillJumping = false;
+            }
+
+            //variable height jump
+            if(stillJumping && !stillWallJumpingRight && !stillWallJumpingLeft)
+            {
+                if (inputState.IsJumping(null))
+                {
+                    mCurrentState = State.Air;
+
+                    //Velocity.Y = -DEFAULT_JUMP;
+                    Velocity.Y = -tempJumpHeight;
+
+                    jumpTimer += theGameTime.ElapsedGameTime;
+
+                    if (jumpTimer > TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX))
+                    {
+                        stillJumping = false;
+                        
+                        jumpTimer = TimeSpan.Zero;
+                    }
+                }
+
+                else //player let go of jump key early for a shorter jump
                 {
                     stillJumping = false;
-                    jumpTimer = TimeSpan.Zero;
                 }
-                return false;
             }
 
-            else //player let go of jump key early for a short jump
-            {
-                stillJumping = false;
-                return false;
-            }
+            wallJumpLeft = false;
+            wallJumpRight = false;
+
+            return false;
         }
 
         private void UpdateDuck(InputState inputState)
