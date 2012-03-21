@@ -94,14 +94,6 @@
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Nuclex.Input, Version=4.0.0.0, Culture=neutral, PublicKeyToken=96bb577564343f16, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Properties\Nuclex.Input.dll</HintPath>
-    </Reference>
-    <Reference Include="Nuclex.UserInterface, Version=4.0.0.0, Culture=neutral, PublicKeyToken=96bb577564343f16, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Properties\Nuclex.UserInterface.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
@@ -132,7 +124,6 @@
     <Compile Include="ScreenManager\ScreenManager.cs" />
     <Compile Include="ScreenManager\Button.cs" />
     <Compile Include="Screens\BackgroundScreen.cs" />
-    <Compile Include="Screens\ConfirmationDialogScreen.cs" />
     <Compile Include="Screens\LevelSelectionScreen.cs" />
     <Compile Include="Screens\ProfileSelectionScreen.cs" />
     <Compile Include="Screens\LevelOverScreen.cs" />

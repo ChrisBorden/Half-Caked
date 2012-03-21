@@ -31,6 +31,16 @@ namespace Half_Caked
         string text;
 
         /// <summary>
+        /// The different choices that can be toggled between for the options.
+        /// </summary>
+        string[] choices;
+
+        /// <summary>
+        /// The currently selected choice.
+        /// </summary>
+        int selected;
+
+        /// <summary>
         /// Tracks a fading selection effect on the entry.
         /// </summary>
         /// <remarks>
@@ -48,10 +58,17 @@ namespace Half_Caked
         /// </summary>
         public string Text
         {
-            get { return text; }
+            get { return text + (HasChoices ? choices[selected] : ""); }
             set { text = value; }
         }
 
+        public int SelectedChoice
+        {
+            get { return selected; }
+            set { selected = value; }
+        }
+
+        public bool HasChoices { get; set; }
 
         #endregion
 
@@ -67,8 +84,10 @@ namespace Half_Caked
         /// <summary>
         /// Method for raising the Selected event.
         /// </summary>
-        protected internal virtual void OnSelectEntry(PlayerIndex playerIndex)
+        protected internal virtual void OnSelectEntry(PlayerIndex playerIndex, int direction)
         {
+            if (HasChoices)
+                this.selected = (this.selected + direction + choices.Length) % choices.Length;
             if (Selected != null)
                 Selected(this, new PlayerIndexEventArgs(playerIndex));
         }
@@ -83,10 +102,20 @@ namespace Half_Caked
         /// Constructs a new menu entry with the specified text.
         /// </summary>
         public MenuEntry(string text)
+            : this(text, null)
         {
-            this.text = text;
         }
 
+        /// <summary>
+        /// Constructs a new menu entry with the specified text.
+        /// </summary>
+        public MenuEntry(string text, string[] choices)
+        {
+            HasChoices = !(choices == null || choices.Length < 1);
+
+            this.text = text;
+            this.choices = choices;
+        }
 
         #endregion
 
@@ -136,7 +165,7 @@ namespace Half_Caked
 
             Vector2 origin = new Vector2(0, font.LineSpacing / 2);
 
-            spriteBatch.DrawString(font, text, position, color, 0,
+            spriteBatch.DrawString(font, Text, position, color, 0,
                                    origin, scale, SpriteEffects.None, 0);
         }
 

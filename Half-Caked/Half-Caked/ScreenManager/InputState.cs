@@ -373,7 +373,7 @@ namespace Half_Caked
 
             return IsNewKeyPress(Keys.Left, controllingPlayer, out playerIndex) ||
                    IsNewKeyPress(Keys.A, controllingPlayer, out playerIndex) ||
-                   IsNewMouseScrollDown() ||
+                   IsNewMouseScrollUp() ||
                    IsNewButtonPress(Buttons.DPadLeft, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.LeftThumbstickUp, controllingPlayer, out playerIndex);
         }
@@ -389,7 +389,7 @@ namespace Half_Caked
 
             return IsNewKeyPress(Keys.Right, controllingPlayer, out playerIndex) ||
                    IsNewKeyPress(Keys.D, controllingPlayer, out playerIndex) ||
-                   IsNewMouseScrollUp() ||
+                   IsNewMouseScrollDown() ||
                    IsNewButtonPress(Buttons.DPadDown, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.LeftThumbstickDown, controllingPlayer, out playerIndex);
         }

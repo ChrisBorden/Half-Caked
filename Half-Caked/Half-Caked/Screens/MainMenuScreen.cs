@@ -84,9 +84,9 @@ namespace Half_Caked
             else
             {
                 const string message = "Are you sure you want to exit the game?";
-                ConfirmationDialogScreen confirmExitMessageBox = new ConfirmationDialogScreen(message, this.ScreenManager);
+                MessageBoxScreen confirmExitMessageBox = new MessageBoxScreen(message);
 
-                confirmExitMessageBox.Confirmed += ConfirmExitMessageBoxAccepted;
+                confirmExitMessageBox.Buttons[0].Pressed += ConfirmExitMessageBoxAccepted;
 
                 ScreenManager.AddScreen(confirmExitMessageBox, playerIndex);
             }

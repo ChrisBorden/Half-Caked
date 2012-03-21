@@ -275,49 +275,4 @@ namespace Half_Caked
 
         #endregion
     }
-
-    class AudioOptionsDialog : MessageBoxScreen
-    {
-        public AudioOptionsDialog(Profile curProfile) 
-            : base("mAudio", new string[] { "Save", "Cancel" }, 0) 
-        {
-            Buttons[0].Pressed += SaveButton;
-            mProfile = curProfile;
-        }
-
-        private Profile mProfile;
-
-        void SaveButton(object sender, PlayerIndexEventArgs e) { }
-    }
-
-    class GraphicsDialog : MessageBoxScreen
-    {
-        public GraphicsDialog(Profile curProfile) 
-            : base("Graphics", new string[] { "Save", "Test", "Cancel" }, 0)
-        {
-            Buttons[0].Pressed += SaveButton;
-            Buttons[1].Pressed += TestButton;
-            mProfile = curProfile;
-        }
-
-        private Profile mProfile;
-
-        void SaveButton(object sender, PlayerIndexEventArgs e) { }
-        void TestButton(object sender, PlayerIndexEventArgs e) { }
-    }
-
-    class KeybindingsDialog : MessageBoxScreen
-    {
-        public KeybindingsDialog(Profile curProfile) 
-            : base("Keybindings", new string[] { "Save", "Cancel" }, 0)
-        {
-            Buttons[0].Pressed += SaveButton;
-            mProfile = curProfile;
-        }
-        
-        private Profile mProfile;
-
-        void SaveButton(object sender, PlayerIndexEventArgs e) { }
-        void KeybindingPressed(object sender, PlayerIndexEventArgs e) { }
-    }
 }

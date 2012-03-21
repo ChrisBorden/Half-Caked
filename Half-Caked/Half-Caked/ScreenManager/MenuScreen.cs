@@ -91,14 +91,16 @@ namespace Half_Caked
             }
 
             int yPosition = 150;
-            bool pressed = false;
+            bool leftPressed = false;
+            bool rightPressed = false;
             for (int i = 0; i < menuEntries.Count; i++)
             {
                 if (input.LastMouseState.Y > yPosition - menuEntries[i].GetHeight(this)/2 && input.IsNewMouseState() && 
                     input.LastMouseState.Y < yPosition + menuEntries[i].GetHeight(this)/2)
                 {
                     selectedEntry = i;
-                    pressed = input.IsNewLeftMouseClick();
+                    leftPressed = input.IsNewLeftMouseClick();
+                    rightPressed = input.IsNewRightMouseClick();
                     break;
                 }
                 yPosition += menuEntries[i].GetHeight(this);
@@ -117,9 +119,14 @@ namespace Half_Caked
             // OnSelectEntry and OnCancel, so they can tell which player triggered them.
             PlayerIndex playerIndex;
 
-            if (input.IsMenuSelect(ControllingPlayer, out playerIndex) || pressed)
+            if (input.IsMenuSelect(ControllingPlayer, out playerIndex) || leftPressed
+                      || (menuEntries[selectedEntry].HasChoices && input.IsNextButton(ControllingPlayer)))
             {
-                OnSelectEntry(selectedEntry, playerIndex);
+                OnSelectEntry(selectedEntry, playerIndex, 1);
+            }
+            else if (menuEntries[selectedEntry].HasChoices && (input.IsPreviousButton(ControllingPlayer) || rightPressed))
+            {
+                OnSelectEntry(selectedEntry, playerIndex, -1);
             }
             else if (input.IsMenuCancel(ControllingPlayer, out playerIndex))
             {
@@ -131,9 +138,9 @@ namespace Half_Caked
         /// <summary>
         /// Handler for when the user has chosen a menu entry.
         /// </summary>
-        protected virtual void OnSelectEntry(int entryIndex, PlayerIndex playerIndex)
+        protected virtual void OnSelectEntry(int entryIndex, PlayerIndex playerIndex, int direction)
         {
-            menuEntries[selectedEntry].OnSelectEntry(playerIndex);
+            menuEntries[selectedEntry].OnSelectEntry(playerIndex, direction);
         }
 
 
