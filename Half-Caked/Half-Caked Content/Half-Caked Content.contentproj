@@ -42,6 +42,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Levels\Level0.xml">
+      <Name>Level0</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Sounds\Level.mp3">
       <Name>Level</Name>
       <Importer>Mp3Importer</Importer>
