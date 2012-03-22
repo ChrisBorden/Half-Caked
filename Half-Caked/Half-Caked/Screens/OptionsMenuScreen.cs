@@ -10,6 +10,7 @@
 #region Using Statements
 using System;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 #endregion
 
 namespace Half_Caked
@@ -201,7 +202,20 @@ namespace Half_Caked
         }
 
         private Profile mProfile;
-
-        void SaveButton(object sender, PlayerIndexEventArgs e) { }
+        
+        void MoveForwardButton(object sender, PlayerIndexEventArgs e) {
+            MessageBoxScreen dialog = new KeybindingDialog("Move Forward");
+            ScreenManager.AddScreen(dialog, ControllingPlayer);
+        }
+        void MoveBackButton(object sender, PlayerIndexEventArgs e) { }
+        void CrouchButton(object sender, PlayerIndexEventArgs e) { }
+        void JumpButton(object sender, PlayerIndexEventArgs e) { }
+        void InteractButton(object sender, PlayerIndexEventArgs e) { }
+        void PortalPrimaryButton(object sender, PlayerIndexEventArgs e) { }
+        void PortalSecondaryButton(object sender, PlayerIndexEventArgs e) { }
+        void SaveButton(object sender, PlayerIndexEventArgs e) {
+            HalfCakedGame game = ScreenManager.Game as HalfCakedGame;
+            Profile.SaveProfile(mProfile, "default.sav", game.Device);
+        }
     }
 }
