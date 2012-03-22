@@ -20,7 +20,7 @@ namespace Half_Caked
     {
         #region Constants
         public static float METERS_TO_UNITS = 20;
-        public static int MAX_LEVELS = 2;
+        public static int MAX_LEVELS = 3;
         #endregion
 
         #region Fields

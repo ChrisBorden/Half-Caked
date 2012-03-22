@@ -28,6 +28,9 @@ namespace Half_Caked
                 case 1:
                     lvl = CreateLevel1();
                     break;
+                case 2:
+                    lvl = CreateLevel2();
+                    break;
                 default:
                     return;
             }
@@ -37,6 +40,37 @@ namespace Half_Caked
         #endregion
 
         #region Private Methods
+
+        private static Level CreateLevel0()
+        {
+            Level lvl = new Level();
+
+            lvl.Gravity = 40f;
+            lvl.InitialPosition = new Vector2(0, 0);
+
+            lvl.AssetName = "Level0";
+            lvl.LevelIdentifier = 0;
+
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 2000, 156), Surface.Normal));
+
+            //2 beginning blocks
+            lvl.Tiles.Add(new Tile(new Rectangle(4, 692, 248, 150), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(496, 691, 752 - 496, 150), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(999, 691, 1252 - 999, 150), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(1700, 680, 1998 - 1700, 150), Surface.Normal));
+            
+            lvl.Checkpoints.Add(new Checkpoint(120, 500, 0, 0, 4)); 
+            lvl.Checkpoints.Add(new Checkpoint(0, 0, 1900, 0, 4));
+
+
+            //Boundaries
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 1500 - 2, 2000, 2), Surface.Death));
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 1500, 2), Surface.Absorbs));
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 2, 2000), Surface.Absorbs));
+            lvl.Tiles.Add(new Tile(new Rectangle(2000 - 2, 0, 2, 1500), Surface.Absorbs));
+
+            return lvl;
+        }
 
         private static Level CreateLevel1()
         {
@@ -74,15 +108,15 @@ namespace Half_Caked
             return lvl;
         }
 
-        private static Level CreateLevel0()
+        private static Level CreateLevel2()
         {
             Level lvl = new Level();
 
             lvl.Gravity = 9.80f;
             lvl.InitialPosition = new Vector2(0, -500);
 
-            lvl.AssetName = "Level0";
-            lvl.LevelIdentifier = 0;
+            lvl.AssetName = "Level2";
+            lvl.LevelIdentifier = 2;
 
             lvl.Tiles.Add(new Tile(new Rectangle(778, 0, 186, 281), Surface.Absorbs));
             lvl.Tiles.Add(new Tile(new Rectangle(964, 0, 420, 195), Surface.Normal));

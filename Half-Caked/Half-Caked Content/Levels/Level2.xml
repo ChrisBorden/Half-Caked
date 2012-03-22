@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Level xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <AssetName>Level0</AssetName>
+  <AssetName>Level2</AssetName>
   <InitialPosition>
     <X>0</X>
     <Y>-500</Y>
   </InitialPosition>
   <Gravity>40</Gravity>
-  <LevelIdentifier>0</LevelIdentifier>
+  <LevelIdentifier>2</LevelIdentifier>
   <Tiles>
     <Tile>
       <Dimensions>

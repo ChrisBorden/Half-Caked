@@ -100,8 +100,20 @@ namespace Half_Caked
 
         #region Fields
         public List<Vector2> Path;
-        public float Speed;
+        private float mSpeed;
         private int mCurrentPath;
+
+        public float Speed
+        {
+            get
+            {
+                return ((PlatformState)mState == PlatformState.Startionary) ? 0 : mSpeed;
+            }
+            set
+            {
+                mSpeed = value;
+            }
+        }
         #endregion
 
         #region Initialization

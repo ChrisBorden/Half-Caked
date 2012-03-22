@@ -36,8 +36,8 @@ namespace Half_Caked
         const int MOVE_DOWN = 1;
         const int MOVE_LEFT = -1;
         const int MOVE_RIGHT = 1;
-        const float MASS = 80.0f;
-        const float STATIC_ACCEL_GND = MASS  * .05f;
+        const float MASS = 40.0f;
+        const float STATIC_ACCEL_GND = MASS  * .10f;
         const float DYNAMIC_ACCEL_AIR = MASS * .20f;
         const float STATIC_ACCEL_AIR = MASS * .0025f;
         const float ARM_LENGTH = 37;
@@ -153,7 +153,11 @@ namespace Half_Caked
                         Die(level);
                         return;
                     }
-                    FrameVelocity = obs.Velocity;
+
+                    var pltfrm = obs as Platform;
+                    if (pltfrm != null && pltfrm.Speed != 0)
+                        FrameVelocity = obs.Velocity;
+
                     if(ePressed)
                         obs.React(CharacterGuid, level);
                 }
