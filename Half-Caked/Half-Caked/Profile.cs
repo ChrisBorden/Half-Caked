@@ -91,6 +91,7 @@ namespace Half_Caked
 
             stream.Close();
             container.Dispose();
+            prof.MakeValid();
             return prof;
         }
 
@@ -150,6 +151,56 @@ namespace Half_Caked
             }
 
             container.Dispose();
+        }
+
+        private bool MakeValid()
+        {
+            bool madeChanges = false;
+
+            this.CurrentLevel = (int)MathHelper.Clamp(this.CurrentLevel, 0, Level.MAX_LEVELS - 1);
+
+            if (LevelStatistics == null)
+            {
+                this.LevelStatistics = new Statistics[Level.MAX_LEVELS];
+                madeChanges = true;
+            }
+
+            if (LevelStatistics.Length < Level.MAX_LEVELS)
+            {
+                this.LevelStatistics = LevelStatistics.Union(new Statistics[Level.MAX_LEVELS - LevelStatistics.Length]).ToArray();
+                madeChanges = true;
+            }
+            else if (LevelStatistics.Length > Level.MAX_LEVELS)
+            {
+                this.LevelStatistics = LevelStatistics.Take(Level.MAX_LEVELS).ToArray();
+                madeChanges = true;
+            }
+
+            if (Name == null || this.Name.Length <= 0)
+            {
+                this.Name = " ";
+                madeChanges = true;
+            }
+
+            if (this.Audio == null)
+            {
+                this.Audio = new AudioSettings();
+                madeChanges = true;
+            }
+
+            if (this.Graphics == null)
+            {
+                this.Graphics = new GraphicsSettings();
+                madeChanges = true;
+            }
+
+            if (this.KeyBindings == null)
+            {
+                this.KeyBindings = new Keybindings();
+                madeChanges = true;
+            }
+            
+            return !madeChanges;
         }
     }
 

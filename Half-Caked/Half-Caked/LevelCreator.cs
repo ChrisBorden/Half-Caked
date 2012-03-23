@@ -76,7 +76,7 @@ namespace Half_Caked
         {
             Level lvl = new Level();
 
-            lvl.Gravity = 9.80f;
+            lvl.Gravity = 40f;
             lvl.InitialPosition = new Vector2(0, -100);
 
             lvl.AssetName = "Level1";
@@ -112,7 +112,7 @@ namespace Half_Caked
         {
             Level lvl = new Level();
 
-            lvl.Gravity = 9.80f;
+            lvl.Gravity = 40f;
             lvl.InitialPosition = new Vector2(0, -500);
 
             lvl.AssetName = "Level2";
@@ -147,7 +147,7 @@ namespace Half_Caked
             lvl.Obstacles.Add(switch1);
 
             Platform pf1 = new Platform(System.Guid.NewGuid(), new List<Vector2>() { new Vector2(1435, 1078), new Vector2(1607, 1078), new Vector2(1607, 473), new Vector2(1286, 473) }, 50, Platform.PlatformState.Forward);
-            pf1.Actions.Add(new KeyValuePair<Guid, int>(switch1.Guid, (int)Platform.PlatformState.Startionary));
+            pf1.Actions.Add(new KeyValuePair<Guid, int>(switch1.Guid, (int)Platform.PlatformState.Stationary));
             lvl.Obstacles.Add(pf1);
 
             Door d1 = new Door(System.Guid.NewGuid(), new Vector2(778, 282), Door.DoorState.Stationary);

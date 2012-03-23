@@ -127,7 +127,7 @@ namespace Half_Caked
             var outputRect = mRectangle;
             outputRect.Height += (int)Padding.Y * 2;
             outputRect.Width += (int)Padding.X * 2;
-
+            
             Vector2 textPosition = new Vector2(mRectangle.X + mPaddingX + (mRectangle.Width / 2) * (int)Alignment, outputRect.Center.Y);
 
             scrn.ScreenManager.SpriteBatch.Draw(mBackground, outputRect, mSource, mDimColor);
@@ -137,6 +137,7 @@ namespace Half_Caked
         public void Widen(float width)
         {
             mRectangle.Width += (int)width;
+            Refresh = true;
         }
     }
 }

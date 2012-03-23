@@ -107,19 +107,15 @@ namespace Half_Caked
             if (input.IsMenuUp(ControllingPlayer))
             {
                 selectedEntry--;
-
-                if (selectedEntry < 0)
-                    selectedEntry = menuEntries.Count - 1;
             }
 
             // Move to the next menu entry?
             if (input.IsMenuDown(ControllingPlayer))
             {
                 selectedEntry++;
-
-                if (selectedEntry >= menuEntries.Count)
-                    selectedEntry = 0;
             }
+
+            selectedEntry = (int)MathHelper.Clamp(selectedEntry, 0, MenuEntries.Count - 1);
 
             if (!menuEntries[selectedEntry].HandleMouseInput(input))
                 for (int i = 0; i < menuEntries.Count; i++)
@@ -149,7 +145,11 @@ namespace Half_Caked
             // OnSelectEntry and OnCancel, so they can tell which player triggered them.
             PlayerIndex playerIndex;
 
-            if (input.IsMenuSelect(ControllingPlayer, out playerIndex) || (menuEntries[selectedEntry].ChangesValue && input.IsNextButton(ControllingPlayer)))
+            if (input.IsMenuSelect(ControllingPlayer, out playerIndex))
+            {
+                OnSelectEntry(selectedEntry, playerIndex, 0);
+            }
+            else if (menuEntries[selectedEntry].ChangesValue && input.IsNextButton(ControllingPlayer))
             {
                 OnSelectEntry(selectedEntry, playerIndex, 1);
             }
@@ -161,8 +161,6 @@ namespace Half_Caked
             {
                 OnCancel(playerIndex);
             }
-          //  else if (menuEntries[selectedEntry].IsDragging)
-         //       menuEntries[selectedEntry].IsDragging = false;
         }
 
 

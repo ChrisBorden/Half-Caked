@@ -155,7 +155,7 @@ namespace Half_Caked
                     }
 
                     var pltfrm = obs as Platform;
-                    if (pltfrm != null && pltfrm.Speed != 0)
+                    if (pltfrm != null && pltfrm.IsMoving)
                         FrameVelocity = obs.Velocity;
 
                     if(ePressed)

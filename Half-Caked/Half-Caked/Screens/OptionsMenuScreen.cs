@@ -8,6 +8,7 @@
 #endregion
 
 #region Using Statements
+using System;
 using Microsoft.Xna.Framework;
 #endregion
 
@@ -99,14 +100,17 @@ namespace Half_Caked
             Slider musicEffectSlider =     new Slider("Music Volume:", 50);
             Slider soundEffectSlider =     new Slider("Sound Effect Volume:", 50);
             Slider narrationVolumeSlider = new Slider("Narration Volume:", 50);
+            MenuEntry saveMenuEntry = new MenuEntry("Save");
             MenuEntry backMenuEntry = new MenuEntry("Back");
 
+            saveMenuEntry.Pressed += SaveButton;
             backMenuEntry.Pressed += OnCancel;
 
             MenuEntries.Add(masterVolumeSlider);
             MenuEntries.Add(musicEffectSlider);
             MenuEntries.Add(soundEffectSlider);
             MenuEntries.Add(narrationVolumeSlider);
+            MenuEntries.Add(saveMenuEntry);
             MenuEntries.Add(backMenuEntry);
 
             mProfile = curProfile;
@@ -162,12 +166,38 @@ namespace Half_Caked
         public KeybindingsScreen(Profile curProfile)
             : base("Keybindings")
         {
+            ButtonGroup bg1 = new ButtonGroup("A", new string[2] { "1", "3332" });
+            ButtonGroup bg2 = new ButtonGroup("BC", new string[2] { "1", "3332" });
+            ButtonGroup bg3 = new ButtonGroup("CAC", new string[2] { "---1", "2" });
+            ButtonGroup bg4 = new ButtonGroup("DCAB", new string[2] { "12", "23333" });
+            ButtonGroup bg5 = new ButtonGroup("EFGBA", new string[2] { "321", "23" });
+
             MenuEntry backMenuEntry = new MenuEntry("Back");
+
             backMenuEntry.Pressed += OnCancel;
+
+            MenuEntries.Add(bg1);
+            MenuEntries.Add(bg2);
+            MenuEntries.Add(bg3);
+            MenuEntries.Add(bg4);
+            MenuEntries.Add(bg5);
             MenuEntries.Add(backMenuEntry);
 
-
             mProfile = curProfile;
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+
+            int width = 0;
+            foreach (UIElement btnGrp in MenuEntries)
+                if(btnGrp is ButtonGroup)
+                    width = (int)Math.Max(width, (btnGrp as ButtonGroup).ButtonWidth);
+
+            foreach (UIElement btnGrp in MenuEntries)
+                if (btnGrp is ButtonGroup)
+                    (btnGrp as ButtonGroup).ButtonWidth = width;
         }
 
         private Profile mProfile;

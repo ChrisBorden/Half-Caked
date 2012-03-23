@@ -91,7 +91,7 @@ namespace Half_Caked
     {        
         public enum PlatformState
         {
-            Startionary = 0,
+            Stationary = 0,
             Forward,
             Reverse,
             Circuit,
@@ -100,18 +100,14 @@ namespace Half_Caked
 
         #region Fields
         public List<Vector2> Path;
-        private float mSpeed;
+        public float Speed;
         private int mCurrentPath;
 
-        public float Speed
+        public bool IsMoving
         {
             get
             {
-                return ((PlatformState)mState == PlatformState.Startionary) ? 0 : mSpeed;
-            }
-            set
-            {
-                mSpeed = value;
+                return (PlatformState)mState != PlatformState.Stationary;
             }
         }
         #endregion
@@ -153,7 +149,7 @@ namespace Half_Caked
 
         public override void Update(GameTime theGameTime)
         {
-            if ((PlatformState)mState == PlatformState.Startionary)
+            if ((PlatformState)mState == PlatformState.Stationary)
                 return;
 
             base.Update(theGameTime);

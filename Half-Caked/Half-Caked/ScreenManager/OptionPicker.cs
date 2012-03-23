@@ -52,16 +52,6 @@ namespace Half_Caked
 
         #region Properties
 
-
-        /// <summary>
-        /// Gets or sets the text of this menu entry.
-        /// </summary>
-        public string Text
-        {
-            get { return text; }
-            set { text = value; }
-        }
-
         public int SelectedChoice
         {
             get { return selected; }

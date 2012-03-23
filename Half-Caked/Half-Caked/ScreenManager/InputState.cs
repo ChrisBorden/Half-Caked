@@ -263,8 +263,9 @@ namespace Half_Caked
         ///<returns>True: If the mouse has been moved or left mouse button was clicked</returns> 
         public bool IsNewMouseState()
         {
-            return (CurrentMouseState.X != LastMouseState.X && CurrentMouseState.Y != LastMouseState.Y)
-                   || (CurrentMouseState.LeftButton != LastMouseState.LeftButton);
+            return (CurrentMouseState.X != LastMouseState.X || CurrentMouseState.Y != LastMouseState.Y)
+                   || (CurrentMouseState.LeftButton != LastMouseState.LeftButton)
+                   || (CurrentMouseState.RightButton != LastMouseState.RightButton);
         }
 
         /// <summary>
@@ -395,7 +396,6 @@ namespace Half_Caked
 
             return IsNewKeyPress(Keys.Left, controllingPlayer, out playerIndex) ||
                    IsNewKeyPress(Keys.A, controllingPlayer, out playerIndex) ||
-                   IsNewMouseScrollUp() ||
                    IsNewButtonPress(Buttons.DPadLeft, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.LeftThumbstickUp, controllingPlayer, out playerIndex);
         }
@@ -411,7 +411,6 @@ namespace Half_Caked
 
             return IsNewKeyPress(Keys.Right, controllingPlayer, out playerIndex) ||
                    IsNewKeyPress(Keys.D, controllingPlayer, out playerIndex) ||
-                   IsNewMouseScrollDown() ||
                    IsNewButtonPress(Buttons.DPadDown, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.LeftThumbstickDown, controllingPlayer, out playerIndex);
         }
