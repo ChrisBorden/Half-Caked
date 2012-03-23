@@ -184,7 +184,7 @@ namespace Half_Caked
             }
         }
 
-        ///<summary> 
+        /// <summary> 
         //Checks for a left mouse button click input from the user and returns true  
         //if a left click was performed. 
         /// </summary> 
@@ -196,6 +196,17 @@ namespace Half_Caked
         }
 
         /// <summary> 
+        //Checks for a left mouse button press input from the user and returns true  
+        //if a left press was performed. 
+        /// </summary> 
+        /// <returns>True: If left mouse button was clickedpressedreturns> 
+        public bool IsNewLeftMousePress()
+        {
+            return (CurrentMouseState.LeftButton == ButtonState.Pressed &&
+                LastMouseState.LeftButton == ButtonState.Released);
+        }
+
+        /// <summary> 
         /// Checks for a right mouse button click input form the user and returns 
         /// true if a right mouse click was performed. 
         /// </summary> 
@@ -204,6 +215,17 @@ namespace Half_Caked
         {
             return (CurrentMouseState.RightButton == ButtonState.Released &&
                 LastMouseState.RightButton == ButtonState.Pressed);
+        }
+
+        /// <summary> 
+        //Checks for a left mouse button press input from the user and returns true  
+        //if a left press was performed. 
+        /// </summary> 
+        /// <returns>True: If right mouse button was pressed.</returns> 
+        public bool IsNewRightMousePress()
+        {
+            return (CurrentMouseState.RightButton == ButtonState.Pressed &&
+                LastMouseState.RightButton == ButtonState.Released);
         }
 
         /// <summary> 

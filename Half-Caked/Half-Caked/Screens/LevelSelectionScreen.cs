@@ -27,7 +27,7 @@ namespace Half_Caked
             for (int i = 1; i <= p.CurrentLevel + 1; i++)
             {
                 MenuEntry entry = new MenuEntry("Level " + i);
-                entry.Selected += EntrySelected;
+                entry.Pressed += EntrySelected;
                 MenuEntries.Add(entry);
             }
         }

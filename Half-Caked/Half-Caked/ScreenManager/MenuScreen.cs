@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 #endregion
 
 namespace Half_Caked
@@ -24,9 +26,10 @@ namespace Half_Caked
     {
         #region Fields
 
-        List<MenuEntry> menuEntries = new List<MenuEntry>();
+        List<UIElement> menuEntries = new List<UIElement>();
         int selectedEntry = 0;
         string menuTitle;
+        SoundEffect EntryFocusChanged;
 
         #endregion
 
@@ -37,7 +40,7 @@ namespace Half_Caked
         /// Gets the list of menu entries, so derived classes can add
         /// or change the menu contents.
         /// </summary>
-        protected IList<MenuEntry> MenuEntries
+        protected IList<UIElement> MenuEntries
         {
             get { return menuEntries; }
         }
@@ -59,6 +62,34 @@ namespace Half_Caked
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
 
+        public override void LoadContent()
+        {
+            try
+            {
+                EntryFocusChanged = ScreenManager.Game.Content.Load<SoundEffect>("Sounds\\UISelected");
+            }
+            catch { }
+
+            menuEntries[selectedEntry].State = UIState.Selected;
+
+            foreach (UIElement ui in menuEntries)
+                ui.LoadContent(this);
+
+            Vector2 position = new Vector2(100, 150);
+            int maxWidth = 0;
+
+            for (int i = 0; i < menuEntries.Count; i++)
+                if (maxWidth < menuEntries[i].LabelWidth)
+                    maxWidth = menuEntries[i].LabelWidth;
+
+            for (int i = 0; i < menuEntries.Count; i++)
+            {
+                menuEntries[i].Position = position;
+                menuEntries[i].LabelWidth = maxWidth;
+                position.Y += menuEntries[i].Size.Y;
+            }
+            
+        }
 
         #endregion
 
@@ -90,26 +121,25 @@ namespace Half_Caked
                     selectedEntry = 0;
             }
 
-            int yPosition = 150;
-            bool leftPressed = false;
-            bool rightPressed = false;
-            for (int i = 0; i < menuEntries.Count; i++)
-            {
-                if (input.LastMouseState.Y > yPosition - menuEntries[i].GetHeight(this)/2 && input.IsNewMouseState() && 
-                    input.LastMouseState.Y < yPosition + menuEntries[i].GetHeight(this)/2)
+            if (!menuEntries[selectedEntry].HandleMouseInput(input))
+                for (int i = 0; i < menuEntries.Count; i++)
                 {
-                    selectedEntry = i;
-                    leftPressed = input.IsNewLeftMouseClick();
-                    rightPressed = input.IsNewRightMouseClick();
-                    break;
-                }
-                yPosition += menuEntries[i].GetHeight(this);
-            } 
+                    if(menuEntries[i].HandleMouseInput(input))
+                    {
+                        selectedEntry = i;
+                        break;
+                    }
+                } 
 
             if(selectedEntry != before)
             {
+                menuEntries[before].State = UIState.Active;
+                menuEntries[selectedEntry].State = UIState.Selected;
+
                 AudioSettings settings = (ScreenManager.Game as HalfCakedGame).CurrentProfile.Audio;
-                EntryFocusChanged.Play(settings.SoundEffectsVolume / 500f, 0f, 0f);
+
+                if(EntryFocusChanged != null)
+                    EntryFocusChanged.Play(settings.SoundEffectsVolume / 500f, 0f, 0f);
             }
 
             // Accept or cancel the menu? We pass in our ControllingPlayer, which may
@@ -119,12 +149,11 @@ namespace Half_Caked
             // OnSelectEntry and OnCancel, so they can tell which player triggered them.
             PlayerIndex playerIndex;
 
-            if (input.IsMenuSelect(ControllingPlayer, out playerIndex) || leftPressed
-                      || (menuEntries[selectedEntry].HasChoices && input.IsNextButton(ControllingPlayer)))
+            if (input.IsMenuSelect(ControllingPlayer, out playerIndex) || (menuEntries[selectedEntry].ChangesValue && input.IsNextButton(ControllingPlayer)))
             {
                 OnSelectEntry(selectedEntry, playerIndex, 1);
             }
-            else if (menuEntries[selectedEntry].HasChoices && (input.IsPreviousButton(ControllingPlayer) || rightPressed))
+            else if (menuEntries[selectedEntry].ChangesValue && (input.IsPreviousButton(ControllingPlayer)))
             {
                 OnSelectEntry(selectedEntry, playerIndex, -1);
             }
@@ -132,6 +161,8 @@ namespace Half_Caked
             {
                 OnCancel(playerIndex);
             }
+          //  else if (menuEntries[selectedEntry].IsDragging)
+         //       menuEntries[selectedEntry].IsDragging = false;
         }
 
 
@@ -140,7 +171,7 @@ namespace Half_Caked
         /// </summary>
         protected virtual void OnSelectEntry(int entryIndex, PlayerIndex playerIndex, int direction)
         {
-            menuEntries[selectedEntry].OnSelectEntry(playerIndex, direction);
+            menuEntries[selectedEntry].OnPressedElement(playerIndex, direction);
         }
 
 
@@ -213,13 +244,10 @@ namespace Half_Caked
             // Draw each menu entry in turn.
             for (int i = 0; i < menuEntries.Count; i++)
             {
-                MenuEntry menuEntry = menuEntries[i];
+                menuEntries[i].Position = position;
+                position.Y += menuEntries[i].Size.Y;
 
-                bool isSelected = IsActive && (i == selectedEntry);
-
-                menuEntry.Draw(this, position, isSelected, gameTime);
-
-                position.Y += menuEntry.GetHeight(this);
+                menuEntries[i].Draw(this, gameTime, TransitionAlpha);
             }
 
             // Draw the menu title.

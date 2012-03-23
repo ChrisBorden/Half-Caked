@@ -21,25 +21,10 @@ namespace Half_Caked
     /// entries in different ways. This also provides an event that will be raised
     /// when the menu entry is selected.
     /// </summary>
-    class MenuEntry
+    class MenuEntry : Label
     {
         #region Fields
-
-        /// <summary>
-        /// The text rendered for this entry.
-        /// </summary>
-        string text;
-
-        /// <summary>
-        /// The different choices that can be toggled between for the options.
-        /// </summary>
-        string[] choices;
-
-        /// <summary>
-        /// The currently selected choice.
-        /// </summary>
-        int selected;
-
+        
         /// <summary>
         /// Tracks a fading selection effect on the entry.
         /// </summary>
@@ -50,73 +35,20 @@ namespace Half_Caked
 
         #endregion
 
-        #region Properties
-
-
-        /// <summary>
-        /// Gets or sets the text of this menu entry.
-        /// </summary>
-        public string Text
-        {
-            get { return text + (HasChoices ? choices[selected] : ""); }
-            set { text = value; }
-        }
-
-        public int SelectedChoice
-        {
-            get { return selected; }
-            set { selected = value; }
-        }
-
-        public bool HasChoices { get; set; }
-
-        #endregion
-
-        #region Events
-
-
-        /// <summary>
-        /// Event raised when the menu entry is selected.
-        /// </summary>
-        public event EventHandler<PlayerIndexEventArgs> Selected;
-
-
-        /// <summary>
-        /// Method for raising the Selected event.
-        /// </summary>
-        protected internal virtual void OnSelectEntry(PlayerIndex playerIndex, int direction)
-        {
-            if (HasChoices)
-                this.selected = (this.selected + direction + choices.Length) % choices.Length;
-            if (Selected != null)
-                Selected(this, new PlayerIndexEventArgs(playerIndex));
-        }
-
-
-        #endregion
-
         #region Initialization
-
 
         /// <summary>
         /// Constructs a new menu entry with the specified text.
         /// </summary>
         public MenuEntry(string text)
-            : this(text, null)
+            : base (text, 5, 2, Alignment.Left)
         {
         }
 
-        /// <summary>
-        /// Constructs a new menu entry with the specified text.
-        /// </summary>
-        public MenuEntry(string text, string[] choices)
+        public override void LoadContent(GameScreen screen)
         {
-            HasChoices = !(choices == null || choices.Length < 1);
-
-            this.text = text;
-            this.choices = choices;
+            Size = screen.ScreenManager.Font.MeasureString(Text) * 1.1f;
         }
-
         #endregion
 
         #region Update and Draw
@@ -124,7 +56,7 @@ namespace Half_Caked
         /// <summary>
         /// Updates the menu entry.
         /// </summary>
-        public virtual void Update(MenuScreen screen, bool isSelected,
+        public override void Update(MenuScreen screen, bool isSelected,
                                                       GameTime gameTime)
         {
             // When the menu selection changes, entries gradually fade between
@@ -142,12 +74,11 @@ namespace Half_Caked
         /// <summary>
         /// Draws the menu entry. This can be overridden to customize the appearance.
         /// </summary>
-        public virtual void Draw(MenuScreen screen, Vector2 position,
-                                 bool isSelected, GameTime gameTime)
+        public override void Draw(GameScreen screen, GameTime gameTime, byte b)
         {
             // Draw the selected entry in yellow, otherwise white.
-            Color color = isSelected ? Color.Yellow : Color.White;
-            
+            Color color = State == UIState.Selected ? Color.Yellow : Color.White;
+
             // Pulsate the size of the selected menu entry.
             double time = gameTime.TotalGameTime.TotalSeconds;
             
@@ -163,21 +94,12 @@ namespace Half_Caked
             SpriteBatch spriteBatch = screenManager.SpriteBatch;
             SpriteFont font = screenManager.Font;
 
-            Vector2 origin = new Vector2(0, font.LineSpacing / 2);
+            Vector2 textPosition = new Vector2(mRectangle.X + mPaddingX + (mRectangle.Width / 2) * (int)Alignment, mRectangle.Y);
+            mOrigin = new Vector2(mRectangle.Width / 2.2f * (int)Alignment * scale, mRectangle.Height / 2.2f * scale);
 
-            spriteBatch.DrawString(font, Text, position, color, 0,
-                                   origin, scale, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, Text, textPosition, color, 0,
+                                   mOrigin, scale, SpriteEffects.None, 0);
         }
-
-
-        /// <summary>
-        /// Queries how much space this menu entry requires.
-        /// </summary>
-        public virtual int GetHeight(MenuScreen screen)
-        {
-            return screen.ScreenManager.Font.LineSpacing;
-        }
-
 
         #endregion
     }

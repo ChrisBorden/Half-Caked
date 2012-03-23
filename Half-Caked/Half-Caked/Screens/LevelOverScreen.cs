@@ -50,8 +50,8 @@ namespace Half_Caked
             base.LoadContent();
             if (mLevel.LevelIdentifier + 1 >= Level.MAX_LEVELS)
             {
-                Buttons[0].State = Button.ButtonState.Inactive;
-                Buttons[1].State = Button.ButtonState.Selected;
+                Buttons[0].State = UIState.Inactive;
+                Buttons[1].State = UIState.Selected;
                 mSelectedButton = 1;
             }
         }

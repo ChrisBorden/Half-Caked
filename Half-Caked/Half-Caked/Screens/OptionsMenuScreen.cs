@@ -37,11 +37,11 @@ namespace Half_Caked
             MenuEntry backMenuEntry = new MenuEntry("Back");
 
             // Hook up menu event handlers.
-            profileMenuEntry.Selected += ProfileMenuEntrySelected;
-            resolutionMenuEntry.Selected += ResolutionMenuEntrySelected;
-            soundMenuEntry.Selected += SoundMenuEntrySelected;
-            keybindingsMenuEntry.Selected += KeybindingsMenuEntrySelected;
-            backMenuEntry.Selected += OnCancel;
+            profileMenuEntry.Pressed += ProfileMenuEntrySelected;
+            resolutionMenuEntry.Pressed += ResolutionMenuEntrySelected;
+            soundMenuEntry.Pressed += SoundMenuEntrySelected;
+            keybindingsMenuEntry.Pressed += KeybindingsMenuEntrySelected;
+            backMenuEntry.Pressed += OnCancel;
             
             // Add entries to the menu.
             MenuEntries.Add(profileMenuEntry);
@@ -95,8 +95,18 @@ namespace Half_Caked
         public AudioOptionsScreen(Profile curProfile)
             : base("Audio Settings")
         {
+            Slider masterVolumeSlider =    new Slider("Master Volume:", 50);
+            Slider musicEffectSlider =     new Slider("Music Volume:", 50);
+            Slider soundEffectSlider =     new Slider("Sound Effect Volume:", 50);
+            Slider narrationVolumeSlider = new Slider("Narration Volume:", 50);
             MenuEntry backMenuEntry = new MenuEntry("Back");
-            backMenuEntry.Selected += OnCancel;
+
+            backMenuEntry.Pressed += OnCancel;
+
+            MenuEntries.Add(masterVolumeSlider);
+            MenuEntries.Add(musicEffectSlider);
+            MenuEntries.Add(soundEffectSlider);
+            MenuEntries.Add(narrationVolumeSlider);
             MenuEntries.Add(backMenuEntry);
 
             mProfile = curProfile;
@@ -114,16 +124,16 @@ namespace Half_Caked
             : base("Graphics Settings")
         {
             // Create our menu entries.
-            MenuEntry displayModeMenuEntry = new MenuEntry("Display Mode: ", new string[3]{"W", "W (NB)", "FS"});
-            MenuEntry resolutionMenuEntry = new MenuEntry("Resolutions: ", new string[3]{"A", "B", "C"});
+            OptionPicker displayModeMenuEntry = new OptionPicker("Display Mode:", new string[3] { "W", "W (NB)", "FS" });
+            OptionPicker resolutionMenuEntry = new OptionPicker( "Resolutions:", new string[3] { "A", "B", "C" });
             MenuEntry testMenuEntry = new MenuEntry("Test");
             MenuEntry saveMenuEntry = new MenuEntry("Save");
             MenuEntry backMenuEntry = new MenuEntry("Back");
 
             // Hook up menu event handlers.
-            testMenuEntry.Selected += TestButton;
-            saveMenuEntry.Selected += SaveButton;
-            backMenuEntry.Selected += OnCancel;
+            testMenuEntry.Pressed += TestButton;
+            saveMenuEntry.Pressed += SaveButton;
+            backMenuEntry.Pressed += OnCancel;
 
             // Add entries to the menu.
             MenuEntries.Add(displayModeMenuEntry);
@@ -153,7 +163,7 @@ namespace Half_Caked
             : base("Keybindings")
         {
             MenuEntry backMenuEntry = new MenuEntry("Back");
-            backMenuEntry.Selected += OnCancel;
+            backMenuEntry.Pressed += OnCancel;
             MenuEntries.Add(backMenuEntry);
 
 

@@ -39,9 +39,9 @@ namespace Half_Caked
             MenuEntry quitGameMenuEntry = new MenuEntry("Quit Game");
             
             // Hook up menu event handlers.
-            resumeGameMenuEntry.Selected += OnCancel;
-            quitGameMenuEntry.Selected += QuitGameMenuEntrySelected;
-            restartLevelMenuEntry.Selected += RestartLevelMenuEntrySelected;
+            resumeGameMenuEntry.Pressed += OnCancel;
+            quitGameMenuEntry.Pressed += QuitGameMenuEntrySelected;
+            restartLevelMenuEntry.Pressed += RestartLevelMenuEntrySelected;
 
             // Add entries to the menu.
             MenuEntries.Add(resumeGameMenuEntry);

@@ -114,14 +114,18 @@
     <Compile Include="Actors.cs" />
     <Compile Include="Checkpoint.cs" />
     <Compile Include="Profile.cs" />
+    <Compile Include="ScreenManager\Slider.cs" />
+    <Compile Include="ScreenManager\MenuEntry.cs" />
     <Compile Include="ScreenManager\GameScreen.cs" />
     <Compile Include="ScreenManager\InputState.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="LevelCreator.cs" />
     <Compile Include="Obstacles.cs" />
     <Compile Include="PortalGroup.cs" />
+    <Compile Include="ScreenManager\Label.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />
     <Compile Include="ScreenManager\Button.cs" />
+    <Compile Include="ScreenManager\UIElement.cs" />
     <Compile Include="Screens\BackgroundScreen.cs" />
     <Compile Include="Screens\LevelSelectionScreen.cs" />
     <Compile Include="Screens\ProfileSelectionScreen.cs" />
@@ -129,7 +133,7 @@
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
-    <Compile Include="ScreenManager\MenuEntry.cs" />
+    <Compile Include="ScreenManager\OptionPicker.cs" />
     <Compile Include="ScreenManager\MenuScreen.cs" />
     <Compile Include="Screens\MessageBoxScreen.cs" />
     <Compile Include="Screens\OptionsMenuScreen.cs" />

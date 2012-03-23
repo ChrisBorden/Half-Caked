@@ -2,10 +2,10 @@
 <!--Obtained from Microsoft's GameStateManagement Open-Source tutorial distribution-->
 <XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
 	<Asset Type="Graphics:FontDescription">
-		<FontName>Segoe UI Mono</FontName>
+		<FontName>Courier New</FontName>
 		<Size>20</Size>
 		<Spacing>2</Spacing>
-		<Style>Regular</Style>
+		<Style>Bold</Style>
 		<CharacterRegions>
 			<CharacterRegion>
 				<Start>&#32;</Start>

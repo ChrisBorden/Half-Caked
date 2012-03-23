@@ -90,9 +90,9 @@ namespace Half_Caked
             mGradientTexture = content.Load<Texture2D>("UI\\gradient");
 
             foreach(Button btn in Buttons)
-                btn.LoadContent(ScreenManager.Font, content);
+                btn.LoadContent(this);
 
-            Buttons[mSelectedButton].State = Button.ButtonState.Selected;
+            Buttons[mSelectedButton].State = UIState.Selected;
 
             CreateDimensions();
         }
@@ -111,23 +111,23 @@ namespace Half_Caked
             PlayerIndex playerIndex;
             int state = -2;
             var prevButton = mSelectedButton;
+            Vector2 mousePos = new Vector2(-1, -1);
 
             if (input.IsNextButton(ControllingPlayer))
             {
                 do
                     mSelectedButton = (mSelectedButton + 1) % Buttons.Count;
-                while(Buttons[mSelectedButton].State == Button.ButtonState.Inactive);
+                while (Buttons[mSelectedButton].State == UIState.Inactive);
             }
             if (input.IsPreviousButton(ControllingPlayer))
             {
                 do
                     mSelectedButton = (mSelectedButton - 1 + Buttons.Count) % Buttons.Count;
-                while(Buttons[mSelectedButton].State == Button.ButtonState.Inactive);
+                while (Buttons[mSelectedButton].State == UIState.Inactive);
             }
 
             for(int i = 0; i < Buttons.Count; i++)
-                if (Buttons[i].Contains(input.CurrentMouseState.X, input.CurrentMouseState.Y) && input.IsNewMouseState()
-                    && Buttons[i].State != Button.ButtonState.Inactive)
+                if (Buttons[i].HandleMouseInput(input))
                 {
                     mSelectedButton = i;
                     if (input.IsNewLeftMouseClick())
@@ -138,8 +138,8 @@ namespace Half_Caked
 
             if (prevButton != mSelectedButton)
             {
-                Buttons[prevButton].State = Button.ButtonState.Active;
-                Buttons[mSelectedButton].State = Button.ButtonState.Selected;
+                Buttons[prevButton].State = UIState.Active;
+                Buttons[mSelectedButton].State = UIState.Selected;
             }
 
             if (input.IsMenuSelect(ControllingPlayer, out playerIndex) && !input.IsNewLeftMouseClick())
@@ -157,13 +157,13 @@ namespace Half_Caked
                     break;
                 case -1:
                     if (Cancelled != null)
-                        Cancelled(this, new PlayerIndexEventArgs(PlayerIndex.One));
+                        Cancelled(this, new PlayerIndexEventArgs(playerIndex));
 
                     ExitScreen();
                     break;
                 default:
                     ExitScreen();
-                    Buttons[state].RaiseEvent();
+                    Buttons[state].OnPressedElement(playerIndex, 0);
                     break;
             }
         }
@@ -193,7 +193,7 @@ namespace Half_Caked
             spriteBatch.Draw(mGradientTexture, mBackgroundRectangle, color);
 
             foreach (Button btn in Buttons)
-                btn.Draw(spriteBatch, TransitionAlpha);
+                btn.Draw(this, gameTime, TransitionAlpha);
 
             // Draw the message box text.
             spriteBatch.DrawString(font, mMessage, mTextPosition, color);

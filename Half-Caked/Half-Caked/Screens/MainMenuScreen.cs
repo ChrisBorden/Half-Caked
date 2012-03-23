@@ -33,9 +33,9 @@ namespace Half_Caked
             MenuEntry exitMenuEntry = new MenuEntry("Exit");
 
             // Hook up menu event handlers.
-            playGameMenuEntry.Selected += PlayGameMenuEntrySelected;
-            optionsMenuEntry.Selected += OptionsMenuEntrySelected;
-            exitMenuEntry.Selected += OnCancel;
+            playGameMenuEntry.Pressed += PlayGameMenuEntrySelected;
+            optionsMenuEntry.Pressed += OptionsMenuEntrySelected;
+            exitMenuEntry.Pressed += OnCancel;
 
             // Add entries to the menu.
             MenuEntries.Add(playGameMenuEntry);
