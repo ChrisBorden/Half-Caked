@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections;
 using System;
+using System.Linq;
 #endregion
 
 namespace Half_Caked
@@ -561,6 +562,23 @@ namespace Half_Caked
                 text += "\n";
             
             return text;
+        }
+
+        //TODO: Add the gamepad functionality
+        public Keybinding GetNewestKeybindingPressed(PlayerIndex? controllingPlayer)
+        {
+            int i = (int) (controllingPlayer.HasValue ? controllingPlayer.Value : PlayerIndex.One);
+
+            var keysReleased = LastKeyboardStates[i].GetPressedKeys().Except(CurrentKeyboardStates[i].GetPressedKeys()).ToArray();
+
+            if (keysReleased.Length > 0)
+                return (Keybinding)keysReleased[0];
+
+            for (i = 1; i <= 3; i++)
+                if (IsNewMouseClick(i))
+                    return (Keybinding)i;
+
+            return null;
         }
 
         #endregion
