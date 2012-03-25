@@ -25,7 +25,13 @@ namespace Half_Caked
 
         #region Fields
         public float Gravity;
-        public int LevelIdentifier = -1;
+
+        private int mLevelID = -1;
+        public int LevelIdentifier
+        {
+            get { return mLevelID; }
+            set { mLevelID = value; if (LevelStatistics != null) LevelStatistics.Level = value; }
+        }
 
         [XmlIgnore]
         public Statistics LevelStatistics;
@@ -67,7 +73,6 @@ namespace Half_Caked
             mTextEffects = new List<TextEffect>();
             Tiles = new List<Tile>();
             Portals = new PortalGroup();
-
         }
 
         public virtual void LoadContent(ContentManager theContentManager, Profile activeProfile)
@@ -182,7 +187,7 @@ namespace Half_Caked
         public override void Reset()
         {
             base.Reset();
-            LevelStatistics = new Statistics();
+            LevelStatistics = new Statistics(mLevelID);
 
             mBackground.Position = Position;
             Portals.Reset();

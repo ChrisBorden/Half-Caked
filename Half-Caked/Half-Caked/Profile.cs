@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
+using System.Threading;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.GamerServices;
@@ -64,6 +65,11 @@ namespace Half_Caked
 
             container.DeleteFile(filename);
             container.Dispose();
+        }
+
+        public void Register()
+        {
+            (new Thread(new ThreadStart(this.HelpRegister))).Start();
         }
 
         public static Profile Load(int number, StorageDevice device)
@@ -202,6 +208,11 @@ namespace Half_Caked
             
             return !madeChanges;
         }
+
+        private void HelpRegister()
+        {
+            this.GlobalIdentifer = Server.RegisterProfile(Name);
+        }
     }
 
     [Serializable]
@@ -211,6 +222,7 @@ namespace Half_Caked
         public double TimeElapsed;
         public int Deaths;
         public int PortalsOpened;
+        public int Level;
 
         public int Score
         {
@@ -218,6 +230,22 @@ namespace Half_Caked
             {
                 return (int)TimeElapsed;
             }
+        }
+
+        public Statistics()
+            : this(-1)
+        {
+        }
+
+        public Statistics(int lvl)
+        {
+            Level = lvl;
+        }
+
+        public void UploadScore(Guid guid)
+        {
+            ThreadStart ts = delegate() { Server.SendHighScores(guid, this); };
+            new Thread(ts).Start();
         }
     }
 

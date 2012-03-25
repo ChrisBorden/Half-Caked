@@ -122,6 +122,7 @@ namespace Half_Caked
                     if (ProfileSaved != null)
                         ProfileSaved(this, new PlayerIndexEventArgs(ControllingPlayer.HasValue ? ControllingPlayer.Value : PlayerIndex.One));
 
+                    mProfiles[mSelectedButton].Register();
                     ExitScreen();
                 }
             }
