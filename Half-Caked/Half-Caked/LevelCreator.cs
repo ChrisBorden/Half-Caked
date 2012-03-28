@@ -31,6 +31,9 @@ namespace Half_Caked
                 case 2:
                     lvl = CreateLevel2();
                     break;
+                case 3:
+                    lvl = CreateLevel3();
+                    break;
                 default:
                     return;
             }
@@ -165,6 +168,62 @@ namespace Half_Caked
 
             return lvl;
         }
+
+
+        private static Level CreateLevel3() // new Level 2
+        {
+            Level lvl = new Level();
+
+            lvl.Gravity = 40f;
+            lvl.InitialPosition = new Vector2(0, 0);
+
+            lvl.AssetName = "Level3";
+            lvl.LevelIdentifier = 3;
+
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 2000, 156), Surface.Absorbs));
+
+            //2 beginning blocks
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 690, 252, 154), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(859, 687, 337, 155), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(1650, 600, 350, 150), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(1950, 150, 50, 450), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(1650, 150, 50, 300), Surface.Absorbs));
+
+            lvl.Checkpoints.Add(new Checkpoint(120, 500, 0, 0, 4));
+            lvl.Checkpoints.Add(new Checkpoint(0, 0, 1900, 0, 4));
+
+
+            //Boundaries
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 1500 - 2, 2000, 2), Surface.Death));
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 1500, 2), Surface.Absorbs));
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 2, 2000), Surface.Absorbs));
+            lvl.Tiles.Add(new Tile(new Rectangle(2000 - 2, 0, 2, 1500), Surface.Absorbs));
+
+            Switch switch1 = new Switch(System.Guid.NewGuid(), new Vector2(0, 590), Switch.SwitchState.Active);
+            switch1.Actions.Add(new KeyValuePair<Guid, int>(Character.CharacterGuid, (int)Switch.SwitchState.Pressed));
+            lvl.Obstacles.Add(switch1);
+                       
+            Platform pf1 = new Platform(System.Guid.NewGuid(), new List<Vector2>() { new Vector2(260, 690), new Vector2(700, 690) }, 100, Platform.PlatformState.Stationary);
+            pf1.Actions.Add(new KeyValuePair<Guid, int>(switch1.Guid, (int)Platform.PlatformState.Forward));
+            lvl.Obstacles.Add(pf1);
+
+           Switch switch2 = new Switch(System.Guid.NewGuid(), new Vector2(920,600 ), Switch.SwitchState.Active);
+            switch2.Actions.Add(new KeyValuePair<Guid, int>(Character.CharacterGuid, (int)Switch.SwitchState.Pressed));
+            lvl.Obstacles.Add(switch2);
+
+            Door d1 = new Door(System.Guid.NewGuid(), new Vector2(1650, 450), Door.DoorState.Stationary);
+            d1.Actions.Add(new KeyValuePair<Guid, int>(switch2.Guid, (int)Door.DoorState.Opening));
+            lvl.Obstacles.Add(d1);
+
+
+
+            return lvl;
+        }
+
+       
+
+
+
 
         private static void SaveLevel(int identifier, Level lvl)
         {

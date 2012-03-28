@@ -81,8 +81,12 @@ namespace Half_Caked
         public virtual void React(Guid caller, Level level)
         {
             KeyValuePair<Guid, int> temp;
-            if((temp = Actions.First(x => x.Key == caller)) != null)
-                mState = temp.Value;
+            try
+            {
+                if ((temp = Actions.First(x => x.Key == caller)) != null)
+                    mState = temp.Value;
+            }
+            catch { }
         }
         #endregion
     }
@@ -253,7 +257,7 @@ namespace Half_Caked
             {
                 level.PlaySoundEffect(mTriggerSound);
                 foreach (Obstacle obs in level.Obstacles)
-                    if (obs.Guid != Guid)
+                    if (obs.Guid != Guid && obs.Guid != caller)
                         obs.React(this.Guid, level);
             }
         }
