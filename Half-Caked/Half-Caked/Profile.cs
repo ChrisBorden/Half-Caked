@@ -19,7 +19,7 @@ namespace Half_Caked
     {
         private const int PROFILE_COUNT = 3;
 
-        public Guid GlobalIdentifer = Guid.Empty;
+        public int GlobalIdentifer = -1;
         public int ProfileNumber = 0;
         public string Name = "";
         public int CurrentLevel = 0;
@@ -242,7 +242,7 @@ namespace Half_Caked
             Level = lvl;
         }
 
-        public void UploadScore(Guid guid)
+        public void UploadScore(int guid)
         {
             ThreadStart ts = delegate() { Server.SendHighScores(guid, this); };
             new Thread(ts).Start();

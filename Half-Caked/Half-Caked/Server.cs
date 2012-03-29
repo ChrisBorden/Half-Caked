@@ -9,32 +9,32 @@ namespace Half_Caked
 {
     static class Server
     {
-        public const string URL = "http://www.mattgerstman.com/halfcaked";
+        public const string URL = "http://www.mattgerstman.com/halfcaked/scores";
 
-        public static Guid RegisterProfile(string name)
+        public static int RegisterProfile(string name)
         {
             try
             {
-                return new Guid(PostAndReceive(name));
+                return Int32.Parse(PostAndReceive("newUser.php", name));
             }
-            catch { return Guid.Empty; }
+            catch { return -1; }
         }
 
-        public static void SendHighScores(Guid g, Statistics stats)
+        public static void SendHighScores(int guid, Statistics stats)
         {
             try
             {
-                PostAndReceive(g.ToString() + "," + stats.Level + "," + stats.Score);
+                PostAndReceive("updateScore.php", guid + "," + stats.Level + "," + stats.Score);
             }
             catch { }
         }
 
-        private static string PostAndReceive(string s)
+        private static string PostAndReceive(string dest, string s)
         {
-            WebRequest request = WebRequest.Create(URL);
+            WebRequest request = WebRequest.Create(URL +"/" + dest);
 
             request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentType = "text/html";
 
             byte[] byteArray = Encoding.UTF8.GetBytes(s);
             request.ContentLength = byteArray.Length;

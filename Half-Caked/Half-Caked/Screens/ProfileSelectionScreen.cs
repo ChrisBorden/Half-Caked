@@ -45,6 +45,12 @@ namespace Half_Caked
         
         void ProfileSelectedButton(object sender, PlayerIndexEventArgs e)
         {
+            if (mReadingInput)
+            {
+                IsExiting = false;
+                return;
+            }
+
             int index = mSelectedButton;
 
             Profile prof = mProfiles[index];

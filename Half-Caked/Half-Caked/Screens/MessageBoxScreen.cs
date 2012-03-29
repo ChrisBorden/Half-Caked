@@ -134,6 +134,7 @@ namespace Half_Caked
                     {
                         state = i;
                     }
+                    break;
                 }
 
             if (prevButton != mSelectedButton)
