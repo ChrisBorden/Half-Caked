@@ -157,12 +157,6 @@ namespace Half_Caked
         void TestButton(object sender, PlayerIndexEventArgs e) { }
     }
 
-    /* My thoughts: 
-     *      -Have this menu just a list of different things to bind and their current bindings
-     *      -Each one opens up a 'KeybindingDialog' at which time the user can bind the primary or secondary keys 
-     *          -has two buttons, one for primary, one for secondary
-     *          -pressing it changes the dialog's message to say "Press any key to bind it to Y (P or S)" at which point it waits for the next valid keypress
-    */
     class KeybindingsScreen : MenuScreen
     {
         private Profile mProfile;
@@ -189,7 +183,8 @@ namespace Half_Caked
                 choices[0] = keyItem.Value[0].ToString();
                 choices[1] = keyItem.Value[1].ToString();
                 ButtonGroup buttonRow = new ButtonGroup(title, choices);
-                buttonRow.Pressed += OpenKeybindingDialog(keyItem, buttonRow);
+                buttonRow.Buttons[0].Pressed += OpenKeybindingDialog(keyItem, buttonRow, 0);
+                buttonRow.Buttons[1].Pressed += OpenKeybindingDialog(keyItem, buttonRow, 1);
                 MenuEntries.Add(buttonRow);
             }
 
@@ -207,7 +202,7 @@ namespace Half_Caked
         }
 
         // Keybindings Dialog event generator
-        System.EventHandler<Half_Caked.PlayerIndexEventArgs> OpenKeybindingDialog(KeybindingKV s, ButtonGroup row)
+        System.EventHandler<PlayerIndexEventArgs> OpenKeybindingDialog(KeybindingKV s, ButtonGroup row, int index)
         {
             return (object sender, PlayerIndexEventArgs e) =>
             {
@@ -216,10 +211,10 @@ namespace Half_Caked
                     (Keybinding input) => {
                         // update the user's profile with the new keybinding
                         this.SetKeybinding(s, input, row.SelectedButton);
-                        // Reload the menu items to show new keybindings on the buttons
-                        // TODO: This could be prettier. I think..
-                        ScreenManager.RemoveScreen(this);
-                        ScreenManager.AddScreen(new KeybindingsScreen(this.mProfile), this.ControllingPlayer);
+
+                        //updates the GUI
+                        row.Buttons[index].Text = input.ToString();
+                        Resize(row.Buttons[index]);
                     }
                 );
                 ScreenManager.AddScreen(dialog, ControllingPlayer);
@@ -238,8 +233,22 @@ namespace Half_Caked
                 if (btnGrp is ButtonGroup)
                     (btnGrp as ButtonGroup).ButtonWidth = width;
         }
+        
+        private void Resize(Button newButton)
+        {
+            int width = (MenuEntries[0] as ButtonGroup).ButtonWidth;
 
-        public void SetKeybinding(KeybindingKV s, Keybinding input, int whichBinding)
+            if (width < newButton.Size.X)
+            {
+                foreach (UIElement btnGrp in MenuEntries)
+                    if (btnGrp is ButtonGroup)
+                        (btnGrp as ButtonGroup).ButtonWidth = (int)newButton.Size.X;
+            }
+            else
+                newButton.Widen(width - newButton.Size.X);
+        }
+
+        private void SetKeybinding(KeybindingKV s, Keybinding input, int whichBinding)
         {
             string displayName = s.Key;
             Keybinding[] key = s.Value;

@@ -31,7 +31,7 @@ namespace Half_Caked
         /// <summary>
         /// The currently selected choice.
         /// </summary>
-        int selected = -1;
+        int selected = 0;
         
         #endregion
 
