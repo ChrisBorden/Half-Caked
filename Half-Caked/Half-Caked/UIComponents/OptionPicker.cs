@@ -55,7 +55,7 @@ namespace Half_Caked
         public int SelectedChoice
         {
             get { return selected; }
-            set { selected = value; }
+            set { selected = value; choiceLabel.Text = choices[value]; }
         }
 
         public override Vector2 Position
