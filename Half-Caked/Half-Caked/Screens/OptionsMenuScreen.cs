@@ -165,14 +165,11 @@ namespace Half_Caked
     */
     class KeybindingsScreen : MenuScreen
     {
-        public KeybindingsScreen(Profile curProfile)
-            : base("Keybindings")
-        {
         private Profile mProfile;
         List<KeybindingKV> menuList;
         public KeybindingsScreen(Profile curProfile) : base("Keybindings") {
             mProfile = curProfile;
-            
+
             // Creates the keybindings menu...
             menuList = new List<KeybindingKV>() {
                 new KeybindingKV("Move Forward",        curProfile.KeyBindings.MoveForward){},
@@ -184,53 +181,50 @@ namespace Half_Caked
                 new KeybindingKV("Portal (Entry) Fire", curProfile.KeyBindings.Portal1){},
                 new KeybindingKV("Portal (Exit) Fire",  curProfile.KeyBindings.Portal2){},
             };
-            foreach (KeybindingKV keyItem in menuList) {
-                string title    = keyItem.Key;
-                MenuEntry item  = new MenuEntry(title);
-                item.Selected  += OpenKeybindingDialog(keyItem);
-                MenuEntries.Add(item);
+            
+            foreach (KeybindingKV keyItem in menuList)
+            {
+                string title = keyItem.Key;
+                string[] choices = new string[2];
+                choices[0] = keyItem.Value[0].ToString();
+                choices[1] = keyItem.Value[1].ToString();
+                ButtonGroup buttonRow = new ButtonGroup(title, choices);
+                buttonRow.Pressed += OpenKeybindingDialog(keyItem, buttonRow);
+                MenuEntries.Add(buttonRow);
             }
 
             // Menu Items that are special
-            MenuEntry acceptMenuEntry   = new MenuEntry("Accept");
-            MenuEntry cancelMenuEntry   = new MenuEntry("Cancel");
+            MenuEntry acceptMenuEntry = new MenuEntry("Accept");
+            MenuEntry cancelMenuEntry = new MenuEntry("Cancel");
 
             // Event bindings
-            acceptMenuEntry.Selected    += SaveButton;
-            cancelMenuEntry.Selected    += OnCancel;
-
+            acceptMenuEntry.Pressed += SaveButton;
+            cancelMenuEntry.Pressed += OnCancel;
 
             // Menu entries on our list
             MenuEntries.Add(acceptMenuEntry);
             MenuEntries.Add(cancelMenuEntry);
-
-            ButtonGroup bg1 = new ButtonGroup("A", new string[2] { "1", "3332" });
-            ButtonGroup bg2 = new ButtonGroup("BC", new string[2] { "1", "3332" });
-            ButtonGroup bg3 = new ButtonGroup("CAC", new string[2] { "---1", "2" });
-            ButtonGroup bg4 = new ButtonGroup("DCAB", new string[2] { "12", "23333" });
-            ButtonGroup bg5 = new ButtonGroup("EFGBA", new string[2] { "321", "23" });
-
-            MenuEntry backMenuEntry = new MenuEntry("Back");
-
-            backMenuEntry.Pressed += OnCancel;
-
-            MenuEntries.Add(bg1);
-            MenuEntries.Add(bg2);
-            MenuEntries.Add(bg3);
-            MenuEntries.Add(bg4);
-            MenuEntries.Add(bg5);
-            MenuEntries.Add(backMenuEntry);
-
-            mProfile = curProfile;
         }
 
         // Keybindings Dialog event generator
-        System.EventHandler<Half_Caked.PlayerIndexEventArgs> OpenKeybindingDialog(KeybindingKV s) {
-            return (object sender, PlayerIndexEventArgs e) => {
-                MessageBoxScreen dialog = new KeybindingDialog(s.Key, (InputState input, string whichBinding) => { this.SetKeybinding(s, input, whichBinding); });
+        System.EventHandler<Half_Caked.PlayerIndexEventArgs> OpenKeybindingDialog(KeybindingKV s, ButtonGroup row)
+        {
+            return (object sender, PlayerIndexEventArgs e) =>
+            {
+                MessageBoxScreen dialog = new KeybindingDialog(
+                    s.Key,
+                    (Keybinding input) => {
+                        // update the user's profile with the new keybinding
+                        this.SetKeybinding(s, input, row.SelectedButton);
+                        // Reload the menu items to show new keybindings on the buttons
+                        // TODO: This could be prettier. I think..
+                        ScreenManager.RemoveScreen(this);
+                        ScreenManager.AddScreen(new KeybindingsScreen(this.mProfile), this.ControllingPlayer);
+                    }
+                );
                 ScreenManager.AddScreen(dialog, ControllingPlayer);
             };
-
+        }
         public override void LoadContent()
         {
             base.LoadContent();
@@ -245,17 +239,18 @@ namespace Half_Caked
                     (btnGrp as ButtonGroup).ButtonWidth = width;
         }
 
-        void MoveForwardButton(object sender, PlayerIndexEventArgs e) {
-            MessageBoxScreen dialog = new KeybindingDialog("Move Forward");
-            ScreenManager.AddScreen(dialog, ControllingPlayer);
-        }
-        public void SetKeybinding(KeybindingKV s, InputState input, string whichBinding)
+        public void SetKeybinding(KeybindingKV s, Keybinding input, int whichBinding)
         {
             string displayName = s.Key;
             Keybinding[] key = s.Value;
+            if (input == null) {
+                throw new System.ArgumentNullException("Keybindings Menu returned null Keybinding object 'input'");
+            }
             System.Console.Error.WriteLine("Request to set the {0} keybinding [{1}] to {2}", whichBinding, displayName, input.ToString());
-            //TODO: Make this work.
-            // Specifically, how do we translate an InputState object to a Keybinding? Iono.
+            if (whichBinding < 0 || whichBinding > key.Length) {
+                throw new System.IndexOutOfRangeException("Keybindings Menu tried to bind to a Keybinding index that doesn't exist.");
+            }
+            key[whichBinding] = input;
         }
         
         void SaveButton(object sender, PlayerIndexEventArgs e) {
