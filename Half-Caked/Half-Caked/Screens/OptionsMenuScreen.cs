@@ -10,6 +10,8 @@
 #region Using Statements
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 #endregion
 
 namespace Half_Caked
@@ -61,7 +63,7 @@ namespace Half_Caked
             var device = (ScreenManager.Game as HalfCakedGame).Device;
             MessageBoxScreen msgbox;
             if (device != null)
-                msgbox = new ProfileSelectionScreen((ScreenManager.Game as HalfCakedGame).Device);
+                msgbox = new ProfileSelectionScreen(device);
             else
                 msgbox = new MessageBoxScreen("Unable to write to your documents folder. Cannot save profiles.", new string[]{"Ok"}, 0);
 
@@ -93,13 +95,18 @@ namespace Half_Caked
 
     class AudioOptionsScreen : MenuScreen
     {
+        Slider masterVolumeSlider;
+        Slider musicEffectSlider;
+        Slider soundEffectSlider;
+        Slider narrationVolumeSlider;
+
         public AudioOptionsScreen(Profile curProfile)
             : base("Audio Settings")
         {
-            Slider masterVolumeSlider =    new Slider("Master Volume:", 50);
-            Slider musicEffectSlider =     new Slider("Music Volume:", 50);
-            Slider soundEffectSlider =     new Slider("Sound Effect Volume:", 50);
-            Slider narrationVolumeSlider = new Slider("Narration Volume:", 50);
+            masterVolumeSlider = new Slider("Master Volume:", curProfile.Audio.MasterVolume);
+            musicEffectSlider = new Slider("Music Volume:", curProfile.Audio.MusicVolume);
+            soundEffectSlider = new Slider("Sound Effect Volume:", curProfile.Audio.SoundEffectsVolume);
+            narrationVolumeSlider = new Slider("Narration Volume:", curProfile.Audio.NarrationVolume);
             MenuEntry saveMenuEntry = new MenuEntry("Save");
             MenuEntry backMenuEntry = new MenuEntry("Back");
 
@@ -118,7 +125,42 @@ namespace Half_Caked
 
         private Profile mProfile;
 
-        void SaveButton(object sender, PlayerIndexEventArgs e) { }
+        void SaveButton(object sender, PlayerIndexEventArgs e)
+        {
+            mProfile.Audio.MasterVolume = masterVolumeSlider.Value;
+            mProfile.Audio.MusicVolume = musicEffectSlider.Value;
+            mProfile.Audio.SoundEffectsVolume = soundEffectSlider.Value;
+            mProfile.Audio.NarrationVolume = narrationVolumeSlider.Value;
+
+            string message;
+            string[] prompt = { "Ok" };
+
+            var device = (ScreenManager.Game as HalfCakedGame).Device;
+            if (device != null)
+            {
+                Profile.SaveProfile(mProfile, "default.sav", device);
+                SoundEffect.MasterVolume = mProfile.Audio.MasterVolume / 100f;
+                MediaPlayer.Volume = mProfile.Audio.MasterVolume * mProfile.Audio.MusicVolume / 10000f;
+
+                Console.WriteLine("Audio Settings Saved for " + mProfile.Name + "..." +
+                    "\nMaster Volume: " + masterVolumeSlider.Value +
+                    "\nMusic Effect Volume: " + musicEffectSlider.Value +
+                    "\nSound Effect Volume: " + soundEffectSlider.Value +
+                    "\nNarration Volume: " + narrationVolumeSlider.Value + "\n"
+                );
+
+                message = "Audio Settings Saved for " + mProfile.Name;
+            }
+            else
+            {
+                Console.WriteLine("Unable to write to documents folder. Cannot save audio settings.");
+                message = "Unable to write to your documents folder. Cannot save audio settings.";
+            }
+
+            MessageBoxScreen savedMessageBox = new MessageBoxScreen(message, prompt, 0);
+
+            ScreenManager.AddScreen(savedMessageBox, e.PlayerIndex);
+        }
     }
 
     //This is just an example, the resolutions/display mode need to be made intelligable and the methods need to be implemented

@@ -1,4 +1,4 @@
-This is a readme file. You should read it.
+Update 3/30/12: 
 
-Why?
-What do you want us to put here?
+-Audio Dialogue Completed
+-Fixed walljumping bug that could cause you to slide incorrectly. Walljumping is now easier to activate as well.

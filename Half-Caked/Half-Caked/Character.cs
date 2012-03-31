@@ -57,7 +57,6 @@ namespace Half_Caked
         bool wallJumpRight = false; //walljump from left wall to right direction is available to player
         bool stillWallJumpingLeft = false; //currently walljumping left
         bool stillWallJumpingRight = false; //currently walljumping right
-        int tempJumpHeight;
         TimeSpan jumpTimer = TimeSpan.Zero;
         TimeSpan wallJumpTimer = TimeSpan.Zero;
 
@@ -334,14 +333,18 @@ namespace Half_Caked
                 {
                     mCollisions[(int)Orientation.Left] = obj;
                     wallJumpRight = true; //walljump from left wall to right direction is available to player
+                    if(Velocity.X != 0)
+                        Velocity.X = 0;
                 }
                 else if (Position.X < result.X)
                 {
                     mCollisions[(int)Orientation.Right] = obj;
                     wallJumpLeft = true; //walljump from right wall to left direction is available to player
+                    if (Velocity.X != 0)
+                        Velocity.X = 0;
                 }
 
-                Position = new Vector2(result.X - (Position.X - result.X < 0 ? CollisionSurface.Width - Center.X + 1 : -result.Width - 1 - Center.X), Position.Y);
+                Position = new Vector2(result.X - (Position.X - result.X < 0 ? CollisionSurface.Width - Center.X - 1 : -result.Width + 1 - Center.X), Position.Y);
             }
 
             return type == Surface.Death;
@@ -436,7 +439,6 @@ namespace Half_Caked
                     Velocity.Y = -DEFAULT_JUMP;
                     stillJumping = true;
                     jumpTimer = TimeSpan.Zero;
-                    tempJumpHeight = DEFAULT_JUMP;
                     return true;
                 }
             }
@@ -448,11 +450,9 @@ namespace Half_Caked
                 {
                     if (inputState.IsNewJump(null))
                     {
-                        tempJumpHeight = DEFAULT_JUMP / 2;
-
-                        Velocity.X = DEFAULT_SPEED * MOVE_LEFT;
+                        Velocity.X = DEFAULT_SPEED * MOVE_RIGHT * 2f;
                         //Velocity.Y = -DEFAULT_JUMP / 2;
-                        Velocity.Y = -tempJumpHeight;
+                        Velocity.Y = -DEFAULT_JUMP;
 
                         stillJumping = true;
                         stillWallJumpingRight = true;
@@ -465,11 +465,9 @@ namespace Half_Caked
                 {
                     if (inputState.IsNewJump(null))
                     {
-                        tempJumpHeight = DEFAULT_JUMP / 2;
-
-                        Velocity.X = DEFAULT_SPEED * MOVE_LEFT;
+                        Velocity.X = DEFAULT_SPEED * MOVE_LEFT * 2f;
                         //Velocity.Y = -DEFAULT_JUMP / 2;
-                        Velocity.Y = -tempJumpHeight;
+                        Velocity.Y = -DEFAULT_JUMP;
 
                         stillJumping = true;
                         stillWallJumpingLeft = true;
@@ -484,9 +482,9 @@ namespace Half_Caked
                     wallJumpTimer += theGameTime.ElapsedGameTime;
                     if (wallJumpTimer < TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX/2))
                     {
-                        Velocity.X = DEFAULT_SPEED * MOVE_RIGHT + 100;
+                        Velocity.X = DEFAULT_SPEED * MOVE_RIGHT * 2f;
                         //Velocity.Y = -DEFAULT_JUMP/2;
-                        Velocity.Y = -tempJumpHeight;
+                        Velocity.Y = -DEFAULT_JUMP;
                     }
                     else
                     { 
@@ -499,14 +497,14 @@ namespace Half_Caked
                     wallJumpTimer += theGameTime.ElapsedGameTime;
                     if (wallJumpTimer < TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX/2))
                     {
-                        Velocity.X = DEFAULT_SPEED * MOVE_LEFT * 2;
+                        Velocity.X = DEFAULT_SPEED * MOVE_LEFT * 2f;
                         //Velocity.Y = -DEFAULT_JUMP/2;
-                        Velocity.Y = -tempJumpHeight;
+                        Velocity.Y = -DEFAULT_JUMP;
                     }
                     else
                     { 
                         stillWallJumpingLeft = false;
-                        stillJumping = false;                
+                        stillJumping = false;
                     }
                 }
             }
@@ -525,7 +523,7 @@ namespace Half_Caked
                     mCurrentState = State.Air;
 
                     //Velocity.Y = -DEFAULT_JUMP;
-                    Velocity.Y = -tempJumpHeight;
+                    Velocity.Y = -DEFAULT_JUMP;
 
                     jumpTimer += theGameTime.ElapsedGameTime;
 
