@@ -10,12 +10,9 @@
 #region Using Statements
 using System;
 using Microsoft.Xna.Framework;
-<<<<<<< HEAD
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
-=======
 using System.Collections.Generic;
->>>>>>> c1cd01b62a225b343894011b6e778de45d58af63
 #endregion
 
 using KeybindingKV = System.Collections.Generic.KeyValuePair<string, Half_Caked.Keybinding[]>;
