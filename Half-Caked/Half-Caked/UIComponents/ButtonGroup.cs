@@ -36,7 +36,18 @@ namespace Half_Caked
         #endregion
 
         #region Properties
-        
+
+        public bool HideInactive 
+        { 
+            get; 
+            set; 
+        }
+
+        public MenuEntry Label
+        {
+            get { return mainLabel; }
+        }
+
         public int SelectedButton
         {
             get { return selected; }
@@ -82,8 +93,10 @@ namespace Half_Caked
                 for (int i = 0; i < buttons.Length; i++)
                     if (value == UIState.Selected)
                         buttons[i].State = (i == selected) ? value : UIState.Active;
-                    else
+                    else if (!HideInactive)
                         buttons[i].State = State;
+                    else
+                        buttons[i].State = UIState.Inactive; 
             }
         }
 
@@ -158,6 +171,7 @@ namespace Half_Caked
         /// </summary>
         public ButtonGroup(string text, string[] choices)
         {
+            HideInactive = false;
             ChangesValue = true;
 
             this.text = text;
@@ -194,8 +208,9 @@ namespace Half_Caked
         {
             mainLabel.Update(screen, isSelected, gameTime);
 
-            foreach (Button btn in buttons)
-                btn.Update(screen, isSelected, gameTime);
+            if (State == UIState.Selected || !HideInactive)
+                foreach (Button btn in buttons)
+                    btn.Update(screen, isSelected, gameTime);
         }
 
         /// <summary>
@@ -205,8 +220,9 @@ namespace Half_Caked
         {
             mainLabel.Draw(screen, gameTime, b);
 
-            foreach (Button btn in buttons)
-                btn.Draw(screen, gameTime, b);
+            if(State == UIState.Selected || !HideInactive)
+                foreach (Button btn in buttons)
+                    btn.Draw(screen, gameTime, b);
         }
 
         #endregion

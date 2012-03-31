@@ -27,7 +27,7 @@ namespace Half_Caked
         #region Fields
 
         List<UIElement> menuEntries = new List<UIElement>();
-        int selectedEntry = 0;
+        protected int selectedEntry = 0;
         string menuTitle;
         SoundEffect EntryFocusChanged;
 
@@ -75,6 +75,11 @@ namespace Half_Caked
             foreach (UIElement ui in menuEntries)
                 ui.LoadContent(this);
 
+            PositionElements();
+        }
+
+        public void PositionElements()
+        {
             Vector2 position = new Vector2(100, 150);
             int maxWidth = 0;
 
@@ -88,7 +93,6 @@ namespace Half_Caked
                 menuEntries[i].LabelWidth = maxWidth;
                 position.Y += menuEntries[i].Size.Y;
             }
-            
         }
 
         #endregion

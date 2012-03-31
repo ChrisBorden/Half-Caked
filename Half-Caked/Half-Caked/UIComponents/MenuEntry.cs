@@ -77,7 +77,7 @@ namespace Half_Caked
         public override void Draw(GameScreen screen, GameTime gameTime, byte b)
         {
             // Draw the selected entry in yellow, otherwise white.
-            Color color = State == UIState.Selected ? Color.Yellow : Color.White;
+            Color color = mTextColor;
 
             // Pulsate the size of the selected menu entry.
             double time = gameTime.TotalGameTime.TotalSeconds;
