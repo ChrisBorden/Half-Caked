@@ -170,23 +170,23 @@ namespace Half_Caked
     //This is just an example, the resolutions/display mode need to be made intelligable and the methods need to be implemented
     class GraphicsScreen : MenuScreen
     {
-        int prevMode;
-        int prevRes;
-        OptionPicker displayModeMenuEntry;
-        OptionPicker resolutionMenuEntry;
+        int mPrevMode;
+        int mPrevRes;
+        OptionPicker mDisplayModePicker;
+        OptionPicker mResolutionPicker;
         public GraphicsScreen(Profile curProfile)
             : base("Graphics Settings")
         {
             // Create our menu entries.
             //get an array of resolutions;
-            displayModeMenuEntry = new OptionPicker("Display Mode:", new string[3] { "Full Screen", "Windowed Mode Screen", "Windowed Mode Screen (No Boarders)" });
-            displayModeMenuEntry.SelectedChoice = (int)curProfile.Graphics.PresentationMode;
-            prevMode = displayModeMenuEntry.SelectedChoice;
+            mDisplayModePicker = new OptionPicker("Display Mode:", new string[3] { "Full Screen", "Windowed", "Windowed (No Borders)" });
+            mDisplayModePicker.SelectedChoice = (int)curProfile.Graphics.PresentationMode;
+            mPrevMode = mDisplayModePicker.SelectedChoice;
 
             mResolutions = GraphicsAdapter.DefaultAdapter.SupportedDisplayModes.Select<DisplayMode, Vector2>(x => new Vector2(x.Width, x.Height)).ToList();
-            resolutionMenuEntry = new OptionPicker( "Resolutions:", mResolutions.Select<Vector2,String>(x => "" + x.X + " x " + x.Y).ToArray() );
-            resolutionMenuEntry.SelectedChoice = mResolutions.IndexOf( curProfile.Graphics.Resolution );
-            prevRes = resolutionMenuEntry.SelectedChoice;
+            mResolutionPicker = new OptionPicker( "Resolutions:", mResolutions.Select<Vector2,String>(x => "" + x.X + " x " + x.Y).ToArray() );
+            mResolutionPicker.SelectedChoice = mResolutions.IndexOf( curProfile.Graphics.Resolution );
+            mPrevRes = mResolutionPicker.SelectedChoice;
  
             MenuEntry testMenuEntry = new MenuEntry("Test");
             MenuEntry saveMenuEntry = new MenuEntry("Save");
@@ -199,8 +199,8 @@ namespace Half_Caked
             backMenuEntry.Pressed += OnCancel;
 
             // Add entries to the menu.
-            MenuEntries.Add(displayModeMenuEntry);
-            MenuEntries.Add(resolutionMenuEntry);
+            MenuEntries.Add(mDisplayModePicker);
+            MenuEntries.Add(mResolutionPicker);
             MenuEntries.Add(testMenuEntry);
             MenuEntries.Add(saveMenuEntry);
             MenuEntries.Add(backMenuEntry);
@@ -225,34 +225,30 @@ namespace Half_Caked
             (ScreenManager.Game as HalfCakedGame).UpdateGraphics();
            
             const string message = "Apply these settings?";
-            MessageBoxScreen confirmExitMessageBox = new MessageBoxScreen(message);
-            confirmExitMessageBox.Buttons[0].Pressed +=new EventHandler<PlayerIndexEventArgs>(GraphicsScreen_Pressed1);
-            confirmExitMessageBox.Buttons[1].Pressed += new EventHandler<PlayerIndexEventArgs>(GraphicsScreen_Pressed);
-            confirmExitMessageBox.Cancelled += new EventHandler<PlayerIndexEventArgs>(GraphicsScreen_Pressed);
-            ScreenManager.AddScreen(confirmExitMessageBox, e.PlayerIndex);
+            MessageBoxScreen testMessageBox = new MessageBoxScreen(message);
+            testMessageBox.Buttons[0].Pressed += new EventHandler<PlayerIndexEventArgs>(ApplySettings);
+            testMessageBox.Buttons[1].Pressed += new EventHandler<PlayerIndexEventArgs>(RevertSettings);
+            testMessageBox.Cancelled += new EventHandler<PlayerIndexEventArgs>(RevertSettings);
+            ScreenManager.AddScreen(testMessageBox, e.PlayerIndex);
         }
 
-        void  GraphicsScreen_Pressed(object sender, PlayerIndexEventArgs e)
+        void RevertSettings(object sender, PlayerIndexEventArgs e)
         {
-            //displayModeMenuEntry.SelectedChoice = prevMode;
-            //resolutionMenuEntry.SelectedChoice = prevRes;
-            //return the presentation mode and resolution string to the previous
-            mProfile.Graphics.PresentationMode = (GraphicsSettings.WindowType)prevMode; //set to previous presentation mode
-            mProfile.Graphics.Resolution = mResolutions[prevRes]; //set to previous resolution
+            mProfile.Graphics.PresentationMode = (GraphicsSettings.WindowType)mPrevMode; //set to previous presentation mode
+            mProfile.Graphics.Resolution = mResolutions[mPrevRes]; //set to previous resolution
             (ScreenManager.Game as HalfCakedGame).UpdateGraphics(); //revert          
         }
 
-        void GraphicsScreen_Pressed1(object sender, PlayerIndexEventArgs e)
+        void ApplySettings(object sender, PlayerIndexEventArgs e)
         {
-            //prevMode = (int)mProfile.Graphics.PresentationMode;
-            prevMode = displayModeMenuEntry.SelectedChoice;
-            prevRes = resolutionMenuEntry.SelectedChoice;
+            mPrevMode = mDisplayModePicker.SelectedChoice;
+            mPrevRes = mResolutionPicker.SelectedChoice;
         }
 
         void ResolutionChange()
         {
-            mProfile.Graphics.PresentationMode = (GraphicsSettings.WindowType)(MenuEntries[0] as OptionPicker).SelectedChoice;
-            mProfile.Graphics.Resolution = mResolutions[(MenuEntries[1] as OptionPicker).SelectedChoice];
+            mProfile.Graphics.PresentationMode = (GraphicsSettings.WindowType)mDisplayModePicker.SelectedChoice;
+            mProfile.Graphics.Resolution = mResolutions[mResolutionPicker.SelectedChoice];
         }
     }
     
