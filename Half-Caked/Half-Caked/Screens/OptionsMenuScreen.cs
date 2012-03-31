@@ -10,10 +10,15 @@
 #region Using Statements
 using System;
 using Microsoft.Xna.Framework;
+<<<<<<< HEAD
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
+=======
+using System.Collections.Generic;
+>>>>>>> c1cd01b62a225b343894011b6e778de45d58af63
 #endregion
 
+using KeybindingKV = System.Collections.Generic.KeyValuePair<string, Half_Caked.Keybinding[]>;
 namespace Half_Caked
 {
     /// <summary>
@@ -197,37 +202,69 @@ namespace Half_Caked
         void TestButton(object sender, PlayerIndexEventArgs e) { }
     }
 
-    /* My thoughts: 
-     *      -Have this menu just a list of different things to bind and their current bindings
-     *      -Each one opens up a 'KeybindingDialog' at which time the user can bind the primary or secondary keys 
-     *          -has two buttons, one for primary, one for secondary
-     *          -pressing it changes the dialog's message to say "Press any key to bind it to Y (P or S)" at which point it waits for the next valid keypress
-    */
     class KeybindingsScreen : MenuScreen
     {
-        public KeybindingsScreen(Profile curProfile)
-            : base("Keybindings")
-        {
-            ButtonGroup bg1 = new ButtonGroup("A", new string[2] { "1", "3332" });
-            ButtonGroup bg2 = new ButtonGroup("BC", new string[2] { "1", "3332" });
-            ButtonGroup bg3 = new ButtonGroup("CAC", new string[2] { "---1", "2" });
-            ButtonGroup bg4 = new ButtonGroup("DCAB", new string[2] { "12", "23333" });
-            ButtonGroup bg5 = new ButtonGroup("EFGBA", new string[2] { "321", "23" });
-
-            MenuEntry backMenuEntry = new MenuEntry("Back");
-
-            backMenuEntry.Pressed += OnCancel;
-
-            MenuEntries.Add(bg1);
-            MenuEntries.Add(bg2);
-            MenuEntries.Add(bg3);
-            MenuEntries.Add(bg4);
-            MenuEntries.Add(bg5);
-            MenuEntries.Add(backMenuEntry);
-
+        private Profile mProfile;
+        List<KeybindingKV> menuList;
+        public KeybindingsScreen(Profile curProfile) : base("Keybindings") {
             mProfile = curProfile;
+
+            // Creates the keybindings menu...
+            menuList = new List<KeybindingKV>() {
+                new KeybindingKV("Move Forward",        curProfile.KeyBindings.MoveForward){},
+                new KeybindingKV("Move Backwards",      curProfile.KeyBindings.MoveBackwards){},
+                new KeybindingKV("Crouch",              curProfile.KeyBindings.Crouch){},
+                new KeybindingKV("Jump",                curProfile.KeyBindings.Jump){},
+                new KeybindingKV("Interact",            curProfile.KeyBindings.Interact){},
+                new KeybindingKV("Pause",               curProfile.KeyBindings.Pause){},
+                new KeybindingKV("Portal (Entry) Fire", curProfile.KeyBindings.Portal1){},
+                new KeybindingKV("Portal (Exit) Fire",  curProfile.KeyBindings.Portal2){},
+            };
+            
+            foreach (KeybindingKV keyItem in menuList)
+            {
+                string title = keyItem.Key;
+                string[] choices = new string[2];
+                choices[0] = keyItem.Value[0].ToString();
+                choices[1] = keyItem.Value[1].ToString();
+                ButtonGroup buttonRow = new ButtonGroup(title, choices);
+                buttonRow.Buttons[0].Pressed += OpenKeybindingDialog(keyItem, buttonRow, 0);
+                buttonRow.Buttons[1].Pressed += OpenKeybindingDialog(keyItem, buttonRow, 1);
+                MenuEntries.Add(buttonRow);
+            }
+
+            // Menu Items that are special
+            MenuEntry acceptMenuEntry = new MenuEntry("Accept");
+            MenuEntry cancelMenuEntry = new MenuEntry("Cancel");
+
+            // Event bindings
+            acceptMenuEntry.Pressed += SaveButton;
+            cancelMenuEntry.Pressed += OnCancel;
+
+            // Menu entries on our list
+            MenuEntries.Add(acceptMenuEntry);
+            MenuEntries.Add(cancelMenuEntry);
         }
 
+        // Keybindings Dialog event generator
+        System.EventHandler<PlayerIndexEventArgs> OpenKeybindingDialog(KeybindingKV s, ButtonGroup row, int index)
+        {
+            return (object sender, PlayerIndexEventArgs e) =>
+            {
+                MessageBoxScreen dialog = new KeybindingDialog(
+                    s.Key,
+                    (Keybinding input) => {
+                        // update the user's profile with the new keybinding
+                        this.SetKeybinding(s, input, row.SelectedButton);
+
+                        //updates the GUI
+                        row.Buttons[index].Text = input.ToString();
+                        Resize(row.Buttons[index]);
+                    }
+                );
+                ScreenManager.AddScreen(dialog, ControllingPlayer);
+            };
+        }
         public override void LoadContent()
         {
             base.LoadContent();
@@ -241,9 +278,39 @@ namespace Half_Caked
                 if (btnGrp is ButtonGroup)
                     (btnGrp as ButtonGroup).ButtonWidth = width;
         }
+        
+        private void Resize(Button newButton)
+        {
+            int width = (MenuEntries[0] as ButtonGroup).ButtonWidth;
 
-        private Profile mProfile;
+            if (width < newButton.Size.X)
+            {
+                foreach (UIElement btnGrp in MenuEntries)
+                    if (btnGrp is ButtonGroup)
+                        (btnGrp as ButtonGroup).ButtonWidth = (int)newButton.Size.X;
+            }
+            else
+                newButton.Widen(width - newButton.Size.X);
+        }
 
-        void SaveButton(object sender, PlayerIndexEventArgs e) { }
+        private void SetKeybinding(KeybindingKV s, Keybinding input, int whichBinding)
+        {
+            string displayName = s.Key;
+            Keybinding[] key = s.Value;
+            if (input == null) {
+                throw new System.ArgumentNullException("Keybindings Menu returned null Keybinding object 'input'");
+            }
+            System.Console.Error.WriteLine("Request to set the {0} keybinding [{1}] to {2}", whichBinding, displayName, input.ToString());
+            if (whichBinding < 0 || whichBinding > key.Length) {
+                throw new System.IndexOutOfRangeException("Keybindings Menu tried to bind to a Keybinding index that doesn't exist.");
+            }
+            key[whichBinding] = input;
+        }
+        
+        void SaveButton(object sender, PlayerIndexEventArgs e) {
+            HalfCakedGame game = ScreenManager.Game as HalfCakedGame;
+            Profile.SaveProfile(mProfile, "default.sav", game.Device);
+            ExitScreen();
+        }
     }
 }

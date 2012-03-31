@@ -128,6 +128,7 @@
     <Compile Include="UIComponents\Button.cs" />
     <Compile Include="UIComponents\UIElement.cs" />
     <Compile Include="Screens\BackgroundScreen.cs" />
+    <Compile Include="Screens\KeybindingDialog.cs" />
     <Compile Include="Screens\LevelSelectionScreen.cs" />
     <Compile Include="Screens\ProfileSelectionScreen.cs" />
     <Compile Include="Screens\LevelOverScreen.cs" />

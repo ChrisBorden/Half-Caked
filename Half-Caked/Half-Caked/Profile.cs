@@ -298,6 +298,13 @@ namespace Half_Caked
         public int MouseClick;
         public Buttons Button;
 
+        public override string ToString(){
+            return  this.Type == InputType.Key          ? this.Key.ToString()
+                : this.Type == InputType.MouseClick     ? this.MouseClick.ToString()
+                : this.Type == InputType.Button         ? this.Button.ToString()
+                :                                         "<Unknown Key>";
+        }
+
         public static implicit operator Keybinding(Keys key)
         {
             Keybinding temp = new Keybinding();

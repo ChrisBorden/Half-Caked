@@ -31,7 +31,7 @@ namespace Half_Caked
         /// <summary>
         /// The currently selected choice.
         /// </summary>
-        int selected;
+        int selected = 0;
         
         #endregion
 
@@ -210,6 +210,8 @@ namespace Half_Caked
         }
 
         #endregion
+
+        //TODO: Make mouse selection of a Button in the group actually trigger the ButtonGroup's Pressed event
 
         private void RecomputeSize()
         {
