@@ -173,7 +173,10 @@ namespace Half_Caked
 
             if (LevelStatistics.Length < Level.MAX_LEVELS)
             {
-                this.LevelStatistics = LevelStatistics.Union(new Statistics[Level.MAX_LEVELS - LevelStatistics.Length]).ToArray();
+                var stats = LevelStatistics.ToList();
+                stats.AddRange(new Statistics[Level.MAX_LEVELS - LevelStatistics.Length]);
+                LevelStatistics = stats.ToArray();
+
                 madeChanges = true;
             }
             else if (LevelStatistics.Length > Level.MAX_LEVELS)

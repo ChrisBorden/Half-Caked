@@ -232,12 +232,12 @@ namespace Half_Caked
         {
             if (result.Width < result.Height)
             {
-                Position = new Vector2(result.X - (Position.X < result.X ? Size.Width : -result.Width), Position.Y);
+                Position = new Vector2(result.X - (Position.X < result.X ? Size.Width : -result.Width-2), Position.Y);
                 Velocity *= new Vector2(-1, 1);
             }
             else
             {
-                Position = new Vector2(Position.X, result.Y - (Position.Y < result.Y ? Size.Height : -result.Height));
+                Position = new Vector2(Position.X, result.Y - (Position.Y < result.Y ? Size.Height : -result.Height-2));
                 Velocity *= new Vector2(1, -1);
             }
         }
