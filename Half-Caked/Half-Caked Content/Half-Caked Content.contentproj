@@ -89,6 +89,26 @@
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Compile Include="Levels\Level5.png">
+      <Name>Level5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Level5b.png">
+      <Name>Level5b</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Content Include="Levels\Level4.xml">
+      <Name>Level4</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Content>
+    <Content Include="Levels\Level5.xml">
+      <Name>Level5</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Sprites\Portal1.png">
@@ -278,6 +298,18 @@
     </Compile>
     <Compile Include="UI\background.png">
       <Name>background</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Levels\Level4.png">
+      <Name>Level4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Level4b.png">
+      <Name>Level4b</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -142,7 +142,6 @@ namespace Half_Caked
         {
             using (HalfCakedGame game = new HalfCakedGame())
             {
-                
                 game.Run();
             }
         }

@@ -34,6 +34,12 @@ namespace Half_Caked
                 case 3:
                     lvl = CreateLevel3();
                     break;
+                case 4:
+                    lvl = CreateLevel4();
+                    break;
+                case 5:
+                    lvl = CreateLevel5();
+                    break;
                 default:
                     return;
             }
@@ -202,12 +208,12 @@ namespace Half_Caked
             Switch switch1 = new Switch(System.Guid.NewGuid(), new Vector2(0, 590), Switch.SwitchState.Active);
             switch1.Actions.Add(new KeyValuePair<Guid, int>(Character.CharacterGuid, (int)Switch.SwitchState.Pressed));
             lvl.Obstacles.Add(switch1);
-                       
+
             Platform pf1 = new Platform(System.Guid.NewGuid(), new List<Vector2>() { new Vector2(260, 690), new Vector2(700, 690) }, 100, Platform.PlatformState.Stationary);
             pf1.Actions.Add(new KeyValuePair<Guid, int>(switch1.Guid, (int)Platform.PlatformState.Forward));
             lvl.Obstacles.Add(pf1);
 
-           Switch switch2 = new Switch(System.Guid.NewGuid(), new Vector2(920,600 ), Switch.SwitchState.Active);
+            Switch switch2 = new Switch(System.Guid.NewGuid(), new Vector2(920, 600), Switch.SwitchState.Active);
             switch2.Actions.Add(new KeyValuePair<Guid, int>(Character.CharacterGuid, (int)Switch.SwitchState.Pressed));
             lvl.Obstacles.Add(switch2);
 
@@ -216,6 +222,110 @@ namespace Half_Caked
             lvl.Obstacles.Add(d1);
 
 
+
+            return lvl;
+        }
+
+
+        private static Level CreateLevel4() // 3rd level
+        {
+            Level lvl = new Level();
+
+            lvl.Gravity = 40f;
+            lvl.InitialPosition = new Vector2(0, 0);
+
+            lvl.AssetName = "Level4";
+            lvl.LevelIdentifier = 4;
+
+            //Lower Normal Surfaces
+            lvl.Tiles.Add(new Tile(new Rectangle(60, 934, 367, 137), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(427, 700, 265, 235), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(60, 273, 170, 144), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 417, 60, 517), Surface.Normal));
+
+            //Reflective Surface
+            lvl.Tiles.Add(new Tile(new Rectangle(230, 273, 130, 144), Surface.Reflects));
+
+            //Absorbing Surfaces
+            lvl.Tiles.Add(new Tile(new Rectangle(480, 321, 340, 90), Surface.Absorbs));
+            lvl.Tiles.Add(new Tile(new Rectangle(687, 411, 131, 589), Surface.Absorbs));
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 360, 275), Surface.Absorbs));
+            lvl.Tiles.Add(new Tile(new Rectangle(360, 0, 200, 175), Surface.Absorbs));
+
+            //Critical Normal Surface for second reflect
+            lvl.Tiles.Add(new Tile(new Rectangle(560, 0, 250, 175), Surface.Normal));
+
+            //Right side Normal surfaces
+            lvl.Tiles.Add(new Tile(new Rectangle(913, 0, 33, 170), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(946, 170, 554, 150), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(913, 320, 587, 533), Surface.Normal));
+
+            lvl.Checkpoints.Add(new Checkpoint(100, 800, 0, 0, 4));
+            lvl.Checkpoints.Add(new Checkpoint(0, 0, 1300, 850, 4));
+
+
+            //Boundaries
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 1000 - 2, 1500, 2), Surface.Absorbs));
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 1500, 2), Surface.Absorbs));
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 2, 1000), Surface.Absorbs));
+            lvl.Tiles.Add(new Tile(new Rectangle(1500 - 2, 0, 2, 1000), Surface.Absorbs));
+
+            Switch switch1 = new Switch(System.Guid.NewGuid(), new Vector2(925, 250), Switch.SwitchState.Active);
+            switch1.Actions.Add(new KeyValuePair<Guid, int>(Character.CharacterGuid, (int)Switch.SwitchState.Pressed));
+            lvl.Obstacles.Add(switch1);
+
+            Platform pf1 = new Platform(System.Guid.NewGuid(), new List<Vector2>() { new Vector2(810, 320), new Vector2(810, 150) }, 100, Platform.PlatformState.Stationary);
+            pf1.Actions.Add(new KeyValuePair<Guid, int>(switch1.Guid, (int)Platform.PlatformState.Forward));
+            lvl.Obstacles.Add(pf1);
+
+            return lvl;
+        }
+
+
+        private static Level CreateLevel5() // 4th level
+        {
+            Level lvl = new Level();
+
+            lvl.Gravity = 40f;
+            lvl.InitialPosition = new Vector2(0, 0);
+
+            lvl.AssetName = "Level5";
+            lvl.LevelIdentifier = 5;
+
+            //Lower Normal Surfaces
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 923, 1033, 77), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(1033, 847, 159, 76), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(1192, 764, 102, 83), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(1294, 689, 106, 75), Surface.Normal));
+            lvl.Tiles.Add(new Tile(new Rectangle(1400, 118, 100, 571), Surface.Normal));
+
+            //Absorbing Surface
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 401, 1074, 152), Surface.Absorbs));
+
+            //Ceiling
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 1400, 118), Surface.Normal));
+
+            lvl.Checkpoints.Add(new Checkpoint(50, 850, 0, 0, 4));
+            lvl.Checkpoints.Add(new Checkpoint(0, 0, 165, 415, 2));
+
+
+            //Boundaries
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 1000 - 2, 1500, 2), Surface.Absorbs));
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 1500, 2), Surface.Absorbs));
+            lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 2, 1000), Surface.Absorbs));
+            lvl.Tiles.Add(new Tile(new Rectangle(1500 - 2, 0, 2, 1000), Surface.Absorbs));
+
+            //Lower Enemies
+            Enemy e1 = new Enemy(new Vector2(550, 922), 300);
+            lvl.Actors.Add(e1);
+            Enemy e2 = new Enemy(new Vector2(650, 922), 300);
+            lvl.Actors.Add(e2);
+
+            //Upper Enemies
+            Enemy e3 = new Enemy(new Vector2(550, 400), 300);
+            lvl.Actors.Add(e3);
+            Enemy e4 = new Enemy(new Vector2(650, 400), 300);
+            lvl.Actors.Add(e4);
 
             return lvl;
         }
