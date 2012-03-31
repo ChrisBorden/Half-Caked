@@ -333,14 +333,14 @@ namespace Half_Caked
                 {
                     mCollisions[(int)Orientation.Left] = obj;
                     wallJumpRight = true; //walljump from left wall to right direction is available to player
-                    if(Velocity.X != 0)
+                    if(Velocity.X < 0)
                         Velocity.X = 0;
                 }
                 else if (Position.X < result.X)
                 {
                     mCollisions[(int)Orientation.Right] = obj;
                     wallJumpLeft = true; //walljump from right wall to left direction is available to player
-                    if (Velocity.X != 0)
+                    if (Velocity.X > 0)
                         Velocity.X = 0;
                 }
 
