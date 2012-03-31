@@ -113,6 +113,7 @@ namespace Half_Caked
             MenuEntry backMenuEntry = new MenuEntry("Back");
 
             saveMenuEntry.Pressed += SaveButton;
+            saveMenuEntry.Pressed += OnCancel;
             backMenuEntry.Pressed += OnCancel;
 
             MenuEntries.Add(masterVolumeSlider);
@@ -159,9 +160,8 @@ namespace Half_Caked
                 message = "Unable to write to your documents folder. Cannot save audio settings.";
             }
 
-            MessageBoxScreen savedMessageBox = new MessageBoxScreen(message, prompt, 0);
-
-            ScreenManager.AddScreen(savedMessageBox, e.PlayerIndex);
+            //MessageBoxScreen savedMessageBox = new MessageBoxScreen(message, prompt, 0);
+            //ScreenManager.AddScreen(savedMessageBox, e.PlayerIndex);
         }
     }
 
@@ -181,6 +181,7 @@ namespace Half_Caked
             // Hook up menu event handlers.
             testMenuEntry.Pressed += TestButton;
             saveMenuEntry.Pressed += SaveButton;
+            saveMenuEntry.Pressed += OnCancel;
             backMenuEntry.Pressed += OnCancel;
 
             // Add entries to the menu.
@@ -236,6 +237,7 @@ namespace Half_Caked
 
             // Event bindings
             acceptMenuEntry.Pressed += SaveButton;
+            acceptMenuEntry.Pressed += OnCancel;
             cancelMenuEntry.Pressed += OnCancel;
 
             // Menu entries on our list
@@ -295,11 +297,13 @@ namespace Half_Caked
             string displayName = s.Key;
             Keybinding[] key = s.Value;
             if (input == null) {
-                throw new System.ArgumentNullException("Keybindings Menu returned null Keybinding object 'input'");
+                //throw new System.ArgumentNullException("Keybindings Menu returned null Keybinding object 'input'");
+                return;
             }
             System.Console.Error.WriteLine("Request to set the {0} keybinding [{1}] to {2}", whichBinding, displayName, input.ToString());
             if (whichBinding < 0 || whichBinding > key.Length) {
-                throw new System.IndexOutOfRangeException("Keybindings Menu tried to bind to a Keybinding index that doesn't exist.");
+                //throw new System.IndexOutOfRangeException("Keybindings Menu tried to bind to a Keybinding index that doesn't exist.");
+                return;
             }
             key[whichBinding] = input;
         }

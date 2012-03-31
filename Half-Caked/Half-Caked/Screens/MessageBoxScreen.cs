@@ -92,7 +92,8 @@ namespace Half_Caked
             foreach(Button btn in Buttons)
                 btn.LoadContent(this);
 
-            Buttons[mSelectedButton].State = UIState.Selected;
+            if(mSelectedButton >= 0)
+                Buttons[mSelectedButton].State = UIState.Selected;
 
             CreateDimensions();
         }
@@ -109,7 +110,7 @@ namespace Half_Caked
             ScreenManager.Game.IsMouseVisible = true;
 
             PlayerIndex playerIndex;
-            int state = -2;
+            int state = -1;
             var prevButton = mSelectedButton;
             Vector2 mousePos = new Vector2(-1, -1);
 
@@ -139,7 +140,8 @@ namespace Half_Caked
 
             if (prevButton != mSelectedButton)
             {
-                Buttons[prevButton].State = UIState.Active;
+                if(prevButton >= 0)
+                    Buttons[prevButton].State = UIState.Active;
                 Buttons[mSelectedButton].State = UIState.Selected;
             }
 
@@ -149,14 +151,14 @@ namespace Half_Caked
             }
             else if (input.IsMenuCancel(ControllingPlayer, out playerIndex))
             {
-                state = -1;
+                state = -2;
             }
 
             switch (state)
             {
-                case -2:
-                    break;
                 case -1:
+                    break;
+                case -2:
                     if (Cancelled != null)
                         Cancelled(this, new PlayerIndexEventArgs(playerIndex));
 
