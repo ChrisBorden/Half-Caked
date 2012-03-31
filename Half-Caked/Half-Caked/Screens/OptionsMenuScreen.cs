@@ -135,8 +135,8 @@ namespace Half_Caked
             mProfile.Audio.SoundEffectsVolume = soundEffectSlider.Value;
             mProfile.Audio.NarrationVolume = narrationVolumeSlider.Value;
 
-            string message;
-            string[] prompt = { "Ok" };
+            //string message;
+            //string[] prompt = { "Ok" };
 
             var device = (ScreenManager.Game as HalfCakedGame).Device;
             if (device != null)
@@ -152,12 +152,12 @@ namespace Half_Caked
                     "\nNarration Volume: " + narrationVolumeSlider.Value + "\n"
                 );
 
-                message = "Audio Settings Saved for " + mProfile.Name;
+                //message = "Audio Settings Saved for " + mProfile.Name;
             }
             else
             {
                 Console.WriteLine("Unable to write to documents folder. Cannot save audio settings.");
-                message = "Unable to write to your documents folder. Cannot save audio settings.";
+                //message = "Unable to write to your documents folder. Cannot save audio settings.";
             }
 
             //MessageBoxScreen savedMessageBox = new MessageBoxScreen(message, prompt, 0);
