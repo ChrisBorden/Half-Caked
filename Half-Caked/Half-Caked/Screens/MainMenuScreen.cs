@@ -91,7 +91,7 @@ namespace Half_Caked
                 ScreenManager.AddScreen(confirmExitMessageBox, playerIndex);
             }
         }
-
+        
 
         /// <summary>
         /// Event handler for when the user selects ok on the "are you sure

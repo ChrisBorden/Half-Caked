@@ -111,6 +111,7 @@ namespace Half_Caked
             base.LoadContent(scrn);
 
             mBackground = scrn.ScreenManager.Game.Content.Load<Texture2D>("UI\\Buttons");
+            State = mState;
 
             Vector2 mTextSize = UIFont.MeasureString(Text);
             mRectangle.Width  = (int)mTextSize.X;

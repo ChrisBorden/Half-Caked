@@ -10,6 +10,10 @@
 #region Using Statements
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Graphics;
+using System.Linq;
 using System.Collections.Generic;
 #endregion
 
@@ -63,7 +67,7 @@ namespace Half_Caked
             var device = (ScreenManager.Game as HalfCakedGame).Device;
             MessageBoxScreen msgbox;
             if (device != null)
-                msgbox = new ProfileSelectionScreen((ScreenManager.Game as HalfCakedGame).Device);
+                msgbox = new ProfileSelectionScreen(device);
             else
                 msgbox = new MessageBoxScreen("Unable to write to your documents folder. Cannot save profiles.", new string[]{"Ok"}, 0);
 
@@ -95,17 +99,23 @@ namespace Half_Caked
 
     class AudioOptionsScreen : MenuScreen
     {
+        Slider masterVolumeSlider;
+        Slider musicEffectSlider;
+        Slider soundEffectSlider;
+        Slider narrationVolumeSlider;
+
         public AudioOptionsScreen(Profile curProfile)
             : base("Audio Settings")
         {
-            Slider masterVolumeSlider =    new Slider("Master Volume:", 50);
-            Slider musicEffectSlider =     new Slider("Music Volume:", 50);
-            Slider soundEffectSlider =     new Slider("Sound Effect Volume:", 50);
-            Slider narrationVolumeSlider = new Slider("Narration Volume:", 50);
+            masterVolumeSlider = new Slider("Master Volume:", curProfile.Audio.MasterVolume);
+            musicEffectSlider = new Slider("Music Volume:", curProfile.Audio.MusicVolume);
+            soundEffectSlider = new Slider("Sound Effect Volume:", curProfile.Audio.SoundEffectsVolume);
+            narrationVolumeSlider = new Slider("Narration Volume:", curProfile.Audio.NarrationVolume);
             MenuEntry saveMenuEntry = new MenuEntry("Save");
             MenuEntry backMenuEntry = new MenuEntry("Back");
 
             saveMenuEntry.Pressed += SaveButton;
+            saveMenuEntry.Pressed += OnCancel;
             backMenuEntry.Pressed += OnCancel;
 
             MenuEntries.Add(masterVolumeSlider);
@@ -120,30 +130,77 @@ namespace Half_Caked
 
         private Profile mProfile;
 
-        void SaveButton(object sender, PlayerIndexEventArgs e) { }
+        void SaveButton(object sender, PlayerIndexEventArgs e)
+        {
+            mProfile.Audio.MasterVolume = masterVolumeSlider.Value;
+            mProfile.Audio.MusicVolume = musicEffectSlider.Value;
+            mProfile.Audio.SoundEffectsVolume = soundEffectSlider.Value;
+            mProfile.Audio.NarrationVolume = narrationVolumeSlider.Value;
+
+            //string message;
+            //string[] prompt = { "Ok" };
+
+            var device = (ScreenManager.Game as HalfCakedGame).Device;
+            if (device != null)
+            {
+                Profile.SaveProfile(mProfile, "default.sav", device);
+                SoundEffect.MasterVolume = mProfile.Audio.MasterVolume / 100f;
+                MediaPlayer.Volume = mProfile.Audio.MasterVolume * mProfile.Audio.MusicVolume / 10000f;
+
+                Console.WriteLine("Audio Settings Saved for " + mProfile.Name + "..." +
+                    "\nMaster Volume: " + masterVolumeSlider.Value +
+                    "\nMusic Effect Volume: " + musicEffectSlider.Value +
+                    "\nSound Effect Volume: " + soundEffectSlider.Value +
+                    "\nNarration Volume: " + narrationVolumeSlider.Value + "\n"
+                );
+
+                //message = "Audio Settings Saved for " + mProfile.Name;
+            }
+            else
+            {
+                Console.WriteLine("Unable to write to documents folder. Cannot save audio settings.");
+                //message = "Unable to write to your documents folder. Cannot save audio settings.";
+            }
+
+            //MessageBoxScreen savedMessageBox = new MessageBoxScreen(message, prompt, 0);
+            //ScreenManager.AddScreen(savedMessageBox, e.PlayerIndex);
+        }
     }
 
     //This is just an example, the resolutions/display mode need to be made intelligable and the methods need to be implemented
     class GraphicsScreen : MenuScreen
     {
+        int mPrevMode;
+        int mPrevRes;
+        OptionPicker mDisplayModePicker;
+        OptionPicker mResolutionPicker;
         public GraphicsScreen(Profile curProfile)
             : base("Graphics Settings")
         {
             // Create our menu entries.
-            OptionPicker displayModeMenuEntry = new OptionPicker("Display Mode:", new string[3] { "W", "W (NB)", "FS" });
-            OptionPicker resolutionMenuEntry = new OptionPicker( "Resolutions:", new string[3] { "A", "B", "C" });
+            //get an array of resolutions;
+            mDisplayModePicker = new OptionPicker("Display Mode:", new string[3] { "Full Screen", "Windowed", "Windowed (No Borders)" });
+            mDisplayModePicker.SelectedChoice = (int)curProfile.Graphics.PresentationMode;
+            mPrevMode = mDisplayModePicker.SelectedChoice;
+
+            mResolutions = GraphicsAdapter.DefaultAdapter.SupportedDisplayModes.Select<DisplayMode, Vector2>(x => new Vector2(x.Width, x.Height)).ToList();
+            mResolutionPicker = new OptionPicker( "Resolutions:", mResolutions.Select<Vector2,String>(x => "" + x.X + " x " + x.Y).ToArray() );
+            mResolutionPicker.SelectedChoice = mResolutions.IndexOf( curProfile.Graphics.Resolution );
+            mPrevRes = mResolutionPicker.SelectedChoice;
+ 
             MenuEntry testMenuEntry = new MenuEntry("Test");
             MenuEntry saveMenuEntry = new MenuEntry("Save");
             MenuEntry backMenuEntry = new MenuEntry("Back");
-
+            
             // Hook up menu event handlers.
             testMenuEntry.Pressed += TestButton;
             saveMenuEntry.Pressed += SaveButton;
+            saveMenuEntry.Pressed += OnCancel;
             backMenuEntry.Pressed += OnCancel;
 
             // Add entries to the menu.
-            MenuEntries.Add(displayModeMenuEntry);
-            MenuEntries.Add(resolutionMenuEntry);
+            MenuEntries.Add(mDisplayModePicker);
+            MenuEntries.Add(mResolutionPicker);
             MenuEntries.Add(testMenuEntry);
             MenuEntries.Add(saveMenuEntry);
             MenuEntries.Add(backMenuEntry);
@@ -151,12 +208,50 @@ namespace Half_Caked
             mProfile = curProfile;
         }
 
+        List<Vector2> mResolutions;
         private Profile mProfile;
 
-        void SaveButton(object sender, PlayerIndexEventArgs e) { }
-        void TestButton(object sender, PlayerIndexEventArgs e) { }
-    }
+        void SaveButton(object sender, PlayerIndexEventArgs e)
+        {
+            ResolutionChange();
+            (ScreenManager.Game as HalfCakedGame).UpdateGraphics();
+            Profile.SaveProfile(mProfile, "default.sav", (ScreenManager.Game as HalfCakedGame).Device);
 
+            (ScreenManager.Game as HalfCakedGame).UpdateGraphics();
+        }
+        void TestButton(object sender, PlayerIndexEventArgs e) 
+        {
+            ResolutionChange();
+            (ScreenManager.Game as HalfCakedGame).UpdateGraphics();
+           
+            const string message = "Apply these settings?";
+            MessageBoxScreen testMessageBox = new MessageBoxScreen(message);
+            testMessageBox.Buttons[0].Pressed += new EventHandler<PlayerIndexEventArgs>(ApplySettings);
+            testMessageBox.Buttons[1].Pressed += new EventHandler<PlayerIndexEventArgs>(RevertSettings);
+            testMessageBox.Cancelled += new EventHandler<PlayerIndexEventArgs>(RevertSettings);
+            ScreenManager.AddScreen(testMessageBox, e.PlayerIndex);
+        }
+
+        void RevertSettings(object sender, PlayerIndexEventArgs e)
+        {
+            mProfile.Graphics.PresentationMode = (GraphicsSettings.WindowType)mPrevMode; //set to previous presentation mode
+            mProfile.Graphics.Resolution = mResolutions[mPrevRes]; //set to previous resolution
+            (ScreenManager.Game as HalfCakedGame).UpdateGraphics(); //revert          
+        }
+
+        void ApplySettings(object sender, PlayerIndexEventArgs e)
+        {
+            mPrevMode = mDisplayModePicker.SelectedChoice;
+            mPrevRes = mResolutionPicker.SelectedChoice;
+        }
+
+        void ResolutionChange()
+        {
+            mProfile.Graphics.PresentationMode = (GraphicsSettings.WindowType)mDisplayModePicker.SelectedChoice;
+            mProfile.Graphics.Resolution = mResolutions[mResolutionPicker.SelectedChoice];
+        }
+    }
+    
     class KeybindingsScreen : MenuScreen
     {
         private Profile mProfile;
@@ -194,6 +289,7 @@ namespace Half_Caked
 
             // Event bindings
             acceptMenuEntry.Pressed += SaveButton;
+            acceptMenuEntry.Pressed += OnCancel;
             cancelMenuEntry.Pressed += OnCancel;
 
             // Menu entries on our list
@@ -253,11 +349,13 @@ namespace Half_Caked
             string displayName = s.Key;
             Keybinding[] key = s.Value;
             if (input == null) {
-                throw new System.ArgumentNullException("Keybindings Menu returned null Keybinding object 'input'");
+                //throw new System.ArgumentNullException("Keybindings Menu returned null Keybinding object 'input'");
+                return;
             }
             System.Console.Error.WriteLine("Request to set the {0} keybinding [{1}] to {2}", whichBinding, displayName, input.ToString());
             if (whichBinding < 0 || whichBinding > key.Length) {
-                throw new System.IndexOutOfRangeException("Keybindings Menu tried to bind to a Keybinding index that doesn't exist.");
+                //throw new System.IndexOutOfRangeException("Keybindings Menu tried to bind to a Keybinding index that doesn't exist.");
+                return;
             }
             key[whichBinding] = input;
         }

@@ -28,7 +28,8 @@ namespace Half_Caked
             set
             {
                 mText = value;
-                Size = mFont.MeasureString(mText);
+        
+                //Size = mFont.MeasureString(mText);
 
                 mOrigin = new Vector2(mRectangle.Width / 2 * (int)Alignment, mRectangle.Height / 2);
                 Refresh = true;

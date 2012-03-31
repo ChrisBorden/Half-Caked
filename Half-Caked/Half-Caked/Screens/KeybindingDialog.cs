@@ -14,7 +14,7 @@ namespace Half_Caked
         ReturnKeybindingInput return_method = null;
 
         public KeybindingDialog(string keybinding, ReturnKeybindingInput method)
-            : base("", new string[] {"Accept", "Cancel"}, 0)
+            : base("", new string[] {"Accept", "Cancel"}, -1)
         {
             this.keybinding = keybinding;
             message += "Set the keybindings for: " + keybinding + "\n\n";
@@ -25,6 +25,9 @@ namespace Half_Caked
             // Hook up menu event handlers.
             Buttons[0].Pressed += AcceptSelected;
 
+            Buttons[0].State = UIState.Inactive;
+            Buttons[1].State = UIState.Inactive;
+
             this.mMessage += message;
         }
 
@@ -32,14 +35,20 @@ namespace Half_Caked
 
         public override void HandleInput(InputState input)
         {
-            base.HandleInput(input);
-
             Keybinding tmpKey = input.GetNewestKeybindingPressed(this.ControllingPlayer);
-            if (tmpKey != null) {
+            if (tmpKey != null && newKey == null) {
+
                 // Reset the message to be our "default" + the new keybinding
                 this.mMessage = this.message + "Key [" + tmpKey.ToString() + "] Pressed";
                 newKey = tmpKey;
+                this.mSelectedButton = 0;
+
+                Buttons[0].State = UIState.Selected;
+                Buttons[1].State = UIState.Active;
             }
+            else
+                base.HandleInput(input);
+
         }
 
         void AcceptSelected(object sender, PlayerIndexEventArgs e)
