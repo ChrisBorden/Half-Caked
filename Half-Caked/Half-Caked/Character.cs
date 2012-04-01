@@ -89,18 +89,19 @@ namespace Half_Caked
             mOrbs[1] = new PortalGunBullet();
             mOrbs[1].LoadContent(this.mContentManager, 1);
 
-            //Load animations
-            idleAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Idle"), 0.1f, true);
-            runAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Run"), 0.1f, true);
-            jumpAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Jump"), 0.1f, false);
-            victoryAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Victory"), 0.1f, false);
-            deathAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Death"), 0.1f, false);
+            //Load animations -- must include frame count for constant frameTime constructor
+			float[] jumpTiming = { 0.02f, 0.1f, 0.1f, 0.1f, 0.25f, 0.1f };
+            idleAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Idle"), 0.1f, 1, true);
+            runAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Run"), 0.05f, 5, true);
+            jumpAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Jump"), jumpTiming, false);
+            victoryAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Victory"), 0.1f, 11, false);
+            deathAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Death"), 0.1f, 12, false);
 
-            int width = (int)(idleAnimation.FrameWidth * 0.4f);
-            int left = (idleAnimation.FrameWidth - width) / 2;
-            int height = (int)(idleAnimation.FrameWidth * 0.8f);
+            int width = (int)(idleAnimation.FrameWidth );
+			int left = 0;// (idleAnimation.FrameWidth - width) / 2;
+            int height = (int)(idleAnimation.FrameHeight);
             int top = idleAnimation.FrameHeight - height;
-            //Source = new Rectangle(66, 65, 73, 135);
+            //Source = new Rectangle(0, 0, 125, 125);
             Source = new Rectangle(left, top, width, height);
 
             animator.PlayAnimation(idleAnimation);
@@ -673,11 +674,11 @@ namespace Half_Caked
     class Gunarm : Actor
     {
         #region Constants
-        Vector2 ARM_ANCHOR = new Vector2(-4, -8);
-        Vector2 ARM_ANCHOR_DUCKED = new Vector2(-6, 12);
+		Vector2 ARM_ANCHOR = new Vector2(-10, 10);//(-4, -8);
+        Vector2 ARM_ANCHOR_DUCKED = new Vector2(0,0);//(-6, 12);
 
-        Vector2 ARM_ANCHOR_LEFT = new Vector2(6, 0);
-        Vector2 ARM_ANCHOR_DUCKED_LEFT = new Vector2(13, 0);
+        Vector2 ARM_ANCHOR_LEFT = new Vector2(0, 0);
+        Vector2 ARM_ANCHOR_DUCKED_LEFT = new Vector2(0, 0);
         #endregion
 
         #region Initialization
@@ -685,9 +686,9 @@ namespace Half_Caked
         public void LoadContent(ContentManager theContentManager)
         {
             base.LoadContent(theContentManager, "Sprites\\Gunarm");
-            Source = new Rectangle(0, 0, 16, 5);
+            Source = new Rectangle(0, 0, 50, 25);
             Scale = 1.0f;
-            Center = new Vector2(0, 3);
+            Center = new Vector2(0, 0);
         }
 
         #endregion

@@ -84,16 +84,17 @@ namespace Half_Caked
         /// <summary>
         /// Advances the time position and draws the current frame of the animation.
         /// </summary>
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, float Angle, Vector2 Center, float Scale, SpriteEffects spriteEffects)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, 
+			float Angle, Vector2 Center, float Scale, SpriteEffects spriteEffects)
         {
             if (Animation == null)
                 throw new NotSupportedException("No animation is currently playing.");
 
             // Process passing time.
             time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            while (time > Animation.FrameTime)
+            while (time > Animation.getFrameTime(this.frameIndex))
             {
-                time -= Animation.FrameTime;
+                time -= Animation.getFrameTime(this.frameIndex);
 
                 // Advance the frame index; looping or clamping as appropriate.
                 if (Animation.IsLooping)
@@ -107,10 +108,12 @@ namespace Half_Caked
             }
 
             // Calculate the source rectangle of the current frame.
-            Rectangle source = new Rectangle(FrameIndex * Animation.Texture.Height, 0, Animation.Texture.Height, Animation.Texture.Height);
+            Rectangle source = new Rectangle(FrameIndex * Animation.FrameWidth, 
+				0, Animation.FrameWidth, Animation.FrameHeight);
 
             // Draw the current frame.
-            spriteBatch.Draw(Animation.Texture, position, source, Color.White, Angle, Origin-Center, Scale, spriteEffects, 0.9f);
+            spriteBatch.Draw(Animation.Texture, position, source, Color.White, 
+				Angle, Origin-Center, Scale, spriteEffects, 0.9f);
         }
     }
 }
