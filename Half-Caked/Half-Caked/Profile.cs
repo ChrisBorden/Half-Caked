@@ -17,10 +17,8 @@ namespace Half_Caked
 {
     public class Profile
     {
-        private const int PROFILE_COUNT = 3;
-
         public int GlobalIdentifer = -1;
-        public int ProfileNumber = 0;
+        public int ProfileNumber = -1;
         public string Name = "";
         public int CurrentLevel = 0;
 
@@ -101,27 +99,37 @@ namespace Half_Caked
             return prof;
         }
 
-        public static KeyValuePair<int, Profile[]> LoadAll(StorageDevice device)
+        public static KeyValuePair<int, List<Profile>> LoadAll(StorageDevice device)
         {
-            Profile[] profArray = new Profile[PROFILE_COUNT];
+            List<Profile> profArray = new List<Profile>();
             Profile defProf = Load(-1, device);
             int index = -1;
                         
-            if(defProf != null && !defProf.Name.Equals(""))
+            IAsyncResult result = device.BeginOpenContainer("Profiles", null, null);
+            result.AsyncWaitHandle.WaitOne();
+            StorageContainer container = device.EndOpenContainer(result);
+            result.AsyncWaitHandle.Close();
+            
+            XmlSerializer serializer = new XmlSerializer(typeof(Profile));
+
+            foreach(string name in container.GetFileNames("*.sav"))
             {
-                for (int i = 0; i < PROFILE_COUNT; i++)
-                {
-                    profArray[i] = Load(i, device);
-                    if (profArray[i] != null && profArray[i].Name.Equals(""))
-                    {
-                        profArray[i] = null;
-                    }
-                }
-                profArray[defProf.ProfileNumber] = defProf;
-                index = defProf.ProfileNumber;
+                Stream stream = container.OpenFile(name, FileMode.Open);
+                Profile prof = serializer.Deserialize(stream) as Profile;
+                stream.Close();
+
+                if (name.Equals("default.sav"))
+                    index = prof.ProfileNumber;
+
+                if (!prof.MakeValid())
+                    Profile.SaveProfile(prof, name, device);
+                
+                profArray.Add(prof);
             }
 
-            return new KeyValuePair<int, Profile[]> (index, profArray);
+            container.Dispose();
+
+            return new KeyValuePair<int, List<Profile>> (index, profArray);
         }
 
         /// <summary>
@@ -155,6 +163,16 @@ namespace Half_Caked
                 newfile.Close();
                 container.DeleteFile(newDefaultName);
             }
+            else if (oldDefaultProfile < 0 && !container.FileExists(defaultName) && container.FileExists(newDefaultName))
+            {
+                Stream oldfile = container.OpenFile(newDefaultName, FileMode.Open);
+                Stream newfile = container.CreateFile(defaultName);
+                oldfile.CopyTo(newfile);
+
+                oldfile.Close();
+                newfile.Close();
+                container.DeleteFile(newDefaultName);
+            }
 
             container.Dispose();
         }
@@ -164,7 +182,7 @@ namespace Half_Caked
             bool madeChanges = false;
 
             this.CurrentLevel = (int)MathHelper.Clamp(this.CurrentLevel, 0, Level.MAX_LEVELS - 1);
-
+            
             if (LevelStatistics == null)
             {
                 this.LevelStatistics = new Statistics[Level.MAX_LEVELS];
@@ -303,14 +321,17 @@ namespace Half_Caked
 
         public override string ToString(){
             return  this.Type == InputType.Key          ? this.Key.ToString()
-                : this.Type == InputType.MouseClick     ? this.MouseClick.ToString()
+                : this.Type == InputType.MouseClick     ? "Mouse #" + this.MouseClick.ToString()
                 : this.Type == InputType.Button         ? this.Button.ToString()
-                :                                         "<Unknown Key>";
+                :                                         "<None>";
         }
 
         public static implicit operator Keybinding(Keys key)
         {
             Keybinding temp = new Keybinding();
+            if (key == Keys.None) 
+                return temp;
+
             temp.Key = key;
             temp.Type = InputType.Key;
             return temp;

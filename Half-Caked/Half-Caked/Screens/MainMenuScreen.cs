@@ -104,8 +104,8 @@ namespace Half_Caked
 
         void ConfirmSaveMessageBoxAccepted(object sender, PlayerIndexEventArgs e)
         {
-            var pss = new ProfileSelectionScreen((ScreenManager.Game as HalfCakedGame).Device);
-            pss.ProfileSaved += ConfirmExitMessageBoxAccepted;
+            var pss = new ProfileScreen((ScreenManager.Game as HalfCakedGame).Device);
+            pss.ProfileSelected += ConfirmExitMessageBoxAccepted;
             ScreenManager.AddScreen(pss, e.PlayerIndex);
         }
 

@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Storage;
 using System.Linq;
 using System.Collections.Generic;
 #endregion
@@ -65,9 +66,9 @@ namespace Half_Caked
         void ProfileMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             var device = (ScreenManager.Game as HalfCakedGame).Device;
-            MessageBoxScreen msgbox;
+            GameScreen msgbox;
             if (device != null)
-                msgbox = new ProfileSelectionScreen(device);
+                msgbox = new ProfileScreen(device);
             else
                 msgbox = new MessageBoxScreen("Unable to write to your documents folder. Cannot save profiles.", new string[]{"Ok"}, 0);
 
@@ -167,7 +168,6 @@ namespace Half_Caked
         }
     }
 
-    //This is just an example, the resolutions/display mode need to be made intelligable and the methods need to be implemented
     class GraphicsScreen : MenuScreen
     {
         int mPrevMode;
