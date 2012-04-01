@@ -53,7 +53,7 @@ namespace Half_Caked
         /// </summary>
         public Vector2 Origin
         {
-            get { return new Vector2(Animation.FrameWidth / 2.0f, Animation.FrameHeight); }
+            get { return new Vector2(Animation.FrameWidth / 1.5f, Animation.FrameHeight); }
         }
 
         /// <summary>

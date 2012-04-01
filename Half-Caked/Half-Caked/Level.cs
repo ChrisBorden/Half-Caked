@@ -171,11 +171,11 @@ namespace Half_Caked
             foreach (Sprite spr in Actors)
                 spr.Draw(theSpriteBatch, Position);
 
-            //This draws non-animated parts of the player
-            Player.Draw(theSpriteBatch, Position);
-
             //This draws the animated parts of the player
             Player.AnimatedDraw(theSpriteBatch, Position, theGameTime);
+
+            //This draws non-animated parts of the player
+            Player.Draw(theSpriteBatch, Position);
 
             Portals.Draw(theSpriteBatch, Position);
             
