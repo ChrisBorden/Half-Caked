@@ -98,7 +98,7 @@ namespace Half_Caked
 
             int width = (int)(idleAnimation.FrameWidth * 0.4f);
             int left = (idleAnimation.FrameWidth - width) / 2;
-            int height = (int)(idleAnimation.FrameHeight);
+            int height = (int)(idleAnimation.FrameHeight * .9f);
             int top = idleAnimation.FrameHeight - height;
             //Source = new Rectangle(66, 65, 73, 135);
             Source = new Rectangle(left, top, width, height);

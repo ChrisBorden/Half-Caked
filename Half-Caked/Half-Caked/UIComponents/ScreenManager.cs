@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
 #endregion
 
 namespace Half_Caked
@@ -83,8 +82,6 @@ namespace Half_Caked
 
         #region Initialization
 
-        private Song menuMusic;
-
         /// <summary>
         /// Constructs a new screen manager component.
         /// </summary>
@@ -116,15 +113,6 @@ namespace Half_Caked
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = content.Load<SpriteFont>("Fonts\\menufont");
             blankTexture = content.Load<Texture2D>("UI\\blank");
-
-            menuMusic = content.Load<Song>("Sounds\\MenuMusic");
-
-            if (MediaPlayer.State == MediaState.Stopped)
-                try
-                {
-                    MediaPlayer.Play(menuMusic);
-                }
-                catch { }
 
             // Tell each of the screens to load their content.
             foreach (GameScreen screen in screens)
