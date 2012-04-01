@@ -77,6 +77,7 @@ namespace Half_Caked
 
         public virtual void LoadContent(ContentManager theContentManager, Profile activeProfile)
         {
+			String backgroundMusicName = "Sounds\\" + AssetName;
             AssetName = "Levels\\" + AssetName;
             base.LoadContent(theContentManager, AssetName);
             mBackground.LoadContent(theContentManager, AssetName + "b");
@@ -88,7 +89,14 @@ namespace Half_Caked
             SoundEffect.MasterVolume = mAudio.MasterVolume / 100f;
             MediaPlayer.Volume = mAudio.MasterVolume * mAudio.MusicVolume / 10000f;
             mExitReached = theContentManager.Load<Song>("Sounds\\ExitReached");
-            mBackgroundMusic = theContentManager.Load<Song>("Sounds\\Level");
+			try
+			{
+				mBackgroundMusic = theContentManager.Load<Song>(backgroundMusicName);
+			}
+			catch
+			{
+				mBackgroundMusic = theContentManager.Load<Song>("Sounds\\Level");
+			}
             mCheckpointSound = theContentManager.Load<SoundEffect>("Sounds\\Checkpoint");
 
             Portals.LoadContent(theContentManager);
