@@ -326,13 +326,7 @@ namespace Half_Caked
             lvl.Tiles.Add(new Tile(new Rectangle(2000 - 2, 0, 2, 1500), Surface.Absorbs));
 
             return lvl;
-        }
-
-
-       
-
-
-
+        }  
 
         private static void SaveLevel(int identifier, Level lvl)
         {
