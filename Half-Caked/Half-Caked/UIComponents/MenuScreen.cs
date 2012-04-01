@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 #endregion
 
 namespace Half_Caked
@@ -30,6 +31,7 @@ namespace Half_Caked
         protected int selectedEntry = 0;
         string menuTitle;
         SoundEffect EntryFocusChanged;
+        Song mMenuMusic;
 
         #endregion
 
@@ -67,6 +69,7 @@ namespace Half_Caked
             try
             {
                 EntryFocusChanged = ScreenManager.Game.Content.Load<SoundEffect>("Sounds\\UISelected");
+                mMenuMusic = ScreenManager.Game.Content.Load<Song>("Sounds\\MenuMusic");
             }
             catch { }
 
@@ -210,6 +213,13 @@ namespace Half_Caked
             base.Update(gameTime, topScreen, coveredByOtherScreen);
 
             ScreenManager.Game.IsMouseVisible = true;
+
+            if (MediaPlayer.State == MediaState.Stopped)
+                try
+                {
+                    MediaPlayer.Play(mMenuMusic);
+                }
+                catch { }
 
             // Update each nested MenuEntry object.
             for (int i = 0; i < menuEntries.Count; i++)
