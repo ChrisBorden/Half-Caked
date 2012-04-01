@@ -103,8 +103,6 @@ namespace Half_Caked
             //Source = new Rectangle(66, 65, 73, 135);
             Source = new Rectangle(left, top, width, height);
 
-            Console.WriteLine(left + ", " + top + ", " + width + ", " + height);
-
             animator.PlayAnimation(idleAnimation);
 
             mJumpEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerJump");

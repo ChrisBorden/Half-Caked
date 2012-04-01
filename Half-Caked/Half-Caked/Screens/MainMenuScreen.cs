@@ -20,7 +20,6 @@ namespace Half_Caked
     {
         #region Initialization
 
-
         /// <summary>
         /// Constructor fills in the menu contents.
         /// </summary>
@@ -42,7 +41,6 @@ namespace Half_Caked
             MenuEntries.Add(optionsMenuEntry);
             MenuEntries.Add(exitMenuEntry);
         }
-
 
         #endregion
 
