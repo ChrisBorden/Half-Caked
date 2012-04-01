@@ -88,6 +88,7 @@ namespace Half_Caked
             mAudio = activeProfile.Audio;
             SoundEffect.MasterVolume = mAudio.MasterVolume / 100f;
             MediaPlayer.Volume = mAudio.MasterVolume * mAudio.MusicVolume / 10000f;
+            MediaPlayer.Stop();
             mExitReached = theContentManager.Load<Song>("Sounds\\ExitReached");
 			try
 			{
