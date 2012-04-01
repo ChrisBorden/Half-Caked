@@ -176,6 +176,7 @@ namespace Half_Caked
                 MenuEntries.Insert(MenuEntries.Count - 2, profileGroup);
                 mProfiles.Add(prof);
                 PositionElements();
+                prof.Register();
 
                 if (mProfiles.Count == 1)
                 {

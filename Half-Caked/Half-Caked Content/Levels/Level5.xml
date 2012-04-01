@@ -101,15 +101,15 @@
     <Tile>
       <Dimensions>
         <X>0</X>
-        <Y>1498</Y>
-        <Width>2000</Width>
+        <Y>998</Y>
+        <Width>1500</Width>
         <Height>2</Height>
         <Location>
           <X>0</X>
-          <Y>1498</Y>
+          <Y>998</Y>
         </Location>
       </Dimensions>
-      <Type>Death</Type>
+      <Type>Absorbs</Type>
     </Tile>
     <Tile>
       <Dimensions>
@@ -129,7 +129,7 @@
         <X>0</X>
         <Y>0</Y>
         <Width>2</Width>
-        <Height>2000</Height>
+        <Height>1000</Height>
         <Location>
           <X>0</X>
           <Y>0</Y>
@@ -139,12 +139,12 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>1998</X>
+        <X>1498</X>
         <Y>0</Y>
         <Width>2</Width>
-        <Height>1500</Height>
+        <Height>1000</Height>
         <Location>
-          <X>1998</X>
+          <X>1498</X>
           <Y>0</Y>
         </Location>
       </Dimensions>
@@ -156,8 +156,32 @@
     <Actor xsi:type="Enemy">
       <AssetName>Sprites\Enemy</AssetName>
       <InitialPosition>
-        <X>370</X>
-        <Y>472</Y>
+        <X>550</X>
+        <Y>922</Y>
+      </InitialPosition>
+      <Range>300</Range>
+    </Actor>
+    <Actor xsi:type="Enemy">
+      <AssetName>Sprites\Enemy</AssetName>
+      <InitialPosition>
+        <X>650</X>
+        <Y>922</Y>
+      </InitialPosition>
+      <Range>300</Range>
+    </Actor>
+    <Actor xsi:type="Enemy">
+      <AssetName>Sprites\Enemy</AssetName>
+      <InitialPosition>
+        <X>550</X>
+        <Y>400</Y>
+      </InitialPosition>
+      <Range>300</Range>
+    </Actor>
+    <Actor xsi:type="Enemy">
+      <AssetName>Sprites\Enemy</AssetName>
+      <InitialPosition>
+        <X>650</X>
+        <Y>400</Y>
       </InitialPosition>
       <Range>300</Range>
     </Actor>

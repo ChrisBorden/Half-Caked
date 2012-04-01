@@ -6,7 +6,6 @@
     <Y>-500</Y>
   </InitialPosition>
   <Gravity>40</Gravity>
-  <LevelIdentifier>2</LevelIdentifier>
   <Tiles>
     <Tile>
       <Dimensions>
@@ -243,7 +242,7 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>b34e832c-c105-41ee-bdbc-ccd36ff130e8</Guid>
+      <Guid>31f483b3-3069-48bc-a95e-c95fd8d8b411</Guid>
       <InitialState>2</InitialState>
     </Obstacle>
     <Obstacle xsi:type="Platform">
@@ -254,11 +253,11 @@
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>b34e832c-c105-41ee-bdbc-ccd36ff130e8</Key>
+          <Key>31f483b3-3069-48bc-a95e-c95fd8d8b411</Key>
           <Value>0</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>431da9d0-5934-4af6-829c-c010f3693214</Guid>
+      <Guid>8d1b3b77-7c60-4050-8a22-d80e1a18e4ec</Guid>
       <InitialState>1</InitialState>
       <Path>
         <Vector2>
@@ -288,11 +287,11 @@
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>b34e832c-c105-41ee-bdbc-ccd36ff130e8</Key>
+          <Key>31f483b3-3069-48bc-a95e-c95fd8d8b411</Key>
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>34bfc813-fdc3-4c0c-ba6f-8c31a452bf98</Guid>
+      <Guid>58053773-d27b-40cc-af64-3c2c714021aa</Guid>
       <InitialState>0</InitialState>
     </Obstacle>
   </Obstacles>
@@ -378,4 +377,5 @@
       </Bound>
     </Checkpoint>
   </Checkpoints>
+  <LevelIdentifier>2</LevelIdentifier>
 </Level>

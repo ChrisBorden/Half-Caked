@@ -151,7 +151,7 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>c5729681-b970-473b-b863-a52f147529d6</Guid>
+      <Guid>2f042c8a-99b5-4631-a19c-ff152e2a86b6</Guid>
       <InitialState>2</InitialState>
     </Obstacle>
     <Obstacle xsi:type="Platform">
@@ -162,11 +162,11 @@
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>c5729681-b970-473b-b863-a52f147529d6</Key>
+          <Key>2f042c8a-99b5-4631-a19c-ff152e2a86b6</Key>
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>64774be5-687c-438c-a12f-ab6f1f1a6b95</Guid>
+      <Guid>8364e183-6aa2-41a1-b94f-557afbc4b528</Guid>
       <InitialState>0</InitialState>
       <Path>
         <Vector2>
@@ -192,7 +192,7 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>27d86773-5354-4442-b83d-054b7460f7d7</Guid>
+      <Guid>584ab3da-c953-4968-b80a-f9f30553e1a3</Guid>
       <InitialState>2</InitialState>
     </Obstacle>
     <Obstacle xsi:type="Door">
@@ -203,11 +203,11 @@
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>27d86773-5354-4442-b83d-054b7460f7d7</Key>
+          <Key>584ab3da-c953-4968-b80a-f9f30553e1a3</Key>
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>f2deefda-c588-4802-8bf7-4fb572117a8a</Guid>
+      <Guid>9a0f6c55-1e62-4de4-a965-e9e3ba69232c</Guid>
       <InitialState>0</InitialState>
     </Obstacle>
   </Obstacles>

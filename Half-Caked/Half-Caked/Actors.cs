@@ -163,9 +163,7 @@ namespace Half_Caked
                     return;
             }
 
-            //dir.Y *= -1;
-
-            Angle = MathHelper.WrapAngle((float)Math.Atan(dir.Y / dir.X) + MathHelper.PiOver2);
+            Angle = MathHelper.WrapAngle((float)Math.Atan(dir.Y / dir.X)) + MathHelper.PiOver2 + (dir.X < 0 ? MathHelper.Pi : 0);
 
             if (mTimeSinceFired < mReloadingTime)
                 return;
