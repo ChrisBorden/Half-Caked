@@ -146,6 +146,8 @@ namespace Half_Caked
 
                 if(ProfileSelected != null)
                     ProfileSelected.Invoke(this, e);
+
+                (this.ScreenManager.Game as HalfCakedGame).CurrentProfile = prof;
             };
         }
 
@@ -182,6 +184,7 @@ namespace Half_Caked
                 {
                     Default = prof.ProfileNumber;
                     Profile.SaveProfile(prof, "default.sav", mDevice);
+                    (this.ScreenManager.Game as HalfCakedGame).CurrentProfile = prof;
 
                     if (ProfileSelected != null)
                         ProfileSelected.Invoke(this, e);

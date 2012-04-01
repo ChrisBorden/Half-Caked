@@ -21,7 +21,22 @@ namespace Half_Caked
         #region Fields
         GraphicsDeviceManager graphics;
         ScreenManager screenManager;
-        public Profile CurrentProfile;
+
+        private Profile mProfile;
+        public Profile CurrentProfile
+        {
+            get { return mProfile; }
+            set
+            {
+                mProfile = value;
+                SoundEffect.MasterVolume = mProfile.Audio.MasterVolume / 100f;
+                MediaPlayer.Volume = mProfile.Audio.MasterVolume * mProfile.Audio.MusicVolume / 10000f;
+
+                UpdateGraphics();
+            }
+        }
+            
+            
         public StorageDevice Device;
         #endregion
 
