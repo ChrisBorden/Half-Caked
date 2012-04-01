@@ -97,9 +97,9 @@ namespace Half_Caked
             victoryAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Victory"), 0.1f, 11, false);
             deathAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Death"), 0.1f, 12, false);
 
-            int width = (int)(idleAnimation.FrameWidth );
+            int width = (int)(idleAnimation.FrameWidth * 0.9f);
 			int left = 0;// (idleAnimation.FrameWidth - width) / 2;
-			int height = (int)(idleAnimation.FrameHeight);
+			int height = (int)(idleAnimation.FrameHeight * 0.9f);
             int top = idleAnimation.FrameHeight - height;
             //Source = new Rectangle(0, 0, 125, 125);
             Source = new Rectangle(left, top, width, height);
@@ -110,7 +110,7 @@ namespace Half_Caked
             mDeathEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerKilled");
             mLandingEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerLanding");
 
-            Center = new Vector2(Size.Width / 2, Size.Height / 2);
+            Center = new Vector2(Size.Width / 4, Size.Height / 2);
         }
         #endregion
 
@@ -366,6 +366,8 @@ namespace Half_Caked
                     mCollisions[(int)Orientation.Up] = obj;
                 }
                 stillJumping = false;
+                stillWallJumpingLeft = false;
+                stillWallJumpingRight = false;
             }
             else
             {
