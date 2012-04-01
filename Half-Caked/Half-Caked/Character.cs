@@ -646,7 +646,6 @@ namespace Half_Caked
             {
                 ShootProjectile(0, inputState.CurrentMouseState, level);
                 mOrbs[0].CheckCollisions(level);
-                level.Portals.Close(0);
             }
 
             if (mOrbs[1].Visible)
@@ -658,7 +657,6 @@ namespace Half_Caked
             {
                 ShootProjectile(1, inputState.CurrentMouseState, level);
                 mOrbs[1].CheckCollisions(level);
-                level.Portals.Close(1);
             }
         }
 
