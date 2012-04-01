@@ -123,6 +123,7 @@ namespace Half_Caked
                     Amplify(tile.Dimensions, result, level, Vector2.Zero);
                     break;
                 case Surface.Normal:
+                    level.Portals.Close(mPortalNumber);
                     Act(tile.Dimensions, result, level, Vector2.Zero);
                     break;
                 case Surface.Reflects:
@@ -138,10 +139,11 @@ namespace Half_Caked
         {
             switch (obs.Contact(result))
             {
-                case Surface.Amplifies:
+                case Surface.Amplifies:                    
                     Amplify(obs.CollisionSurface, result, level, obs.Velocity);
                     break;
                 case Surface.Normal:
+                    level.Portals.Close(mPortalNumber);
                     Act(obs.CollisionSurface, result, level, obs.Velocity);
                     break;
                 case Surface.Reflects:
