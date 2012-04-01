@@ -12,6 +12,8 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Half_Caked
 {
@@ -301,9 +303,21 @@ namespace Half_Caked
         public Keybinding[] Interact =      { Keys.E, Keys.None   };
         public Keybinding[] Pause =         { Keys.P, Keys.Escape };
         public Keybinding[] Portal1 =       { 1, -1 };
-        public Keybinding[] Portal2 =       { 2, -1 };            
+        public Keybinding[] Portal2 =       { 2, -1 };
+
+        public Keybindings Clone(){
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new MemoryStream();
+            using (stream)
+            {
+                formatter.Serialize(stream, this);
+                stream.Seek(0, SeekOrigin.Begin);
+                return (Keybindings) formatter.Deserialize(stream);
+            }
+        }
+
     }
-    
+    [Serializable]
     public class Keybinding
     {
         public enum InputType

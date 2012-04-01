@@ -255,9 +255,11 @@ namespace Half_Caked
     class KeybindingsScreen : MenuScreen
     {
         private Profile mProfile;
+        private Keybindings originalBindings;
         List<KeybindingKV> menuList;
         public KeybindingsScreen(Profile curProfile) : base("Keybindings") {
             mProfile = curProfile;
+            originalBindings = curProfile.KeyBindings.Clone();
 
             // Creates the keybindings menu...
             menuList = new List<KeybindingKV>() {
@@ -290,7 +292,7 @@ namespace Half_Caked
             // Event bindings
             acceptMenuEntry.Pressed += SaveButton;
             acceptMenuEntry.Pressed += OnCancel;
-            cancelMenuEntry.Pressed += OnCancel;
+            cancelMenuEntry.Pressed += CancelButton;
 
             // Menu entries on our list
             MenuEntries.Add(acceptMenuEntry);
@@ -359,7 +361,11 @@ namespace Half_Caked
             }
             key[whichBinding] = input;
         }
-        
+        void CancelButton(object sender, PlayerIndexEventArgs e)
+        {
+            mProfile.KeyBindings = originalBindings;
+            base.OnCancel(sender, e);
+        }
         void SaveButton(object sender, PlayerIndexEventArgs e) {
             HalfCakedGame game = ScreenManager.Game as HalfCakedGame;
             Profile.SaveProfile(mProfile, "default.sav", game.Device);
