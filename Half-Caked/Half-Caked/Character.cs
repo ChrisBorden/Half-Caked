@@ -265,6 +265,7 @@ namespace Half_Caked
 
         public void Die(Level level)
         {
+            //animator.PlayAnimation(deathAnimation);
             level.PlaySoundEffect(mDeathEffect);
             level.PlayerDeath();
         }
@@ -406,12 +407,18 @@ namespace Half_Caked
                 if (inputState.IsMovingBackwards(null))
                 {
                     Velocity.X = DEFAULT_SPEED * MOVE_LEFT * (mIsDucking ? .5f : 1);
-                    animator.PlayAnimation(runAnimation);
+                    if (mIsDucking)
+                    { }
+                    else
+                    { animator.PlayAnimation(runAnimation); }
                 }
                 else if (inputState.IsMovingForward(null))
                 {
                     Velocity.X = DEFAULT_SPEED * MOVE_RIGHT * (mIsDucking ? .5f : 1);
-                    animator.PlayAnimation(runAnimation);
+                    if (mIsDucking)
+                    { }
+                    else
+                    { animator.PlayAnimation(runAnimation); }
                 }
                 else
                 {
