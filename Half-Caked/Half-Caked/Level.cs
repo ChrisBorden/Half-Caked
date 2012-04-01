@@ -162,19 +162,24 @@ namespace Half_Caked
 
         }
 
-        public override void Draw(SpriteBatch theSpriteBatch)
+        public override void Draw(SpriteBatch theSpriteBatch, GameTime theGameTime)
         {
-            mBackground.Draw(theSpriteBatch);
+            mBackground.Draw(theSpriteBatch, theGameTime);
             foreach (Obstacle spr in Obstacles)
                 spr.Draw(theSpriteBatch, Position);
 
             foreach (Sprite spr in Actors)
                 spr.Draw(theSpriteBatch, Position);
 
+            //This draws non-animated parts of the player
             Player.Draw(theSpriteBatch, Position);
+
+            //This draws the animated parts of the player
+            Player.AnimatedDraw(theSpriteBatch, Position, theGameTime);
+
             Portals.Draw(theSpriteBatch, Position);
             
-            base.Draw(theSpriteBatch);
+            base.Draw(theSpriteBatch, theGameTime);
             Portals.DrawPortals(theSpriteBatch, Position);
 
             foreach (TextEffect effect in mTextEffects)

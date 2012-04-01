@@ -136,11 +136,11 @@ namespace Half_Caked
                 bullet.CheckCollisions(level);
         }
 
-        public override void Draw(SpriteBatch theSpriteBatch, Vector2 relative)
+        public override void Draw(SpriteBatch theSpriteBatch, Vector2 Relative)
         {
-            base.Draw(theSpriteBatch, relative);
+            base.Draw(theSpriteBatch, Relative);
             foreach (EnemyBullet bullet in mBullets)
-                bullet.Draw(theSpriteBatch, relative);
+                bullet.Draw(theSpriteBatch, Relative);
         }
 
         public void Fire(Level lvl)

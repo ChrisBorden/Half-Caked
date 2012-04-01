@@ -153,7 +153,7 @@ namespace Half_Caked
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
             spriteBatch.Begin();
-            mLevel.Draw(spriteBatch);
+            mLevel.Draw(spriteBatch, gameTime);
             spriteBatch.End();
 
             // If the game is transitioning on or off, fade it out to black.
