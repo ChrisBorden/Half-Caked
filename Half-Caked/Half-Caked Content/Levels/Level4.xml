@@ -242,7 +242,7 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>f455a86c-f451-40e8-96d7-548d1721b090</Guid>
+      <Guid>6c4754c4-c031-436b-afbd-513a1ea96a0c</Guid>
       <InitialState>2</InitialState>
     </Obstacle>
     <Obstacle xsi:type="Platform">
@@ -253,11 +253,11 @@
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>f455a86c-f451-40e8-96d7-548d1721b090</Key>
+          <Key>6c4754c4-c031-436b-afbd-513a1ea96a0c</Key>
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>0a6debdf-ecb0-43f7-b2ab-e9c37b5db1b3</Guid>
+      <Guid>6dfddd7e-d8f4-4087-8a1b-5a764513462c</Guid>
       <InitialState>0</InitialState>
       <Path>
         <Vector2>

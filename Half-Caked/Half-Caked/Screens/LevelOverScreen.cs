@@ -20,6 +20,7 @@ namespace Half_Caked
             Buttons[0].Pressed += NextLevelMenuEntrySelected;
             Buttons[1].Pressed += ResetMenuEntrySelected;
             Buttons[2].Pressed += QuitGameMenuEntrySelected;
+            Cancelled += QuitGameMenuEntrySelected;
 
             Profile prof = game.CurrentProfile;
             String scoreString = "\n";
