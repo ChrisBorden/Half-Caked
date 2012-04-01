@@ -228,6 +228,19 @@
       </Dimensions>
       <Type>Absorbs</Type>
     </Tile>
+	<Tile>
+      <Dimensions>
+        <X>0</X>
+        <Y>1498</Y>
+        <Width>2000</Width>
+        <Height>2</Height>
+        <Location>
+          <X>0</X>
+          <Y>-60</Y>
+        </Location>
+      </Dimensions>
+      <Type>Death</Type>
+    </Tile>
   </Tiles>
   <Obstacles>
     <Obstacle xsi:type="Switch">

@@ -83,6 +83,7 @@ namespace Half_Caked
 
         #region Initialization
 
+        private Song menuMusic;
 
         /// <summary>
         /// Constructs a new screen manager component.
@@ -116,13 +117,12 @@ namespace Half_Caked
             font = content.Load<SpriteFont>("Fonts\\menufont");
             blankTexture = content.Load<Texture2D>("UI\\blank");
 
-            Song openingMusic = content.Load<Song>("Sounds\\MenuMusic");
-            MediaPlayer.IsRepeating = true;
+            menuMusic = content.Load<Song>("Sounds\\MenuMusic");
 
             if (MediaPlayer.State == MediaState.Stopped)
                 try
                 {
-                    MediaPlayer.Play(openingMusic);
+                    MediaPlayer.Play(menuMusic);
                 }
                 catch { }
 
