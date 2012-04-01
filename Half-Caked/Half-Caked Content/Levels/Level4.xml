@@ -3,45 +3,32 @@
   <AssetName>Level4</AssetName>
   <InitialPosition>
     <X>0</X>
-    <Y>0</Y>
+    <Y>-500</Y>
   </InitialPosition>
   <Gravity>40</Gravity>
   <Tiles>
     <Tile>
       <Dimensions>
-        <X>60</X>
-        <Y>934</Y>
-        <Width>367</Width>
-        <Height>137</Height>
+        <X>778</X>
+        <Y>0</Y>
+        <Width>186</Width>
+        <Height>281</Height>
         <Location>
-          <X>60</X>
-          <Y>934</Y>
+          <X>778</X>
+          <Y>0</Y>
         </Location>
       </Dimensions>
-      <Type>Normal</Type>
+      <Type>Absorbs</Type>
     </Tile>
     <Tile>
       <Dimensions>
-        <X>427</X>
-        <Y>700</Y>
-        <Width>265</Width>
-        <Height>235</Height>
+        <X>964</X>
+        <Y>0</Y>
+        <Width>420</Width>
+        <Height>195</Height>
         <Location>
-          <X>427</X>
-          <Y>700</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>60</X>
-        <Y>273</Y>
-        <Width>170</Width>
-        <Height>144</Height>
-        <Location>
-          <X>60</X>
-          <Y>273</Y>
+          <X>964</X>
+          <Y>0</Y>
         </Location>
       </Dimensions>
       <Type>Normal</Type>
@@ -49,51 +36,142 @@
     <Tile>
       <Dimensions>
         <X>0</X>
-        <Y>417</Y>
-        <Width>60</Width>
-        <Height>517</Height>
+        <Y>473</Y>
+        <Width>301</Width>
+        <Height>151</Height>
         <Location>
           <X>0</X>
-          <Y>417</Y>
+          <Y>473</Y>
+        </Location>
+      </Dimensions>
+      <Type>Absorbs</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>301</X>
+        <Y>473</Y>
+        <Width>411</Width>
+        <Height>151</Height>
+        <Location>
+          <X>301</X>
+          <Y>473</Y>
         </Location>
       </Dimensions>
       <Type>Normal</Type>
     </Tile>
     <Tile>
       <Dimensions>
-        <X>230</X>
-        <Y>273</Y>
-        <Width>130</Width>
-        <Height>144</Height>
+        <X>711</X>
+        <Y>473</Y>
+        <Width>569</Width>
+        <Height>151</Height>
         <Location>
-          <X>230</X>
-          <Y>273</Y>
+          <X>711</X>
+          <Y>473</Y>
+        </Location>
+      </Dimensions>
+      <Type>Amplifies</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>0</X>
+        <Y>1136</Y>
+        <Width>216</Width>
+        <Height>364</Height>
+        <Location>
+          <X>0</X>
+          <Y>1136</Y>
+        </Location>
+      </Dimensions>
+      <Type>Absorbs</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>216</X>
+        <Y>1136</Y>
+        <Width>240</Width>
+        <Height>364</Height>
+        <Location>
+          <X>216</X>
+          <Y>1136</Y>
+        </Location>
+      </Dimensions>
+      <Type>Normal</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>456</X>
+        <Y>1136</Y>
+        <Width>216</Width>
+        <Height>364</Height>
+        <Location>
+          <X>456</X>
+          <Y>1136</Y>
+        </Location>
+      </Dimensions>
+      <Type>Absorbs</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>672</X>
+        <Y>1136</Y>
+        <Width>159</Width>
+        <Height>364</Height>
+        <Location>
+          <X>672</X>
+          <Y>1136</Y>
+        </Location>
+      </Dimensions>
+      <Type>Normal</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>0</X>
+        <Y>966</Y>
+        <Width>216</Width>
+        <Height>170</Height>
+        <Location>
+          <X>0</X>
+          <Y>966</Y>
+        </Location>
+      </Dimensions>
+      <Type>Normal</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>456</X>
+        <Y>966</Y>
+        <Width>215</Width>
+        <Height>170</Height>
+        <Location>
+          <X>456</X>
+          <Y>966</Y>
+        </Location>
+      </Dimensions>
+      <Type>Normal</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>936</X>
+        <Y>1079</Y>
+        <Width>485</Width>
+        <Height>421</Height>
+        <Location>
+          <X>936</X>
+          <Y>1079</Y>
         </Location>
       </Dimensions>
       <Type>Reflects</Type>
     </Tile>
     <Tile>
       <Dimensions>
-        <X>480</X>
-        <Y>321</Y>
-        <Width>340</Width>
-        <Height>90</Height>
+        <X>1718</X>
+        <Y>915</Y>
+        <Width>282</Width>
+        <Height>585</Height>
         <Location>
-          <X>480</X>
-          <Y>321</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>687</X>
-        <Y>411</Y>
-        <Width>131</Width>
-        <Height>589</Height>
-        <Location>
-          <X>687</X>
-          <Y>411</Y>
+          <X>1718</X>
+          <Y>915</Y>
         </Location>
       </Dimensions>
       <Type>Absorbs</Type>
@@ -101,93 +179,15 @@
     <Tile>
       <Dimensions>
         <X>0</X>
-        <Y>0</Y>
-        <Width>360</Width>
-        <Height>275</Height>
-        <Location>
-          <X>0</X>
-          <Y>0</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>360</X>
-        <Y>0</Y>
-        <Width>200</Width>
-        <Height>175</Height>
-        <Location>
-          <X>360</X>
-          <Y>0</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>560</X>
-        <Y>0</Y>
-        <Width>250</Width>
-        <Height>175</Height>
-        <Location>
-          <X>560</X>
-          <Y>0</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>913</X>
-        <Y>0</Y>
-        <Width>33</Width>
-        <Height>170</Height>
-        <Location>
-          <X>913</X>
-          <Y>0</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>946</X>
-        <Y>170</Y>
-        <Width>554</Width>
-        <Height>150</Height>
-        <Location>
-          <X>946</X>
-          <Y>170</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>913</X>
-        <Y>320</Y>
-        <Width>587</Width>
-        <Height>533</Height>
-        <Location>
-          <X>913</X>
-          <Y>320</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>0</X>
-        <Y>998</Y>
-        <Width>1500</Width>
+        <Y>1498</Y>
+        <Width>2000</Width>
         <Height>2</Height>
         <Location>
           <X>0</X>
-          <Y>998</Y>
+          <Y>1498</Y>
         </Location>
       </Dimensions>
-      <Type>Absorbs</Type>
+      <Type>Death</Type>
     </Tile>
     <Tile>
       <Dimensions>
@@ -207,7 +207,7 @@
         <X>0</X>
         <Y>0</Y>
         <Width>2</Width>
-        <Height>1000</Height>
+        <Height>2000</Height>
         <Location>
           <X>0</X>
           <Y>0</Y>
@@ -217,12 +217,12 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>1498</X>
+        <X>1998</X>
         <Y>0</Y>
         <Width>2</Width>
-        <Height>1000</Height>
+        <Height>1500</Height>
         <Location>
-          <X>1498</X>
+          <X>1998</X>
           <Y>0</Y>
         </Location>
       </Dimensions>
@@ -233,8 +233,8 @@
     <Obstacle xsi:type="Switch">
       <AssetName>Sprites\Switch</AssetName>
       <InitialPosition>
-        <X>925</X>
-        <Y>250</Y>
+        <X>1980</X>
+        <Y>815</Y>
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
@@ -242,42 +242,74 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>6c4754c4-c031-436b-afbd-513a1ea96a0c</Guid>
+      <Guid>31f483b3-3069-48bc-a95e-c95fd8d8b411</Guid>
       <InitialState>2</InitialState>
     </Obstacle>
     <Obstacle xsi:type="Platform">
       <AssetName>Sprites\Platform</AssetName>
       <InitialPosition>
-        <X>810</X>
-        <Y>320</Y>
+        <X>1435</X>
+        <Y>1078</Y>
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>6c4754c4-c031-436b-afbd-513a1ea96a0c</Key>
+          <Key>31f483b3-3069-48bc-a95e-c95fd8d8b411</Key>
+          <Value>0</Value>
+        </KeyValuePairOfGuidInt32>
+      </Actions>
+      <Guid>8d1b3b77-7c60-4050-8a22-d80e1a18e4ec</Guid>
+      <InitialState>1</InitialState>
+      <Path>
+        <Vector2>
+          <X>1435</X>
+          <Y>1078</Y>
+        </Vector2>
+        <Vector2>
+          <X>1607</X>
+          <Y>1078</Y>
+        </Vector2>
+        <Vector2>
+          <X>1607</X>
+          <Y>473</Y>
+        </Vector2>
+        <Vector2>
+          <X>1286</X>
+          <Y>473</Y>
+        </Vector2>
+      </Path>
+      <Speed>50</Speed>
+    </Obstacle>
+    <Obstacle xsi:type="Door">
+      <AssetName>Sprites\Door</AssetName>
+      <InitialPosition>
+        <X>778</X>
+        <Y>282</Y>
+      </InitialPosition>
+      <Actions>
+        <KeyValuePairOfGuidInt32>
+          <Key>31f483b3-3069-48bc-a95e-c95fd8d8b411</Key>
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>6dfddd7e-d8f4-4087-8a1b-5a764513462c</Guid>
+      <Guid>58053773-d27b-40cc-af64-3c2c714021aa</Guid>
       <InitialState>0</InitialState>
-      <Path>
-        <Vector2>
-          <X>810</X>
-          <Y>320</Y>
-        </Vector2>
-        <Vector2>
-          <X>810</X>
-          <Y>150</Y>
-        </Vector2>
-      </Path>
-      <Speed>100</Speed>
     </Obstacle>
   </Obstacles>
-  <Actors />
+  <Actors>
+    <Actor xsi:type="Enemy">
+      <AssetName>Sprites\Enemy</AssetName>
+      <InitialPosition>
+        <X>370</X>
+        <Y>472</Y>
+      </InitialPosition>
+      <Range>300</Range>
+    </Actor>
+  </Actors>
   <Checkpoints>
     <Checkpoint>
       <Location>
-        <X>100</X>
-        <Y>800</Y>
+        <X>270</X>
+        <Y>1002</Y>
       </Location>
       <Quadrant>
         <X>-1</X>
@@ -290,18 +322,60 @@
     </Checkpoint>
     <Checkpoint>
       <Location>
-        <X>0</X>
-        <Y>0</Y>
+        <X>680</X>
+        <Y>1002</Y>
       </Location>
       <Quadrant>
         <X>-1</X>
-        <Y>-1</Y>
+        <Y>1</Y>
       </Quadrant>
       <Bound>
-        <X>1300</X>
-        <Y>850</Y>
+        <X>680</X>
+        <Y>1024</Y>
+      </Bound>
+    </Checkpoint>
+    <Checkpoint>
+      <Location>
+        <X>1180</X>
+        <Y>945</Y>
+      </Location>
+      <Quadrant>
+        <X>-1</X>
+        <Y>1</Y>
+      </Quadrant>
+      <Bound>
+        <X>1180</X>
+        <Y>1500</Y>
+      </Bound>
+    </Checkpoint>
+    <Checkpoint>
+      <Location>
+        <X>1165</X>
+        <Y>339</Y>
+      </Location>
+      <Quadrant>
+        <X>1</X>
+        <Y>1</Y>
+      </Quadrant>
+      <Bound>
+        <X>1275</X>
+        <Y>473</Y>
+      </Bound>
+    </Checkpoint>
+    <Checkpoint>
+      <Location>
+        <X>75</X>
+        <Y>339</Y>
+      </Location>
+      <Quadrant>
+        <X>1</X>
+        <Y>1</Y>
+      </Quadrant>
+      <Bound>
+        <X>100</X>
+        <Y>473</Y>
       </Bound>
     </Checkpoint>
   </Checkpoints>
-  <LevelIdentifier>4</LevelIdentifier>
+  <LevelIdentifier>2</LevelIdentifier>
 </Level>

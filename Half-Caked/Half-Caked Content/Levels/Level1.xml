@@ -3,7 +3,7 @@
   <AssetName>Level1</AssetName>
   <InitialPosition>
     <X>0</X>
-    <Y>-100</Y>
+    <Y>0</Y>
   </InitialPosition>
   <Gravity>40</Gravity>
   <Tiles>
@@ -11,8 +11,8 @@
       <Dimensions>
         <X>0</X>
         <Y>0</Y>
-        <Width>301</Width>
-        <Height>147</Height>
+        <Width>2000</Width>
+        <Height>156</Height>
         <Location>
           <X>0</X>
           <Y>0</Y>
@@ -22,143 +22,78 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>301</X>
-        <Y>0</Y>
-        <Width>361</Width>
-        <Height>147</Height>
-        <Location>
-          <X>301</X>
-          <Y>0</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>662</X>
-        <Y>0</Y>
-        <Width>49</Width>
-        <Height>4</Height>
-        <Location>
-          <X>662</X>
-          <Y>0</Y>
-        </Location>
-      </Dimensions>
-      <Type>Death</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>711</X>
-        <Y>0</Y>
-        <Width>569</Width>
-        <Height>147</Height>
-        <Location>
-          <X>711</X>
-          <Y>0</Y>
-        </Location>
-      </Dimensions>
-      <Type>Amplifies</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
         <X>0</X>
-        <Y>490</Y>
-        <Width>215</Width>
-        <Height>174</Height>
+        <Y>690</Y>
+        <Width>252</Width>
+        <Height>154</Height>
         <Location>
           <X>0</X>
-          <Y>490</Y>
+          <Y>690</Y>
         </Location>
       </Dimensions>
       <Type>Normal</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>859</X>
+        <Y>687</Y>
+        <Width>337</Width>
+        <Height>155</Height>
+        <Location>
+          <X>859</X>
+          <Y>687</Y>
+        </Location>
+      </Dimensions>
+      <Type>Normal</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>1650</X>
+        <Y>600</Y>
+        <Width>350</Width>
+        <Height>150</Height>
+        <Location>
+          <X>1650</X>
+          <Y>600</Y>
+        </Location>
+      </Dimensions>
+      <Type>Normal</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>1950</X>
+        <Y>150</Y>
+        <Width>50</Width>
+        <Height>450</Height>
+        <Location>
+          <X>1950</X>
+          <Y>150</Y>
+        </Location>
+      </Dimensions>
+      <Type>Normal</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>1650</X>
+        <Y>150</Y>
+        <Width>50</Width>
+        <Height>300</Height>
+        <Location>
+          <X>1650</X>
+          <Y>150</Y>
+        </Location>
+      </Dimensions>
+      <Type>Absorbs</Type>
     </Tile>
     <Tile>
       <Dimensions>
         <X>0</X>
-        <Y>664</Y>
-        <Width>215</Width>
-        <Height>363</Height>
-        <Location>
-          <X>0</X>
-          <Y>664</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>215</X>
-        <Y>661</Y>
-        <Width>243</Width>
-        <Height>363</Height>
-        <Location>
-          <X>215</X>
-          <Y>661</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>936</X>
-        <Y>603</Y>
-        <Width>344</Width>
-        <Height>421</Height>
-        <Location>
-          <X>936</X>
-          <Y>603</Y>
-        </Location>
-      </Dimensions>
-      <Type>Reflects</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>458</X>
-        <Y>490</Y>
-        <Width>215</Width>
-        <Height>174</Height>
-        <Location>
-          <X>458</X>
-          <Y>490</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>458</X>
-        <Y>664</Y>
-        <Width>215</Width>
-        <Height>343</Height>
-        <Location>
-          <X>458</X>
-          <Y>664</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>673</X>
-        <Y>661</Y>
-        <Width>157</Width>
-        <Height>363</Height>
-        <Location>
-          <X>673</X>
-          <Y>661</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>0</X>
-        <Y>1022</Y>
-        <Width>1280</Width>
+        <Y>1498</Y>
+        <Width>2000</Width>
         <Height>2</Height>
         <Location>
           <X>0</X>
-          <Y>1022</Y>
+          <Y>1498</Y>
         </Location>
       </Dimensions>
       <Type>Death</Type>
@@ -167,7 +102,7 @@
       <Dimensions>
         <X>0</X>
         <Y>0</Y>
-        <Width>1280</Width>
+        <Width>1500</Width>
         <Height>2</Height>
         <Location>
           <X>0</X>
@@ -181,7 +116,7 @@
         <X>0</X>
         <Y>0</Y>
         <Width>2</Width>
-        <Height>1024</Height>
+        <Height>2000</Height>
         <Location>
           <X>0</X>
           <Y>0</Y>
@@ -191,25 +126,97 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>1278</X>
+        <X>1998</X>
         <Y>0</Y>
         <Width>2</Width>
-        <Height>1024</Height>
+        <Height>1500</Height>
         <Location>
-          <X>1278</X>
+          <X>1998</X>
           <Y>0</Y>
         </Location>
       </Dimensions>
       <Type>Absorbs</Type>
     </Tile>
   </Tiles>
-  <Obstacles />
+  <Obstacles>
+    <Obstacle xsi:type="Switch">
+      <AssetName>Sprites\Switch</AssetName>
+      <InitialPosition>
+        <X>0</X>
+        <Y>590</Y>
+      </InitialPosition>
+      <Actions>
+        <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+      </Actions>
+      <Guid>2f042c8a-99b5-4631-a19c-ff152e2a86b6</Guid>
+      <InitialState>2</InitialState>
+    </Obstacle>
+    <Obstacle xsi:type="Platform">
+      <AssetName>Sprites\Platform</AssetName>
+      <InitialPosition>
+        <X>260</X>
+        <Y>690</Y>
+      </InitialPosition>
+      <Actions>
+        <KeyValuePairOfGuidInt32>
+          <Key>2f042c8a-99b5-4631-a19c-ff152e2a86b6</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+      </Actions>
+      <Guid>8364e183-6aa2-41a1-b94f-557afbc4b528</Guid>
+      <InitialState>0</InitialState>
+      <Path>
+        <Vector2>
+          <X>260</X>
+          <Y>690</Y>
+        </Vector2>
+        <Vector2>
+          <X>700</X>
+          <Y>690</Y>
+        </Vector2>
+      </Path>
+      <Speed>100</Speed>
+    </Obstacle>
+    <Obstacle xsi:type="Switch">
+      <AssetName>Sprites\Switch</AssetName>
+      <InitialPosition>
+        <X>920</X>
+        <Y>600</Y>
+      </InitialPosition>
+      <Actions>
+        <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+      </Actions>
+      <Guid>584ab3da-c953-4968-b80a-f9f30553e1a3</Guid>
+      <InitialState>2</InitialState>
+    </Obstacle>
+    <Obstacle xsi:type="Door">
+      <AssetName>Sprites\Door</AssetName>
+      <InitialPosition>
+        <X>1650</X>
+        <Y>450</Y>
+      </InitialPosition>
+      <Actions>
+        <KeyValuePairOfGuidInt32>
+          <Key>584ab3da-c953-4968-b80a-f9f30553e1a3</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+      </Actions>
+      <Guid>9a0f6c55-1e62-4de4-a965-e9e3ba69232c</Guid>
+      <InitialState>0</InitialState>
+    </Obstacle>
+  </Obstacles>
   <Actors />
   <Checkpoints>
     <Checkpoint>
       <Location>
-        <X>270</X>
-        <Y>527</Y>
+        <X>120</X>
+        <Y>500</Y>
       </Location>
       <Quadrant>
         <X>-1</X>
@@ -222,32 +229,18 @@
     </Checkpoint>
     <Checkpoint>
       <Location>
-        <X>680</X>
-        <Y>527</Y>
+        <X>0</X>
+        <Y>0</Y>
       </Location>
       <Quadrant>
         <X>-1</X>
-        <Y>1</Y>
+        <Y>-1</Y>
       </Quadrant>
       <Bound>
-        <X>680</X>
-        <Y>1024</Y>
-      </Bound>
-    </Checkpoint>
-    <Checkpoint>
-      <Location>
-        <X>1180</X>
-        <Y>527</Y>
-      </Location>
-      <Quadrant>
-        <X>-1</X>
-        <Y>1</Y>
-      </Quadrant>
-      <Bound>
-        <X>1180</X>
-        <Y>602</Y>
+        <X>1900</X>
+        <Y>0</Y>
       </Bound>
     </Checkpoint>
   </Checkpoints>
-  <LevelIdentifier>1</LevelIdentifier>
+  <LevelIdentifier>3</LevelIdentifier>
 </Level>
