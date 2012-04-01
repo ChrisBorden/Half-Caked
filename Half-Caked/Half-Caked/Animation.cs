@@ -5,12 +5,19 @@
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
+//-------------------------------
+//
+// Adapted for Half_Caked 3/31/12
+//
+//-------------------------------
+
 #endregion
 
 using System;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Platformer
+namespace Half_Caked
 {
     /// <summary>
     /// Represents an animated texture.
@@ -76,7 +83,7 @@ namespace Platformer
         }
 
         /// <summary>
-        /// Constructors a new animation.
+        /// New animation constructor.
         /// </summary>        
         public Animation(Texture2D texture, float frameTime, bool isLooping)
         {

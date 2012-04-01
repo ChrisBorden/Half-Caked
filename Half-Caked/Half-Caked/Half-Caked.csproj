@@ -127,10 +127,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors.cs" />
+    <Compile Include="Animation.cs" />
+    <Compile Include="AnimationPlayer.cs" />
     <Compile Include="Checkpoint.cs" />
     <Compile Include="Profile.cs" />
-    <Compile Include="Screens\Animation.cs" />
-    <Compile Include="Screens\AnimationPlayer.cs" />
     <Compile Include="Screens\InputDialog.cs" />
     <Compile Include="UIComponents\ButtonGroup.cs" />
     <Compile Include="UIComponents\Slider.cs" />

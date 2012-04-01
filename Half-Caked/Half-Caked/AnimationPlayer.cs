@@ -5,13 +5,20 @@
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
+//-------------------------------
+//
+// Adapted for Half_Caked 3/31/12
+//
+//-------------------------------
+
 #endregion
 
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Platformer
+namespace Half_Caked
 {
     /// <summary>
     /// Controls playback of an Animation.
@@ -65,9 +72,19 @@ namespace Platformer
         }
 
         /// <summary>
+        /// Resets currently playing animation.
+        /// </summary>
+        public void ResetAnimation()
+        {
+            // Restart the animation.
+            this.frameIndex = 0;
+            this.time = 0.0f;
+        }
+
+        /// <summary>
         /// Advances the time position and draws the current frame of the animation.
         /// </summary>
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, SpriteEffects spriteEffects)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, float Angle, Vector2 Center, float Scale, SpriteEffects spriteEffects)
         {
             if (Animation == null)
                 throw new NotSupportedException("No animation is currently playing.");
@@ -93,7 +110,7 @@ namespace Platformer
             Rectangle source = new Rectangle(FrameIndex * Animation.Texture.Height, 0, Animation.Texture.Height, Animation.Texture.Height);
 
             // Draw the current frame.
-            spriteBatch.Draw(Animation.Texture, position, source, Color.White, 0.0f, Origin, 1.0f, spriteEffects, 0.0f);
+            spriteBatch.Draw(Animation.Texture, position, source, Color.White, Angle, Origin-Center, Scale, spriteEffects, 0.9f);
         }
     }
 }
