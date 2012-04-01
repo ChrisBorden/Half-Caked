@@ -187,10 +187,10 @@ namespace Half_Caked
         public override void Reset()
         {
             base.Reset();
+            Portals.Reset();
             LevelStatistics = new Statistics(mLevelID);
 
             mBackground.Position = Position;
-            Portals.Reset();
 
             foreach (Obstacle spr in Obstacles)
                 spr.Reset();
@@ -208,6 +208,7 @@ namespace Half_Caked
         {
             LevelStatistics.Deaths++;
             Player.DeathReset();
+            Portals.Reset();
             Player.Position = Checkpoints[mCheckpointIndex-1].Location;
         }
 
