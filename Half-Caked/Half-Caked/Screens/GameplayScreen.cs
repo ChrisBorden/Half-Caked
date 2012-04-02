@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Runtime.InteropServices;
 #endregion
 
 namespace Half_Caked
@@ -31,6 +32,8 @@ namespace Half_Caked
         ContentManager content;
         Level mLevel;
         InputState mInputState;
+        bool mIsBound = false;
+        Rectangle mOldClip;
 
         #endregion
 
@@ -77,6 +80,11 @@ namespace Half_Caked
         #endregion
 
         #region Update and Draw
+        [DllImport("user32.dll")]
+        static extern void ClipCursor(ref Rectangle rect);
+
+        [DllImport("user32.dll")]
+        static extern void GetClipCursor(ref Rectangle rect);
 
         /// <summary>
         /// Updates the state of the game. This method checks the GameScreen.IsActive
@@ -90,6 +98,17 @@ namespace Half_Caked
 
             if (IsActive)
             {
+                // Prevent mouse cursor from leaving window when in game.
+               if (!mIsBound){
+                   GetClipCursor(ref mOldClip); 
+
+                    Rectangle rect = this.ScreenManager.Game.Window.ClientBounds;
+                    rect.Width += rect.X;
+                    rect.Height += rect.Y;
+                    ClipCursor(ref rect);
+                    mIsBound = true;
+                }
+
                 if(mInputState == null)
                     return;
                 this.ScreenManager.Game.IsMouseVisible = false;
@@ -109,6 +128,12 @@ namespace Half_Caked
             {
                 ScreenManager.AddScreen(new PauseMenuScreen(mLevel), ControllingPlayer);
             }
+            else
+            {
+                ClipCursor(ref mOldClip);
+                mIsBound = false;
+            }
+
         }
 
         /// <summary>
@@ -153,7 +178,7 @@ namespace Half_Caked
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
             spriteBatch.Begin();
-            mLevel.Draw(spriteBatch);
+            mLevel.Draw(spriteBatch, gameTime);
             spriteBatch.End();
 
             // If the game is transitioning on or off, fade it out to black.

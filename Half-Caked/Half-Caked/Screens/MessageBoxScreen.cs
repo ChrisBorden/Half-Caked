@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Linq;
 #endregion
 
 namespace Half_Caked
@@ -34,13 +35,14 @@ namespace Half_Caked
 
         protected string mMessage;
         Texture2D mGradientTexture;
-        Rectangle mBackgroundRectangle;
-        Vector2 mTextPosition;
+        protected Rectangle mBackgroundRectangle;
+        protected Vector2 mTextPosition;
 
         public List<Button> Buttons = new List<Button>();
 
         protected int mSelectedButton;
         protected int mContentHeightPadding = 0, mContentWidth = 0;
+        protected int mContentStartHeight = 0;
         protected ButtonDisplayMode mButtonDisplayMode = ButtonDisplayMode.VariableWidth;
 
         public event EventHandler<PlayerIndexEventArgs> Cancelled;
@@ -69,8 +71,12 @@ namespace Half_Caked
             IsPopup = true;
             mSelectedButton = defaultSelection;
 
-            foreach( string str in prompts)
-                Buttons.Add(new Button(str));
+            foreach (string str in prompts)
+            {
+                Button btn = new Button(str);
+                btn.Pressed += Exit;
+                Buttons.Add(btn);
+            }
 
             TransitionOnTime = TimeSpan.FromSeconds(0.2);
             TransitionOffTime = TimeSpan.FromSeconds(0.2);
@@ -92,7 +98,8 @@ namespace Half_Caked
             foreach(Button btn in Buttons)
                 btn.LoadContent(this);
 
-            Buttons[mSelectedButton].State = UIState.Selected;
+            if(mSelectedButton >= 0)
+                Buttons[mSelectedButton].State = UIState.Selected;
 
             CreateDimensions();
         }
@@ -109,22 +116,23 @@ namespace Half_Caked
             ScreenManager.Game.IsMouseVisible = true;
 
             PlayerIndex playerIndex;
-            int state = -2;
+            int state = -1;
             var prevButton = mSelectedButton;
             Vector2 mousePos = new Vector2(-1, -1);
 
-            if (input.IsNextButton(ControllingPlayer))
-            {
-                do
-                    mSelectedButton = (mSelectedButton + 1) % Buttons.Count;
-                while (Buttons[mSelectedButton].State == UIState.Inactive);
-            }
-            if (input.IsPreviousButton(ControllingPlayer))
-            {
-                do
-                    mSelectedButton = (mSelectedButton - 1 + Buttons.Count) % Buttons.Count;
-                while (Buttons[mSelectedButton].State == UIState.Inactive);
-            }
+            if(Buttons.Any(x => x.State != UIState.Inactive))
+                if (input.IsNextButton(ControllingPlayer))
+                {
+                    do
+                        mSelectedButton = (mSelectedButton + 1) % Buttons.Count;
+                    while (Buttons[mSelectedButton].State == UIState.Inactive);
+                }
+                else if (input.IsPreviousButton(ControllingPlayer))
+                {
+                    do
+                        mSelectedButton = (mSelectedButton - 1 + Buttons.Count) % Buttons.Count;
+                    while (Buttons[mSelectedButton].State == UIState.Inactive);
+                }
 
             for(int i = 0; i < Buttons.Count; i++)
                 if (Buttons[i].HandleMouseInput(input))
@@ -133,13 +141,15 @@ namespace Half_Caked
                     if (input.IsNewLeftMouseClick())
                     {
                         state = i;
+                        return;
                     }
                     break;
                 }
 
             if (prevButton != mSelectedButton)
             {
-                Buttons[prevButton].State = UIState.Active;
+                if(prevButton >= 0)
+                    Buttons[prevButton].State = UIState.Active;
                 Buttons[mSelectedButton].State = UIState.Selected;
             }
 
@@ -149,24 +159,28 @@ namespace Half_Caked
             }
             else if (input.IsMenuCancel(ControllingPlayer, out playerIndex))
             {
-                state = -1;
+                state = -2;
             }
 
             switch (state)
             {
-                case -2:
-                    break;
                 case -1:
+                    break;
+                case -2:
                     if (Cancelled != null)
                         Cancelled(this, new PlayerIndexEventArgs(playerIndex));
 
                     ExitScreen();
                     break;
                 default:
-                    ExitScreen();
                     Buttons[state].OnPressedElement(playerIndex, 0);
                     break;
             }
+        }
+
+        void Exit(object sender, PlayerIndexEventArgs e)
+        {
+            ExitScreen();
         }
 
         #endregion
@@ -202,7 +216,7 @@ namespace Half_Caked
             spriteBatch.End();
         }
 
-        protected void CreateDimensions()
+        protected virtual void CreateDimensions()
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
@@ -242,6 +256,8 @@ namespace Half_Caked
             int offset_y = (int)(mBackgroundRectangle.Bottom - vPad - mButtonsHeight);
             float cur_offset_x = mBackgroundRectangle.Left + hPad;
 
+            mContentStartHeight = offset_y - mContentHeightPadding;
+
             switch (mButtonDisplayMode)
             {
                 case ButtonDisplayMode.VariableWidth:
@@ -272,6 +288,62 @@ namespace Half_Caked
                 default:
                     break;
             }
+        }
+
+        #endregion
+    }
+
+    class ContentBoxScreen : MessageBoxScreen
+    {
+        #region Fields
+        protected Label mContentLabel;
+
+        public string Content
+        {
+            get { return mContentLabel.Text; }
+            set { mContentLabel.Text = value; CreateDimensions(); }
+        }
+        #endregion
+
+        #region Intialization
+        public ContentBoxScreen(string msg, string content)
+            : base(msg)
+        {
+            mContentLabel = new Label(content);
+        }
+
+        public ContentBoxScreen(string msg, string content, string[] prompts, int def)
+            : base(msg, prompts, def)
+        {
+            mContentLabel = new Label(content);
+        }
+
+        public override void LoadContent()
+        {
+            mContentLabel.LoadContent(this);
+            base.LoadContent();
+
+            CreateDimensions();
+        }
+        #endregion
+
+        #region Draw
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+
+            SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
+            spriteBatch.Begin();
+            mContentLabel.Draw(this, gameTime);
+            spriteBatch.End();
+        }
+
+        protected override void CreateDimensions()
+        {
+            mContentHeightPadding = this.ScreenManager.Font.LineSpacing + 10;
+            mContentWidth = (int)mContentLabel.Size.X + 10;
+            base.CreateDimensions();
+            mContentLabel.Position = new Vector2((mBackgroundRectangle.Width - mContentLabel.Size.X) / 2 + mBackgroundRectangle.Left, this.mContentStartHeight + 15);
         }
 
         #endregion

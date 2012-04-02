@@ -123,6 +123,7 @@ namespace Half_Caked
                     Amplify(tile.Dimensions, result, level, Vector2.Zero);
                     break;
                 case Surface.Normal:
+                    (mPortalNumber == 0 ? level.Portals.Portal1 : level.Portals.Portal2).Scale = 1f;
                     Act(tile.Dimensions, result, level, Vector2.Zero);
                     break;
                 case Surface.Reflects:
@@ -138,10 +139,11 @@ namespace Half_Caked
         {
             switch (obs.Contact(result))
             {
-                case Surface.Amplifies:
+                case Surface.Amplifies:                    
                     Amplify(obs.CollisionSurface, result, level, obs.Velocity);
                     break;
                 case Surface.Normal:
+                    (mPortalNumber == 0 ? level.Portals.Portal1 : level.Portals.Portal2).Scale = 1f;
                     Act(obs.CollisionSurface, result, level, obs.Velocity);
                     break;
                 case Surface.Reflects:
@@ -232,12 +234,12 @@ namespace Half_Caked
         {
             if (result.Width < result.Height)
             {
-                Position = new Vector2(result.X - (Position.X < result.X ? Size.Width : -result.Width), Position.Y);
+                Position = new Vector2(result.X - (Position.X < result.X ? Size.Width : -result.Width-2), Position.Y);
                 Velocity *= new Vector2(-1, 1);
             }
             else
             {
-                Position = new Vector2(Position.X, result.Y - (Position.Y < result.Y ? Size.Height : -result.Height));
+                Position = new Vector2(Position.X, result.Y - (Position.Y < result.Y ? Size.Height : -result.Height-2));
                 Velocity *= new Vector2(1, -1);
             }
         }

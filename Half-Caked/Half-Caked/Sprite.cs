@@ -164,7 +164,7 @@ namespace Half_Caked
         }
         
         //Draw the sprite to the screen
-        public virtual void Draw(SpriteBatch theSpriteBatch)
+        public virtual void Draw(SpriteBatch theSpriteBatch, GameTime theGameTime)
         {
             Draw(theSpriteBatch, Vector2.Zero);
         }

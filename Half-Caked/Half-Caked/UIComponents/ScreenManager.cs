@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 #endregion
 
 namespace Half_Caked
@@ -81,7 +82,6 @@ namespace Half_Caked
         #endregion
 
         #region Initialization
-
 
         /// <summary>
         /// Constructs a new screen manager component.
@@ -161,6 +161,12 @@ namespace Half_Caked
 
             if ((Game as HalfCakedGame).CurrentProfile != null)
                 input.ControlMap = (Game as HalfCakedGame).CurrentProfile.KeyBindings;
+
+            if (!Game.IsActive)
+                MediaPlayer.Pause();
+            else if (MediaPlayer.State == MediaState.Paused)
+                MediaPlayer.Resume();
+
 
             // Loop as long as there are screens waiting to be updated.
             while (screensToUpdate.Count > 0)

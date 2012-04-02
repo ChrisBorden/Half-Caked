@@ -20,7 +20,7 @@ namespace Half_Caked
     {
         #region Constants
         public static float METERS_TO_UNITS = 20;
-        public static int MAX_LEVELS = 4;
+        public static int MAX_LEVELS = 5;
         #endregion
 
         #region Fields
@@ -77,6 +77,7 @@ namespace Half_Caked
 
         public virtual void LoadContent(ContentManager theContentManager, Profile activeProfile)
         {
+			String backgroundMusicName = "Sounds\\" + AssetName;
             AssetName = "Levels\\" + AssetName;
             base.LoadContent(theContentManager, AssetName);
             mBackground.LoadContent(theContentManager, AssetName + "b");
@@ -87,8 +88,16 @@ namespace Half_Caked
             mAudio = activeProfile.Audio;
             SoundEffect.MasterVolume = mAudio.MasterVolume / 100f;
             MediaPlayer.Volume = mAudio.MasterVolume * mAudio.MusicVolume / 10000f;
+            MediaPlayer.Stop();
             mExitReached = theContentManager.Load<Song>("Sounds\\ExitReached");
-            mBackgroundMusic = theContentManager.Load<Song>("Sounds\\Level");
+			try
+			{
+				mBackgroundMusic = theContentManager.Load<Song>(backgroundMusicName);
+			}
+			catch
+			{
+				mBackgroundMusic = theContentManager.Load<Song>("Sounds\\Level");
+			}
             mCheckpointSound = theContentManager.Load<SoundEffect>("Sounds\\Checkpoint");
 
             Portals.LoadContent(theContentManager);
@@ -162,19 +171,24 @@ namespace Half_Caked
 
         }
 
-        public override void Draw(SpriteBatch theSpriteBatch)
+        public override void Draw(SpriteBatch theSpriteBatch, GameTime theGameTime)
         {
-            mBackground.Draw(theSpriteBatch);
+            mBackground.Draw(theSpriteBatch, theGameTime);
             foreach (Obstacle spr in Obstacles)
                 spr.Draw(theSpriteBatch, Position);
 
             foreach (Sprite spr in Actors)
                 spr.Draw(theSpriteBatch, Position);
 
+            //This draws the animated parts of the player
+            Player.AnimatedDraw(theSpriteBatch, Position, theGameTime);
+
+            //This draws non-animated parts of the player
             Player.Draw(theSpriteBatch, Position);
+
             Portals.Draw(theSpriteBatch, Position);
             
-            base.Draw(theSpriteBatch);
+            base.Draw(theSpriteBatch, theGameTime);
             Portals.DrawPortals(theSpriteBatch, Position);
 
             foreach (TextEffect effect in mTextEffects)
@@ -187,10 +201,10 @@ namespace Half_Caked
         public override void Reset()
         {
             base.Reset();
+            Portals.Reset();
             LevelStatistics = new Statistics(mLevelID);
 
             mBackground.Position = Position;
-            Portals.Reset();
 
             foreach (Obstacle spr in Obstacles)
                 spr.Reset();
@@ -208,6 +222,7 @@ namespace Half_Caked
         {
             LevelStatistics.Deaths++;
             Player.DeathReset();
+            Portals.Reset();
             Player.Position = Checkpoints[mCheckpointIndex-1].Location;
         }
 

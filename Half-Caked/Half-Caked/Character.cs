@@ -28,7 +28,7 @@ namespace Half_Caked
         public static Guid CharacterGuid =
             new Guid("05159D8A-B739-4AA4-9F6D-3FF5CB29572D");
 
-        const string ASSETNAME= "Sprites\\Stickman";
+        const string ASSETNAME = "Sprites\\Player\\Idle";
         const int DEFAULT_SPEED = 250;
         const int DEFAULT_JUMP = 250;
         const int JUMP_HEIGHT_MAX = 350;
@@ -37,14 +37,23 @@ namespace Half_Caked
         const int MOVE_LEFT = -1;
         const int MOVE_RIGHT = 1;
         const float MASS = 40.0f;
-        const float STATIC_ACCEL_GND = MASS  * .10f;
+        const float STATIC_ACCEL_GND = MASS * .20f;
         const float DYNAMIC_ACCEL_AIR = MASS * .20f;
         const float STATIC_ACCEL_AIR = MASS * .0025f;
-        const float ARM_LENGTH = 37;
+        const float ARM_LENGTH = 16;
         #endregion
 
         #region Fields
-        State mCurrentState = State.Ground;               
+        //Animations
+        private Animation idleAnimation;
+        private Animation runAnimation;
+        private Animation jumpAnimation;
+        private Animation victoryAnimation;
+        private Animation deathAnimation;
+        private SpriteEffects flip = SpriteEffects.None;
+        private AnimationPlayer animator;
+
+        State mCurrentState = State.Ground;
 
         PortalGunBullet[] mOrbs = new PortalGunBullet[2];
         Gunarm mGunhand;
@@ -71,7 +80,6 @@ namespace Half_Caked
         {
             mContentManager = theContentManager;
             base.LoadContent(theContentManager, ASSETNAME);
-            Source = new Rectangle(66, 65, 73, 135);
 
             mGunhand = new Gunarm();
             mGunhand.LoadContent(this.mContentManager);
@@ -81,11 +89,28 @@ namespace Half_Caked
             mOrbs[1] = new PortalGunBullet();
             mOrbs[1].LoadContent(this.mContentManager, 1);
 
+            //Load animations -- must include frame count for constant frameTime constructor
+			float[] jumpTiming = { 0.1f, 0.1f, 0.1f, 0.2f, 0.1f };
+            idleAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Idle"), 0.1f, 1, true);
+            runAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Run"), 0.05f, 5, true);
+            jumpAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Jump"), jumpTiming, false);
+            victoryAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Victory"), 0.1f, 11, false);
+            deathAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Death"), 0.1f, 12, false);
+
+            int width = (int)(idleAnimation.FrameWidth * 0.9f);
+            int left = 0; //(idleAnimation.FrameWidth - width) / 2;
+			int height = (int)(idleAnimation.FrameHeight * 0.8f);
+            int top = idleAnimation.FrameHeight - height;
+            //Source = new Rectangle(0, 0, 125, 125);
+            Source = new Rectangle(left, top, width, height);
+
+            animator.PlayAnimation(idleAnimation);
+
             mJumpEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerJump");
             mDeathEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerKilled");
             mLandingEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerLanding");
 
-            Center = new Vector2(Size.Width / 2, Size.Height / 2);
+            Center = new Vector2(Size.Width / 4, Size.Height / 2);
         }
         #endregion
 
@@ -111,17 +136,17 @@ namespace Half_Caked
             UpdateDuck(inputState);
 
             //falling
-            Acceleration.Y = (mCurrentState == State.Air || mCurrentState == State.GravityPortal  || mCurrentState == State.Portal ? 1 : 0) * level.Gravity * Level.METERS_TO_UNITS;
+            Acceleration.Y = (mCurrentState == State.Air || mCurrentState == State.GravityPortal || mCurrentState == State.Portal ? 1 : 0) * level.Gravity * Level.METERS_TO_UNITS;
 
             if (Angle != 0)
             {
-                if(Angle > 0)
-                    Angle = (float)Math.Max(0, Angle - Math.PI * theGameTime.ElapsedGameTime.TotalSeconds / 2);
+                if (Angle > 0)
+                    Angle = (float)Math.Max(0, Angle - Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
                 else
-                    Angle = (float)Math.Min(0, Angle + Math.PI * theGameTime.ElapsedGameTime.TotalSeconds / 2);
+                    Angle = (float)Math.Min(0, Angle + Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
 
             }
-            
+
             base.Update(theGameTime);
 
             mFlip = mGunhand.Update(inputState.CurrentMouseState, mIsDucking, this, level.Position);
@@ -138,7 +163,7 @@ namespace Half_Caked
                     return;
             }
 
-            if(mForcedDucking)
+            if (mForcedDucking)
                 StopDucking();
             mCurrentState = State.Air;
 
@@ -157,7 +182,7 @@ namespace Half_Caked
                     if (pltfrm != null && pltfrm.IsMoving)
                         FrameVelocity = obs.Velocity;
 
-                    if(ePressed)
+                    if (ePressed)
                         obs.React(CharacterGuid, level);
                 }
             }
@@ -186,7 +211,7 @@ namespace Half_Caked
             else
                 mForcedDucking = false;
 
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
                 mCollisions[i] = Rectangle.Empty;
         }
 
@@ -199,10 +224,22 @@ namespace Half_Caked
         {
             if (!Visible)
                 return;
-            base.Draw(theSpriteBatch, Relative);
+            //base.Draw(theSpriteBatch, Relative);
             mOrbs[0].Draw(theSpriteBatch, Relative);
             mOrbs[1].Draw(theSpriteBatch, Relative);
             mGunhand.Draw(theSpriteBatch, Relative);
+        }
+
+        public void AnimatedDraw(SpriteBatch theSpriteBatch, Vector2 Relative, GameTime gameTime)
+        {
+            // Flip the sprite to face the way we are moving.
+            //if (Velocity.X > 0)
+            //    flip = SpriteEffects.FlipHorizontally;
+            //else if (Velocity.X < 0)
+            //    flip = SpriteEffects.None;
+
+            // Draw the sprite.
+            animator.Draw(gameTime, theSpriteBatch, Position + Relative, Angle, Center, Scale, mFlip);
         }
 
         public override void PortalDraw(SpriteBatch theSpriteBatch, Vector2 Relative)
@@ -223,10 +260,13 @@ namespace Half_Caked
 
             mCurrentState = State.Ground;
             StopDucking();
+
+            animator.PlayAnimation(idleAnimation);
         }
 
         public void Die(Level level)
         {
+            //animator.PlayAnimation(deathAnimation);
             level.PlaySoundEffect(mDeathEffect);
             level.PlayerDeath();
         }
@@ -326,6 +366,8 @@ namespace Half_Caked
                     mCollisions[(int)Orientation.Up] = obj;
                 }
                 stillJumping = false;
+                stillWallJumpingLeft = false;
+                stillWallJumpingRight = false;
             }
             else
             {
@@ -333,14 +375,14 @@ namespace Half_Caked
                 {
                     mCollisions[(int)Orientation.Left] = obj;
                     wallJumpRight = true; //walljump from left wall to right direction is available to player
-                    if(Velocity.X != 0)
+                    if (Velocity.X < 0)
                         Velocity.X = 0;
                 }
                 else if (Position.X < result.X)
                 {
                     mCollisions[(int)Orientation.Right] = obj;
                     wallJumpLeft = true; //walljump from right wall to left direction is available to player
-                    if (Velocity.X != 0)
+                    if (Velocity.X > 0)
                         Velocity.X = 0;
                 }
 
@@ -351,7 +393,7 @@ namespace Half_Caked
         }
 
 
-         //UNDER CONSTRUCTION                                   
+        //UNDER CONSTRUCTION                                   
         private void UpdateMovement(InputState inputState)
         {
             //Movement while on the ground is UNDER CONSTRUCTION (values are hardcoded) 
@@ -368,15 +410,28 @@ namespace Half_Caked
                 if (inputState.IsMovingBackwards(null))
                 {
                     Velocity.X = DEFAULT_SPEED * MOVE_LEFT * (mIsDucking ? .5f : 1);
+                    if (mIsDucking)
+                    { }
+                    else
+                    { animator.PlayAnimation(runAnimation); }
                 }
                 else if (inputState.IsMovingForward(null))
                 {
                     Velocity.X = DEFAULT_SPEED * MOVE_RIGHT * (mIsDucking ? .5f : 1);
+                    if (mIsDucking)
+                    { }
+                    else
+                    { animator.PlayAnimation(runAnimation); }
+                }
+                else
+                {
+                    animator.PlayAnimation(idleAnimation);
                 }
             }
 
-                //Movement while in the air is UNDER CONSTRUCTION (values are hardcoded)
-            else if(mCurrentState == State.Air || mCurrentState == State.GravityPortal)
+
+            //Movement while in the AIR is UNDER CONSTRUCTION (values are hardcoded)
+            else if (mCurrentState == State.Air || mCurrentState == State.GravityPortal)
             {
                 if (Math.Abs(Velocity.X) <= STATIC_ACCEL_AIR)
                 {
@@ -403,6 +458,8 @@ namespace Half_Caked
                             Velocity.X -= 25;
                         }
                     }
+
+                    animator.PlayAnimation(jumpAnimation);
                 }
                 else if (inputState.IsMovingForward(null))
                 {
@@ -419,11 +476,13 @@ namespace Half_Caked
                             Velocity.X += 25;
                         }
                     }
+
+                    animator.PlayAnimation(jumpAnimation);
                 }
 
                 //if (mIsDucking)
                 //    Acceleration.X *= .75f;
-            //}
+                //}
             }
         }
 
@@ -439,6 +498,7 @@ namespace Half_Caked
                     Velocity.Y = -DEFAULT_JUMP;
                     stillJumping = true;
                     jumpTimer = TimeSpan.Zero;
+                    animator.PlayAnimation(jumpAnimation);
                     return true;
                 }
             }
@@ -458,6 +518,7 @@ namespace Half_Caked
                         stillWallJumpingRight = true;
                         jumpTimer = TimeSpan.Zero;
                         wallJumpTimer = TimeSpan.Zero;
+                        animator.ResetAnimation();
                         return true;
                     }
                 }
@@ -473,6 +534,7 @@ namespace Half_Caked
                         stillWallJumpingLeft = true;
                         jumpTimer = TimeSpan.Zero;
                         wallJumpTimer = TimeSpan.Zero;
+                        animator.ResetAnimation();
                         return true;
                     }
                 }
@@ -480,14 +542,14 @@ namespace Half_Caked
                 if (stillWallJumpingRight)
                 {
                     wallJumpTimer += theGameTime.ElapsedGameTime;
-                    if (wallJumpTimer < TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX/2))
+                    if (wallJumpTimer < TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX / 2))
                     {
                         Velocity.X = DEFAULT_SPEED * MOVE_RIGHT * 2f;
                         //Velocity.Y = -DEFAULT_JUMP/2;
                         Velocity.Y = -DEFAULT_JUMP;
                     }
                     else
-                    { 
+                    {
                         stillWallJumpingRight = false;
                         stillJumping = false;
                     }
@@ -495,20 +557,20 @@ namespace Half_Caked
                 else if (stillWallJumpingLeft)
                 {
                     wallJumpTimer += theGameTime.ElapsedGameTime;
-                    if (wallJumpTimer < TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX/2))
+                    if (wallJumpTimer < TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX / 2))
                     {
                         Velocity.X = DEFAULT_SPEED * MOVE_LEFT * 2f;
                         //Velocity.Y = -DEFAULT_JUMP/2;
                         Velocity.Y = -DEFAULT_JUMP;
                     }
                     else
-                    { 
+                    {
                         stillWallJumpingLeft = false;
                         stillJumping = false;
                     }
                 }
             }
-            else 
+            else
             {
                 stillWallJumpingRight = false;
                 stillWallJumpingLeft = false;
@@ -516,7 +578,7 @@ namespace Half_Caked
             }
 
             //variable height jump
-            if(stillJumping && !stillWallJumpingRight && !stillWallJumpingLeft)
+            if (stillJumping && !stillWallJumpingRight && !stillWallJumpingLeft)
             {
                 if (inputState.IsJumping(null))
                 {
@@ -530,7 +592,7 @@ namespace Half_Caked
                     if (jumpTimer > TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX))
                     {
                         stillJumping = false;
-                        
+
                         jumpTimer = TimeSpan.Zero;
                     }
                 }
@@ -563,10 +625,10 @@ namespace Half_Caked
         {
             if (!mIsDucking)
             {
-                Position += new Vector2(0 ,16);
-                Source = new Rectangle(272, 97, 67, 103);
-                Center = new Vector2(Size.Width / 2, Size.Height / 2);
-                mIsDucking = true;
+                //Position += new Vector2(0 ,16);
+                //Source = new Rectangle(272, 97, 67, 103);
+                //Center = new Vector2(Size.Width / 2, Size.Height / 2);
+                //mIsDucking = true;
             }
         }
 
@@ -574,10 +636,10 @@ namespace Half_Caked
         {
             if (mIsDucking)
             {
-                Position -= new Vector2(0, 16);
-                Source = new Rectangle(66, 65, 72, 135);
-                Center = new Vector2(Size.Width / 2, Size.Height / 2);
-                mIsDucking = false;
+                //Position -= new Vector2(0, 16);
+                //Source = new Rectangle(66, 65, 72, 135);
+                //Center = new Vector2(Size.Width / 2, Size.Height / 2);
+                //mIsDucking = false;
             }
         }
 
@@ -592,7 +654,6 @@ namespace Half_Caked
             {
                 ShootProjectile(0, inputState.CurrentMouseState, level);
                 mOrbs[0].CheckCollisions(level);
-                level.Portals.Close(0);
             }
 
             if (mOrbs[1].Visible)
@@ -604,7 +665,6 @@ namespace Half_Caked
             {
                 ShootProjectile(1, inputState.CurrentMouseState, level);
                 mOrbs[1].CheckCollisions(level);
-                level.Portals.Close(1);
             }
         }
 
@@ -612,7 +672,7 @@ namespace Half_Caked
         {
             Vector2 dir = new Vector2((float)Math.Cos(mGunhand.Angle), (float)Math.Sin(mGunhand.Angle));
 
-            mOrbs[type].Fire(mGunhand.Position + ARM_LENGTH * dir, 
+            mOrbs[type].Fire(mGunhand.Position + ARM_LENGTH * dir,
                             dir,
                             Vector2.Zero,
                             level);
@@ -623,11 +683,11 @@ namespace Half_Caked
     class Gunarm : Actor
     {
         #region Constants
-        Vector2 ARM_ANCHOR = new Vector2(-4, -8);
-        Vector2 ARM_ANCHOR_DUCKED = new Vector2(-6, 12);
+		Vector2 ARM_ANCHOR = new Vector2(-10, 10);//(-4, -8);
+        Vector2 ARM_ANCHOR_DUCKED = new Vector2(0,0);//(-6, 12);
 
-        Vector2 ARM_ANCHOR_LEFT = new Vector2(6, 0);
-        Vector2 ARM_ANCHOR_DUCKED_LEFT = new Vector2(13, 0);
+        Vector2 ARM_ANCHOR_LEFT = new Vector2(55, 0);
+        Vector2 ARM_ANCHOR_DUCKED_LEFT = new Vector2(0, 0);
         #endregion
 
         #region Initialization
@@ -635,9 +695,9 @@ namespace Half_Caked
         public void LoadContent(ContentManager theContentManager)
         {
             base.LoadContent(theContentManager, "Sprites\\Gunarm");
-            Source = new Rectangle(0, 0, 37, 5);
+            Source = new Rectangle(0, 0, 50, 25);
             Scale = 1.0f;
-            Center = new Vector2(0, 3);
+            Center = new Vector2(4, 4);
         }
 
         #endregion
@@ -653,10 +713,16 @@ namespace Half_Caked
             if (aCurrentMouseState.X < Position.X + rel.X)
             {
                 Position += Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED_LEFT : ARM_ANCHOR_LEFT), Matrix.CreateRotationZ(theMan.Angle));
-                return SpriteEffects.FlipHorizontally;
+                Center = new Vector2(4, 21);
+                mFlip = SpriteEffects.FlipVertically;
+                return SpriteEffects.None;
             }
             else
-                return SpriteEffects.None;
+            {
+                Center = new Vector2(4, 4);
+                mFlip = SpriteEffects.None;
+                return SpriteEffects.FlipHorizontally;
+            }
         }
 
         public void Update(bool ducking, Character theMan)

@@ -6,7 +6,6 @@
     <Y>0</Y>
   </InitialPosition>
   <Gravity>40</Gravity>
-  <LevelIdentifier>0</LevelIdentifier>
   <Tiles>
     <Tile>
       <Dimensions>
@@ -158,4 +157,5 @@
       </Bound>
     </Checkpoint>
   </Checkpoints>
+  <LevelIdentifier>0</LevelIdentifier>
 </Level>

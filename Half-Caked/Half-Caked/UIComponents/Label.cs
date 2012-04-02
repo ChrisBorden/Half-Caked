@@ -14,7 +14,7 @@ namespace Half_Caked
         public Color ForegroundColor = DEFAULT_FOREGROUND, 
                      SelectedColor   = DEFAULT_SELECTED, 
                      InactiveColor   = DEFAULT_INACTIVE;
-        private Color mTextColor;
+        protected Color mTextColor;
 
         public static Color DEFAULT_FOREGROUND = Color.White;
         public static Color DEFAULT_SELECTED = Color.Yellow;
@@ -27,8 +27,9 @@ namespace Half_Caked
             get { return mText; }
             set
             {
-                mText = value;
-                Size = mFont.MeasureString(mText);
+                mText = value;       
+                if(mFont != null)
+                    Size = mFont.MeasureString(mText);
 
                 mOrigin = new Vector2(mRectangle.Width / 2 * (int)Alignment, mRectangle.Height / 2);
                 Refresh = true;

@@ -30,9 +30,12 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ProductName>Half-Cake%27d</ProductName>
+    <PublisherName>Catch 21 Games</PublisherName>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -61,6 +64,18 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <PlatformTarget>x86</PlatformTarget>
     <XnaCompressContent>true</XnaCompressContent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>644DEF55310E003D92D012834FA389194E300969</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Half-Caked_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
@@ -112,8 +127,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors.cs" />
+    <Compile Include="Animation.cs" />
+    <Compile Include="AnimationPlayer.cs" />
     <Compile Include="Checkpoint.cs" />
     <Compile Include="Profile.cs" />
+    <Compile Include="Screens\InputDialog.cs" />
     <Compile Include="UIComponents\ButtonGroup.cs" />
     <Compile Include="UIComponents\Slider.cs" />
     <Compile Include="UIComponents\MenuEntry.cs" />
@@ -130,13 +148,13 @@
     <Compile Include="Screens\BackgroundScreen.cs" />
     <Compile Include="Screens\KeybindingDialog.cs" />
     <Compile Include="Screens\LevelSelectionScreen.cs" />
-    <Compile Include="Screens\ProfileSelectionScreen.cs" />
+    <Compile Include="Screens\ProfileScreen.cs" />
     <Compile Include="Screens\LevelOverScreen.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="UIComponents\OptionPicker.cs" />
-    <Compile Include="UIComponents\MenuScreen.cs" />
+    <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Screens\MessageBoxScreen.cs" />
     <Compile Include="Screens\OptionsMenuScreen.cs" />
     <Compile Include="Screens\PauseMenuScreen.cs" />

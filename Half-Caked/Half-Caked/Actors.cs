@@ -136,11 +136,11 @@ namespace Half_Caked
                 bullet.CheckCollisions(level);
         }
 
-        public override void Draw(SpriteBatch theSpriteBatch, Vector2 relative)
+        public override void Draw(SpriteBatch theSpriteBatch, Vector2 Relative)
         {
-            base.Draw(theSpriteBatch, relative);
+            base.Draw(theSpriteBatch, Relative);
             foreach (EnemyBullet bullet in mBullets)
-                bullet.Draw(theSpriteBatch, relative);
+                bullet.Draw(theSpriteBatch, Relative);
         }
 
         public void Fire(Level lvl)
@@ -163,9 +163,7 @@ namespace Half_Caked
                     return;
             }
 
-            //dir.Y *= -1;
-
-            Angle = MathHelper.WrapAngle((float)Math.Atan(dir.Y / dir.X) + MathHelper.PiOver2);
+            Angle = MathHelper.WrapAngle((float)Math.Atan(dir.Y / dir.X)) + MathHelper.PiOver2 + (dir.X < 0 ? MathHelper.Pi : 0);
 
             if (mTimeSinceFired < mReloadingTime)
                 return;

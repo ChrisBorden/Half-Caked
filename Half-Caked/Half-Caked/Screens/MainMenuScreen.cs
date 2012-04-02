@@ -20,7 +20,6 @@ namespace Half_Caked
     {
         #region Initialization
 
-
         /// <summary>
         /// Constructor fills in the menu contents.
         /// </summary>
@@ -42,7 +41,6 @@ namespace Half_Caked
             MenuEntries.Add(optionsMenuEntry);
             MenuEntries.Add(exitMenuEntry);
         }
-
 
         #endregion
 
@@ -91,7 +89,7 @@ namespace Half_Caked
                 ScreenManager.AddScreen(confirmExitMessageBox, playerIndex);
             }
         }
-
+        
 
         /// <summary>
         /// Event handler for when the user selects ok on the "are you sure
@@ -104,8 +102,8 @@ namespace Half_Caked
 
         void ConfirmSaveMessageBoxAccepted(object sender, PlayerIndexEventArgs e)
         {
-            var pss = new ProfileSelectionScreen((ScreenManager.Game as HalfCakedGame).Device);
-            pss.ProfileSaved += ConfirmExitMessageBoxAccepted;
+            var pss = new ProfileScreen((ScreenManager.Game as HalfCakedGame).Device);
+            pss.ProfileSelected += ConfirmExitMessageBoxAccepted;
             ScreenManager.AddScreen(pss, e.PlayerIndex);
         }
 
