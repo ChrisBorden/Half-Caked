@@ -97,8 +97,8 @@ namespace Half_Caked
             victoryAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Victory"), 0.1f, 11, false);
             deathAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Death"), 0.1f, 12, false);
 
-            int width = (int)(idleAnimation.FrameWidth * 0.7f);
-			int left = (idleAnimation.FrameWidth - width) / 2;
+            int width = (int)(idleAnimation.FrameWidth * 0.9f);
+            int left = 0; //(idleAnimation.FrameWidth - width) / 2;
 			int height = (int)(idleAnimation.FrameHeight * 0.8f);
             int top = idleAnimation.FrameHeight - height;
             //Source = new Rectangle(0, 0, 125, 125);
