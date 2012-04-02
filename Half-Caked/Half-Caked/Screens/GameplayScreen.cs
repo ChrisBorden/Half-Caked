@@ -32,6 +32,8 @@ namespace Half_Caked
         ContentManager content;
         Level mLevel;
         InputState mInputState;
+        bool mIsBound = false;
+        Rectangle mOldClip;
 
         #endregion
 
@@ -80,6 +82,10 @@ namespace Half_Caked
         #region Update and Draw
         [DllImport("user32.dll")]
         static extern void ClipCursor(ref Rectangle rect);
+
+        [DllImport("user32.dll")]
+        static extern void GetClipCursor(ref Rectangle rect);
+
         /// <summary>
         /// Updates the state of the game. This method checks the GameScreen.IsActive
         /// property, so the game will stop updating when the pause menu is active,
@@ -93,12 +99,16 @@ namespace Half_Caked
             if (IsActive)
             {
                 // Prevent mouse cursor from leaving window when in game.
-                if (topScreen){
+               if (!mIsBound){
+                   GetClipCursor(ref mOldClip); 
+
                     Rectangle rect = this.ScreenManager.Game.Window.ClientBounds;
                     rect.Width += rect.X;
                     rect.Height += rect.Y;
                     ClipCursor(ref rect);
+                    mIsBound = true;
                 }
+
                 if(mInputState == null)
                     return;
                 this.ScreenManager.Game.IsMouseVisible = false;
@@ -118,6 +128,12 @@ namespace Half_Caked
             {
                 ScreenManager.AddScreen(new PauseMenuScreen(mLevel), ControllingPlayer);
             }
+            else
+            {
+                ClipCursor(ref mOldClip);
+                mIsBound = false;
+            }
+
         }
 
         /// <summary>
