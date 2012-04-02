@@ -135,7 +135,7 @@ namespace Half_Caked
             lvl.Tiles.Add(new Tile(new Rectangle(1650, 150, 50, 300), Surface.Absorbs));
 
             lvl.Checkpoints.Add(new Checkpoint(120, 500, 0, 0, 4));
-            lvl.Checkpoints.Add(new Checkpoint(0, 0, 1900, 0, 4));
+            lvl.Checkpoints.Add(new Checkpoint(0, 0, 1800, 0, 4));
 
 
             //Boundaries
