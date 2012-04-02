@@ -90,15 +90,15 @@ namespace Half_Caked
             mOrbs[1].LoadContent(this.mContentManager, 1);
 
             //Load animations -- must include frame count for constant frameTime constructor
-			float[] jumpTiming = { 0.02f, 0.1f, 0.1f, 0.1f, 0.2f, 0.1f };
+			float[] jumpTiming = { 0.1f, 0.1f, 0.1f, 0.2f, 0.1f };
             idleAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Idle"), 0.1f, 1, true);
             runAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Run"), 0.05f, 5, true);
             jumpAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Jump"), jumpTiming, false);
             victoryAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Victory"), 0.1f, 11, false);
             deathAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Death"), 0.1f, 12, false);
 
-            int width = (int)(idleAnimation.FrameWidth * 0.9f);
-			int left = 0;// (idleAnimation.FrameWidth - width) / 2;
+            int width = (int)(idleAnimation.FrameWidth * 0.7f);
+			int left = (idleAnimation.FrameWidth - width) / 2;
 			int height = (int)(idleAnimation.FrameHeight * 0.8f);
             int top = idleAnimation.FrameHeight - height;
             //Source = new Rectangle(0, 0, 125, 125);
@@ -686,7 +686,7 @@ namespace Half_Caked
 		Vector2 ARM_ANCHOR = new Vector2(-10, 10);//(-4, -8);
         Vector2 ARM_ANCHOR_DUCKED = new Vector2(0,0);//(-6, 12);
 
-        Vector2 ARM_ANCHOR_LEFT = new Vector2(75, 0);
+        Vector2 ARM_ANCHOR_LEFT = new Vector2(55, 0);
         Vector2 ARM_ANCHOR_DUCKED_LEFT = new Vector2(0, 0);
         #endregion
 
