@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Runtime.InteropServices;
 #endregion
 
 namespace Half_Caked
@@ -77,7 +78,8 @@ namespace Half_Caked
         #endregion
 
         #region Update and Draw
-
+        [DllImport("user32.dll")]
+        static extern void ClipCursor(ref Rectangle rect);
         /// <summary>
         /// Updates the state of the game. This method checks the GameScreen.IsActive
         /// property, so the game will stop updating when the pause menu is active,
@@ -90,6 +92,13 @@ namespace Half_Caked
 
             if (IsActive)
             {
+                // Prevent mouse cursor from leaving window when in game.
+                if (topScreen){
+                    Rectangle rect = this.ScreenManager.Game.Window.ClientBounds;
+                    rect.Width += rect.X;
+                    rect.Height += rect.Y;
+                    ClipCursor(ref rect);
+                }
                 if(mInputState == null)
                     return;
                 this.ScreenManager.Game.IsMouseVisible = false;
