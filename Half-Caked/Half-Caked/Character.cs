@@ -90,7 +90,7 @@ namespace Half_Caked
             mOrbs[1].LoadContent(this.mContentManager, 1);
 
             //Load animations -- must include frame count for constant frameTime constructor
-			float[] jumpTiming = { 0.02f, 0.1f, 0.1f, 0.1f, 0.25f, 0.1f };
+			float[] jumpTiming = { 0.02f, 0.1f, 0.1f, 0.1f, 0.2f, 0.1f };
             idleAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Idle"), 0.1f, 1, true);
             runAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Run"), 0.05f, 5, true);
             jumpAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Jump"), jumpTiming, false);
