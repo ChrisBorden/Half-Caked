@@ -123,7 +123,7 @@ namespace Half_Caked
                     Amplify(tile.Dimensions, result, level, Vector2.Zero);
                     break;
                 case Surface.Normal:
-                    level.Portals.Close(mPortalNumber);
+                    (mPortalNumber == 0 ? level.Portals.Portal1 : level.Portals.Portal2).Scale = 1f;
                     Act(tile.Dimensions, result, level, Vector2.Zero);
                     break;
                 case Surface.Reflects:
@@ -143,7 +143,7 @@ namespace Half_Caked
                     Amplify(obs.CollisionSurface, result, level, obs.Velocity);
                     break;
                 case Surface.Normal:
-                    level.Portals.Close(mPortalNumber);
+                    (mPortalNumber == 0 ? level.Portals.Portal1 : level.Portals.Portal2).Scale = 1f;
                     Act(obs.CollisionSurface, result, level, obs.Velocity);
                     break;
                 case Surface.Reflects:
