@@ -99,7 +99,7 @@ namespace Half_Caked
 
             int width = (int)(idleAnimation.FrameWidth * 0.9f);
 			int left = 0;// (idleAnimation.FrameWidth - width) / 2;
-			int height = (int)(idleAnimation.FrameHeight * 0.9f);
+			int height = (int)(idleAnimation.FrameHeight * 0.8f);
             int top = idleAnimation.FrameHeight - height;
             //Source = new Rectangle(0, 0, 125, 125);
             Source = new Rectangle(left, top, width, height);
@@ -233,13 +233,13 @@ namespace Half_Caked
         public void AnimatedDraw(SpriteBatch theSpriteBatch, Vector2 Relative, GameTime gameTime)
         {
             // Flip the sprite to face the way we are moving.
-            if (Velocity.X > 0)
-                flip = SpriteEffects.FlipHorizontally;
-            else if (Velocity.X < 0)
-                flip = SpriteEffects.None;
+            //if (Velocity.X > 0)
+            //    flip = SpriteEffects.FlipHorizontally;
+            //else if (Velocity.X < 0)
+            //    flip = SpriteEffects.None;
 
             // Draw the sprite.
-            animator.Draw(gameTime, theSpriteBatch, Position + Relative, Angle, Center, Scale, flip);
+            animator.Draw(gameTime, theSpriteBatch, Position + Relative, Angle, Center, Scale, mFlip);
         }
 
         public override void PortalDraw(SpriteBatch theSpriteBatch, Vector2 Relative)
@@ -686,7 +686,7 @@ namespace Half_Caked
 		Vector2 ARM_ANCHOR = new Vector2(-10, 10);//(-4, -8);
         Vector2 ARM_ANCHOR_DUCKED = new Vector2(0,0);//(-6, 12);
 
-        Vector2 ARM_ANCHOR_LEFT = new Vector2(0, 0);
+        Vector2 ARM_ANCHOR_LEFT = new Vector2(75, 0);
         Vector2 ARM_ANCHOR_DUCKED_LEFT = new Vector2(0, 0);
         #endregion
 
@@ -697,7 +697,7 @@ namespace Half_Caked
             base.LoadContent(theContentManager, "Sprites\\Gunarm");
             Source = new Rectangle(0, 0, 50, 25);
             Scale = 1.0f;
-            Center = new Vector2(0, 0);
+            Center = new Vector2(4, 4);
         }
 
         #endregion
@@ -713,10 +713,16 @@ namespace Half_Caked
             if (aCurrentMouseState.X < Position.X + rel.X)
             {
                 Position += Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED_LEFT : ARM_ANCHOR_LEFT), Matrix.CreateRotationZ(theMan.Angle));
-                return SpriteEffects.FlipHorizontally;
+                Center = new Vector2(4, 21);
+                mFlip = SpriteEffects.FlipVertically;
+                return SpriteEffects.None;
             }
             else
-                return SpriteEffects.None;
+            {
+                Center = new Vector2(4, 4);
+                mFlip = SpriteEffects.None;
+                return SpriteEffects.FlipHorizontally;
+            }
         }
 
         public void Update(bool ducking, Character theMan)
