@@ -40,7 +40,7 @@ namespace Half_Caked
         const float STATIC_ACCEL_GND = MASS * .20f;
         const float DYNAMIC_ACCEL_AIR = MASS * .20f;
         const float STATIC_ACCEL_AIR = MASS * .0025f;
-        const float ARM_LENGTH = 16;
+        const float ARM_LENGTH = 20;
         #endregion
 
         #region Fields
@@ -50,7 +50,6 @@ namespace Half_Caked
         private Animation jumpAnimation;
         private Animation victoryAnimation;
         private Animation deathAnimation;
-        private SpriteEffects flip = SpriteEffects.None;
         private AnimationPlayer animator;
 
         State mCurrentState = State.Ground;
@@ -99,7 +98,7 @@ namespace Half_Caked
 
             int width = (int)(idleAnimation.FrameWidth * 0.9f);
             int left = 0; //(idleAnimation.FrameWidth - width) / 2;
-			int height = (int)(idleAnimation.FrameHeight * 0.8f);
+			int height = (int)(idleAnimation.FrameHeight);//* 0.8f);
             int top = idleAnimation.FrameHeight - height;
             //Source = new Rectangle(0, 0, 125, 125);
             Source = new Rectangle(left, top, width, height);
@@ -232,12 +231,6 @@ namespace Half_Caked
 
         public void AnimatedDraw(SpriteBatch theSpriteBatch, Vector2 Relative, GameTime gameTime)
         {
-            // Flip the sprite to face the way we are moving.
-            //if (Velocity.X > 0)
-            //    flip = SpriteEffects.FlipHorizontally;
-            //else if (Velocity.X < 0)
-            //    flip = SpriteEffects.None;
-
             // Draw the sprite.
             animator.Draw(gameTime, theSpriteBatch, Position + Relative, Angle, Center, Scale, mFlip);
         }
@@ -683,11 +676,19 @@ namespace Half_Caked
     class Gunarm : Actor
     {
         #region Constants
-		Vector2 ARM_ANCHOR = new Vector2(-10, 10);//(-4, -8);
-        Vector2 ARM_ANCHOR_DUCKED = new Vector2(0,0);//(-6, 12);
+        Vector2 ARM_ANCHOR = new Vector2(-10, 10);
+        Vector2 ARM_ANCHOR_OFFSET = new Vector2(4, 4);
+        Vector2 ARM_ANCHOR_DUCKED = new Vector2(0,0);
 
-        Vector2 ARM_ANCHOR_LEFT = new Vector2(55, 0);
+        Vector2 ARM_ANCHOR_LEFT = new Vector2(65, 0);
+        Vector2 ARM_ANCHOR_LEFT_OFFSET = new Vector2(4, 15);
         Vector2 ARM_ANCHOR_DUCKED_LEFT = new Vector2(0, 0);
+        #endregion
+
+        #region Fields
+
+        bool wasFlipped = false;
+
         #endregion
 
         #region Initialization
@@ -695,8 +696,6 @@ namespace Half_Caked
         public void LoadContent(ContentManager theContentManager)
         {
             base.LoadContent(theContentManager, "Sprites\\Gunarm");
-            Source = new Rectangle(0, 0, 50, 25);
-            Scale = 1.0f;
             Center = new Vector2(4, 4);
         }
 
@@ -706,14 +705,26 @@ namespace Half_Caked
 
         public SpriteEffects Update(MouseState aCurrentMouseState, bool ducking, Character theMan, Vector2 rel)
         {
-            Position = theMan.Position + Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED : ARM_ANCHOR), Matrix.CreateRotationZ(theMan.Angle));
+            if(wasFlipped)
+                Position = theMan.Position + Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED + ARM_ANCHOR_DUCKED_LEFT : ARM_ANCHOR + ARM_ANCHOR_LEFT), Matrix.CreateRotationZ(theMan.Angle)) ;
+            else
+                Position = theMan.Position + Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED : ARM_ANCHOR), Matrix.CreateRotationZ(theMan.Angle));
 
-            Angle = (float)Math.Atan2(aCurrentMouseState.Y - (double)(Position.Y + rel.Y), aCurrentMouseState.X - (double)(Position.X + rel.X));
 
-            if (aCurrentMouseState.X < Position.X + rel.X)
-            {
+            bool flip = aCurrentMouseState.X < Position.X + rel.X;
+            if (flip && !wasFlipped)
                 Position += Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED_LEFT : ARM_ANCHOR_LEFT), Matrix.CreateRotationZ(theMan.Angle));
-                Center = new Vector2(4, 21);
+            else if (!flip && wasFlipped)
+                Position -= Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED_LEFT : ARM_ANCHOR_LEFT), Matrix.CreateRotationZ(theMan.Angle));
+
+            wasFlipped = flip;
+
+            Vector2 displacement =  (Position + rel + (flip ? ARM_ANCHOR_OFFSET : ARM_ANCHOR_LEFT_OFFSET));
+            Angle = (float)Math.Atan2(aCurrentMouseState.Y - displacement.Y, aCurrentMouseState.X - displacement.X);
+
+            if (flip)
+            {
+                Center = new Vector2(4, 15);
                 mFlip = SpriteEffects.FlipVertically;
                 return SpriteEffects.None;
             }

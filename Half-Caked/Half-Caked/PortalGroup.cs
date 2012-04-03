@@ -27,7 +27,7 @@ namespace Half_Caked
 
         #region Fields
         [XmlIgnore]
-        public Sprite Portal1, Portal2;
+        public Sprite Portal1, Portal2, PortalEffect1, PortalEffect2;
         
         PortalState mState = PortalState.Closed;
         List<Actor> mInPortal1 = new List<Actor>();
@@ -40,9 +40,12 @@ namespace Half_Caked
         {
             Portal1 = new Sprite();
             Portal2 = new Sprite();
-            
+            PortalEffect1 = new Sprite();
+            PortalEffect2 = new Sprite();
+
             Portal1.Center  = new Vector2(0, PORTAL_HEIGHT / 2);
-            Portal2.Center  = new Vector2(0, PORTAL_HEIGHT / 2);
+            Portal2.Center = new Vector2(0, PORTAL_HEIGHT / 2);
+
             Portal1.Visible = Portal2.Visible = false;
         }
 
@@ -50,7 +53,12 @@ namespace Half_Caked
         {
             Portal1.LoadContent(theContentManager, "Sprites\\Portal1");
             Portal2.LoadContent(theContentManager, "Sprites\\Portal2");
+            PortalEffect1.LoadContent(theContentManager, "Sprites\\PortalEffect");
+            PortalEffect2.LoadContent(theContentManager, "Sprites\\PortalEffect");
             mOpenPortalEffect  = theContentManager.Load<SoundEffect>("Sounds\\PortalOpen");
+
+            PortalEffect1.Center = new Vector2(0, PortalEffect1.Size.Height / 2);
+            PortalEffect2.Center = new Vector2(0, PortalEffect2.Size.Height / 2);
         }
         #endregion
 
@@ -145,6 +153,17 @@ namespace Half_Caked
 
         public void Draw(SpriteBatch theSpriteBatch, Vector2 Relative)
         {
+            if (IsOpen())
+            {
+                PortalEffect1.Position = Portal1.Position;
+                PortalEffect1.Angle = Portal1.Angle + ((int)Portal1.Oriented == 3 ? MathHelper.Pi : (int)Portal1.Oriented == 0 ? MathHelper.Pi : 0);
+                PortalEffect1.Draw(theSpriteBatch, Relative);
+
+                PortalEffect2.Position = Portal2.Position;
+                PortalEffect2.Angle = Portal2.Angle + ((int)Portal2.Oriented == 3 ? MathHelper.Pi : (int)Portal2.Oriented == 0 ? MathHelper.Pi : 0);
+                PortalEffect2.Draw(theSpriteBatch, Relative);
+            }
+
             foreach (Actor spr in mInPortal1)
             {
                 spr.PortalDraw(theSpriteBatch, Relative);

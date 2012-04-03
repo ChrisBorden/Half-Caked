@@ -236,7 +236,7 @@ namespace Half_Caked
         public override void LoadContent(ContentManager theContentManager, string theAssetName)
         {
             base.LoadContent(theContentManager, theAssetName);
-            UpdateSource((SwitchState)mState);
+            UpdateSource((SwitchState)mState, true);
             mTriggerSound = theContentManager.Load<SoundEffect>("Sounds\\Switch");
         }
         #endregion
@@ -245,7 +245,7 @@ namespace Half_Caked
         public override void Reset()
         {
             base.Reset();
-            UpdateSource((SwitchState)InitialState);
+            UpdateSource((SwitchState)InitialState, true);
         }
         
         public override void React(Guid caller, Level level)
@@ -264,22 +264,32 @@ namespace Half_Caked
         #endregion
 
         #region Private Methods
+
         private void UpdateSource(SwitchState state)
         {
+            UpdateSource(state, false);
+        }
+
+        private void UpdateSource(SwitchState state, bool first)
+        {
+            Position -= new Vector2(0, Source.Y);
+
             mState = (int)state;
 
             switch (state)
             {
-                case SwitchState.InActive:
-                    Source = new Rectangle(40, 0, 20, 100);
+                case SwitchState.InActive:         
+                    Source = new Rectangle(40, 3, 20, 97);
                     break;
                 case SwitchState.Pressed:
-                    Source = new Rectangle(20, 0, 20, 100);
+                    Source = new Rectangle(20, 16, 20, 84);
                     break;
                 default:
-                    Source = new Rectangle(0, 0, 20, 100);
+                    Source = new Rectangle(0, 13, 20, 87);
                     break;
             }
+
+            Position += new Vector2(0, Source.Y);
         }
         #endregion
     }

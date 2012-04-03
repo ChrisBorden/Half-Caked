@@ -15,6 +15,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Reflection;
 #endregion
 
 namespace Half_Caked
@@ -46,6 +49,7 @@ namespace Half_Caked
 
         #region Properties
 
+        public Cursor GameCursor, DefaultCursor;
 
         /// <summary>
         /// A default SpriteBatch shared by all the screens. This saves
@@ -114,6 +118,8 @@ namespace Half_Caked
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = content.Load<SpriteFont>("Fonts\\menufont");
             blankTexture = content.Load<Texture2D>("UI\\blank");
+            GameCursor = LoadCustomCursor(Application.StartupPath + @"\Content\UI\cursor.cur");
+            DefaultCursor = Form.FromHandle(this.Game.Window.Handle).Cursor;
 
             // Tell each of the screens to load their content.
             foreach (GameScreen screen in screens)
@@ -134,8 +140,21 @@ namespace Half_Caked
                 screen.UnloadContent();
             }
         }
+        
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern IntPtr LoadCursorFromFile(string path);
 
-
+        public Cursor LoadCustomCursor(string path)
+        {
+            IntPtr hCurs = LoadCursorFromFile(path);
+            if (hCurs == IntPtr.Zero) return null;
+            var curs = new Cursor(hCurs);
+            // Note: force the cursor to own the handle so it gets released properly
+            var fi = typeof(Cursor).GetField("ownHandle", BindingFlags.NonPublic | BindingFlags.Instance);
+            fi.SetValue(curs, true);
+            return curs;
+        }
+        
         #endregion
 
         #region Update and Draw

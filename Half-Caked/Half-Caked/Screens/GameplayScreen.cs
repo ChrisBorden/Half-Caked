@@ -10,12 +10,13 @@
 #region Using Statements
 using System;
 using System.Threading;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Reflection;
 #endregion
 
 namespace Half_Caked
@@ -76,10 +77,10 @@ namespace Half_Caked
             content.Unload();
         }
 
-
         #endregion
 
         #region Update and Draw
+
         [DllImport("user32.dll")]
         static extern void ClipCursor(ref Rectangle rect);
 
@@ -98,9 +99,12 @@ namespace Half_Caked
 
             if (IsActive)
             {
+                ScreenManager.Game.IsMouseVisible = true;
                 // Prevent mouse cursor from leaving window when in game.
-               if (!mIsBound){
-                   GetClipCursor(ref mOldClip); 
+                if (!mIsBound)
+                {
+                    GetClipCursor(ref mOldClip);
+                    Form.FromHandle(this.ScreenManager.Game.Window.Handle).Cursor = ScreenManager.GameCursor;
 
                     Rectangle rect = this.ScreenManager.Game.Window.ClientBounds;
                     rect.Width += rect.X;
@@ -111,14 +115,14 @@ namespace Half_Caked
 
                 if(mInputState == null)
                     return;
-                this.ScreenManager.Game.IsMouseVisible = false;
+
                 try
                 {
                     mLevel.Update(gameTime, mInputState);
                 }
                 catch (Exception E)
                 {
-                    if(E.Message.Equals("LevelComplete"))
+                    if (E.Message.Equals("LevelComplete"))
                         ScreenManager.AddScreen(new LevelOverScreen(mLevel, (ScreenManager.Game as HalfCakedGame)), ControllingPlayer);
                     else
                         throw E;
@@ -131,6 +135,8 @@ namespace Half_Caked
             else
             {
                 ClipCursor(ref mOldClip);
+
+                Form.FromHandle(this.ScreenManager.Game.Window.Handle).Cursor = ScreenManager.DefaultCursor;
                 mIsBound = false;
             }
 

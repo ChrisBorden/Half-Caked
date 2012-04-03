@@ -6,12 +6,12 @@ using Microsoft.Xna.Framework;
 
 namespace Half_Caked
 {
-    class LevelOverScreen : MessageBoxScreen
+    class LevelOverScreen : ContentBoxScreen
     {
         Level mLevel;
 
         public LevelOverScreen(Level level, HalfCakedGame game)
-            : base("Level Complete!", new string[] {"Next Level", "Play Again", "Exit"}, 0)
+            : base("Level Complete!", "", new string[] {"Next Level", "Play Again", "Exit"}, 0)
         {
             IsPopup = true;
             mLevel = level;
@@ -23,7 +23,6 @@ namespace Half_Caked
             Cancelled += QuitGameMenuEntrySelected;
 
             Profile prof = game.CurrentProfile;
-            String scoreString = "\n";
 
             if (prof.CurrentLevel < Level.MAX_LEVELS - 1 && prof.CurrentLevel == level.LevelIdentifier)
                 prof.CurrentLevel++;
@@ -31,7 +30,7 @@ namespace Half_Caked
             if (prof.LevelStatistics[mLevel.LevelIdentifier] == null ||
                 prof.LevelStatistics[mLevel.LevelIdentifier].Score > level.LevelStatistics.Score)
             {
-                scoreString += "Congratulations! You set a new high score.\n";
+                mContentLabel.Text = "Congratulations! You set a new High Score: " + level.LevelStatistics.Score;
                 level.LevelStatistics.Date = DateTime.Now;
                 prof.LevelStatistics[mLevel.LevelIdentifier] = level.LevelStatistics;
                 level.LevelStatistics.UploadScore(prof.GlobalIdentifer);
@@ -39,12 +38,9 @@ namespace Half_Caked
             }
             else
             {
-                scoreString += "High Score: " + prof.LevelStatistics[mLevel.LevelIdentifier].Score + "\n";
+                mContentLabel.Text = "High Score: " + prof.LevelStatistics[mLevel.LevelIdentifier].Score
+                                      + "   |   Your Score: " + level.LevelStatistics.Score;
             }
-            scoreString += "Your Score: " + level.LevelStatistics.Score + "\n";
-
-            mMessage += scoreString;
-
         }
 
         public override void LoadContent()
