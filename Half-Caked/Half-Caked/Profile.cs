@@ -235,6 +235,9 @@ namespace Half_Caked
         private void HelpRegister()
         {
             this.GlobalIdentifer = Server.RegisterProfile(Name);
+
+            foreach(Statistics stats in LevelStatistics.Where(x => x != null))
+                Server.SendHighScores(GlobalIdentifer, stats); 
         }
     }
 

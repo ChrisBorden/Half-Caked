@@ -33,7 +33,12 @@ namespace Half_Caked
                 mContentLabel.Text = "Congratulations! You set a new High Score: " + level.LevelStatistics.Score;
                 level.LevelStatistics.Date = DateTime.Now;
                 prof.LevelStatistics[mLevel.LevelIdentifier] = level.LevelStatistics;
-                level.LevelStatistics.UploadScore(prof.GlobalIdentifer);
+
+                if (prof.GlobalIdentifer != -1)
+                    level.LevelStatistics.UploadScore(prof.GlobalIdentifer);
+                else
+                    prof.Register();
+
                 Profile.SaveProfile(prof, "default.sav", game.Device);
             }
             else
