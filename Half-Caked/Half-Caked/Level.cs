@@ -131,7 +131,7 @@ namespace Half_Caked
             LevelStatistics.TimeElapsed += theGameTime.ElapsedGameTime.TotalSeconds;
 
             Portals.ClearSprites();
-
+            
             foreach (Obstacle spr in Obstacles)
                 spr.Update(theGameTime);
 

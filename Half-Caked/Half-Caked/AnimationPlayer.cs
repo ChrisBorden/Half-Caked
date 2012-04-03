@@ -113,7 +113,7 @@ namespace Half_Caked
 
             // Draw the current frame.
             spriteBatch.Draw(Animation.Texture, position, source, Color.White, 
-				Angle, Origin-Center, Scale, spriteEffects, 0.9f);
+				Angle, Center, Scale, spriteEffects, 0.9f);
         }
     }
 }

@@ -158,6 +158,7 @@ namespace Half_Caked
         {
             if (!Visible)
                 return;
+
             Velocity += Acceleration * (float)theGameTime.ElapsedGameTime.TotalSeconds;
 
             Position += (Velocity + FrameVelocity) * (float)theGameTime.ElapsedGameTime.TotalSeconds;

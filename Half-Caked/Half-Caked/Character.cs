@@ -96,7 +96,7 @@ namespace Half_Caked
             victoryAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Victory"), 0.1f, 11, false);
             deathAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Death"), 0.1f, 12, false);
 
-            int width = (int)(idleAnimation.FrameWidth * 0.9f);
+            int width = (int)(idleAnimation.FrameWidth);// * 0.9f);
             int left = 0; //(idleAnimation.FrameWidth - width) / 2;
 			int height = (int)(idleAnimation.FrameHeight);//* 0.8f);
             int top = idleAnimation.FrameHeight - height;
@@ -109,7 +109,7 @@ namespace Half_Caked
             mDeathEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerKilled");
             mLandingEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerLanding");
 
-            Center = new Vector2(Size.Width / 4, Size.Height / 2);
+            Center = new Vector2(Size.Width / 2, Size.Height / 2);
         }
         #endregion
 
@@ -179,7 +179,7 @@ namespace Half_Caked
 
                     var pltfrm = obs as Platform;
                     if (pltfrm != null && pltfrm.IsMoving)
-                        FrameVelocity = obs.Velocity;
+                        FrameVelocity = obs.Velocity + Vector2.UnitY *  40;
 
                     if (ePressed)
                         obs.React(CharacterGuid, level);
@@ -384,7 +384,6 @@ namespace Half_Caked
 
             return type == Surface.Death;
         }
-
 
         //UNDER CONSTRUCTION                                   
         private void UpdateMovement(InputState inputState)
@@ -680,7 +679,7 @@ namespace Half_Caked
         Vector2 ARM_ANCHOR_OFFSET = new Vector2(4, 4);
         Vector2 ARM_ANCHOR_DUCKED = new Vector2(0,0);
 
-        Vector2 ARM_ANCHOR_LEFT = new Vector2(65, 0);
+        Vector2 ARM_ANCHOR_LEFT = new Vector2(25, 0);
         Vector2 ARM_ANCHOR_LEFT_OFFSET = new Vector2(4, 15);
         Vector2 ARM_ANCHOR_DUCKED_LEFT = new Vector2(0, 0);
         #endregion
@@ -709,7 +708,6 @@ namespace Half_Caked
                 Position = theMan.Position + Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED + ARM_ANCHOR_DUCKED_LEFT : ARM_ANCHOR + ARM_ANCHOR_LEFT), Matrix.CreateRotationZ(theMan.Angle)) ;
             else
                 Position = theMan.Position + Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED : ARM_ANCHOR), Matrix.CreateRotationZ(theMan.Angle));
-
 
             bool flip = aCurrentMouseState.X < Position.X + rel.X;
             if (flip && !wasFlipped)
