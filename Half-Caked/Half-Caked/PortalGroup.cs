@@ -76,12 +76,7 @@ namespace Half_Caked
         public void Open(Vector2 position, Orientation orientation, int portalNumber, Vector2 movement, Level lvl)
         {
             Sprite chosenOne = portalNumber == 1 ? Portal2 : Portal1;
-
-            bool prevVisible = chosenOne.Visible;
-            Orientation prevOrient = chosenOne.Oriented;
-            Vector2 prevPosition = chosenOne.Position;
-            Vector2 prevFrameVelocity = chosenOne.FrameVelocity;
-
+            
             chosenOne.Visible = true;
             chosenOne.Angle = (int)orientation % 2== 0 ? MathHelper.PiOver2 : 0;
             chosenOne.Position = position;
@@ -92,11 +87,7 @@ namespace Half_Caked
             {
                 if (!Rectangle.Intersect(Portal1.CollisionSurface, Portal2.CollisionSurface).IsEmpty)
                 {
-                    chosenOne.Visible = prevVisible;
-                    chosenOne.Angle = (int)prevOrient % 2 == 0 ? MathHelper.PiOver2 : 0;
-                    chosenOne.Position = prevPosition;
-                    chosenOne.Oriented = prevOrient;
-                    chosenOne.FrameVelocity = prevFrameVelocity;
+                    Close(1 - portalNumber);
                     return;
                 }
                 mState = PortalState.Open;
