@@ -155,6 +155,11 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="Sprites\Cake.png">
+      <Name>Cake</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Content Include="UI\cursor.cur">
       <Name>cursor</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
