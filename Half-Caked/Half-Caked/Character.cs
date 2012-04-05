@@ -100,7 +100,6 @@ namespace Half_Caked
             int left = 0; //(idleAnimation.FrameWidth - width) / 2;
 			int height = (int)(idleAnimation.FrameHeight);//* 0.8f);
             int top = idleAnimation.FrameHeight - height;
-            //Source = new Rectangle(0, 0, 125, 125);
             Source = new Rectangle(left, top, width, height);
 
             animator.PlayAnimation(idleAnimation);
@@ -123,7 +122,7 @@ namespace Half_Caked
             CheckCollisions(level, inputState.IsInteracting(null));
 
             //play sound effect for landing
-            if (curstate == State.Air && (mCurrentState == State.Ground || mCurrentState == State.Platform))
+            if (curstate == State.Air && (mCurrentState == State.Ground))
                 level.PlaySoundEffect(mLandingEffect);
 
             UpdateMovement(inputState);
@@ -143,7 +142,6 @@ namespace Half_Caked
                     Angle = (float)Math.Max(0, Angle - Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
                 else
                     Angle = (float)Math.Min(0, Angle + Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
-
             }
 
             base.Update(theGameTime);
@@ -179,7 +177,10 @@ namespace Half_Caked
 
                     var pltfrm = obs as Platform;
                     if (pltfrm != null && pltfrm.IsMoving)
-                        FrameVelocity = obs.Velocity + Vector2.UnitY *  40;
+                    {
+                        FrameVelocity = obs.Velocity +Vector2.UnitY * 50;
+                        mCurrentState = State.Platform;
+                    }
 
                     if (ePressed)
                         obs.React(CharacterGuid, level);
@@ -347,15 +348,10 @@ namespace Half_Caked
                     Position = new Vector2(Position.X, obj.Top - Center.Y + 1);
                     mCollisions[(int)Orientation.Down] = obj;
                 }
-                else if (CollisionSurface.Center.Y > obj.Center.Y) // hit the roof
-                {
-                    if (Velocity.Y < 5)
-                    { Velocity.Y = 5; }
-                }
                 else
                 {
-                    Velocity.Y = Math.Min(Velocity.Y, 0);
-                    Position = new Vector2(Position.X, obj.Bottom + Center.Y + 1);
+                    Velocity.Y = Math.Max(Velocity.Y, 5);
+                    Position = new Vector2(Position.X, obj.Bottom + Center.Y *1.41f);
                     mCollisions[(int)Orientation.Up] = obj;
                 }
                 stillJumping = false;

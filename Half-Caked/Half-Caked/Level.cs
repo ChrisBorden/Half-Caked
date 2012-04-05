@@ -21,6 +21,9 @@ namespace Half_Caked
         #region Constants
         public static float METERS_TO_UNITS = 20;
         public static int MAX_LEVELS = 5;
+
+        private const float LONG_DIST = .4f;
+        private const float SHORT_DIST = .01f;
         #endregion
 
         #region Fields
@@ -132,10 +135,10 @@ namespace Half_Caked
 
             Portals.ClearSprites();
             
+            Player.Update(theGameTime, this, inputState);
+
             foreach (Obstacle spr in Obstacles)
                 spr.Update(theGameTime);
-
-            Player.Update(theGameTime, this, inputState);
 
             foreach (Actor spr in Actors)
             {
@@ -149,9 +152,22 @@ namespace Half_Caked
             }
 
             Portals.Update(theGameTime);
-            
-            Position = mCenterVector - Player.Position;
-            Position = new Vector2(MathHelper.Clamp(Position.X, mDimensions.X - Size.Width, 0), MathHelper.Clamp(Position.Y, mDimensions.Y - Size.Height, 0));
+
+            Vector2 offset = new Vector2(MathHelper.Clamp((mCenterVector - Player.Position).X, mDimensions.X - Size.Width, 0), MathHelper.Clamp((mCenterVector - Player.Position).Y, mDimensions.Y - Size.Height, 0)) - Position;
+            float dist = offset.Length();// Vector2.Multiply(offset, new Vector2(1, this.Size.Height / (float)Size.Width)).Length();
+
+            if (dist > LONG_DIST * mDimensions.X || dist < SHORT_DIST * mDimensions.X)
+            {
+                Position += offset;
+                Velocity = Vector2.Zero;
+                Acceleration = Vector2.Zero;
+            }
+            else
+            {
+                offset.Normalize();
+                Velocity = (Velocity.Length() + 10) * offset;
+                base.Update(theGameTime);
+            }
 
             mBackground.Position = Position;
             
@@ -168,7 +184,6 @@ namespace Half_Caked
                         PlaySoundEffect(mCheckpointSound);
                     }
                 }
-
         }
 
         public override void Draw(SpriteBatch theSpriteBatch, GameTime theGameTime)
@@ -193,6 +208,21 @@ namespace Half_Caked
 
             foreach (TextEffect effect in mTextEffects)
                 effect.Draw(theSpriteBatch, mGameFont);
+        }
+
+        public void DrawMap(SpriteBatch theSpriteBatch, GameTime theGameTime, Vector2 offset, float scale)
+        {
+            mBackground.Draw(theSpriteBatch, offset - Position*scale, scale);
+            foreach (Obstacle spr in Obstacles)
+                spr.Draw(theSpriteBatch, offset, scale);
+
+            foreach (Sprite spr in Actors)
+                spr.Draw(theSpriteBatch, offset, scale);
+
+            //This draws non-animated parts of the player
+            Player.Draw(theSpriteBatch, offset, scale);
+
+            base.Draw(theSpriteBatch, offset - Position * scale, scale);
         }
 
         #endregion
@@ -223,6 +253,7 @@ namespace Half_Caked
             LevelStatistics.Deaths++;
             Player.DeathReset();
             Portals.Reset();
+            mTextEffects.Add(new DeathNotification(Vector2.Clamp(Player.Position, Vector2.Zero, mDimensions)));
             Player.Position = Checkpoints[mCheckpointIndex-1].Location;
         }
 

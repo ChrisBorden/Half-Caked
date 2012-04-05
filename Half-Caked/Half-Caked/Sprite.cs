@@ -177,6 +177,14 @@ namespace Half_Caked
                 theSpriteBatch.Draw(mSpriteTexture, Position+Relative, Source,
                     Color.White, Angle, Center, Scale, mFlip, .9f);
         }
+
+        //Draw the sprite to the screen
+        public virtual void Draw(SpriteBatch theSpriteBatch, Vector2 Relative, float scale)
+        {
+            if (Visible)
+                theSpriteBatch.Draw(mSpriteTexture, Position*scale + Relative, Source,
+                    Color.White, Angle, Center, scale * Scale, mFlip, .9f);
+        }
         #endregion
 
         #region Public Methods

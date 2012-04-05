@@ -51,4 +51,45 @@ namespace Half_Caked
         }
         #endregion
     }
+
+    public class DeathNotification : TextEffect
+    {
+        #region Constants
+        private const float VELOCITY_Y = -100;
+        private const float VELOCITY_X = -50;
+        private const float TIME_TO_FADE = 2;
+        #endregion
+
+        #region Fields
+        private Color mColor = Color.Red;
+        private Vector2 mPosition;
+        private float mBaseX;
+        #endregion
+
+        #region Initialization
+        public DeathNotification(Vector2 pos)
+        {
+            mPosition = pos;
+            mBaseX = pos.X;
+        }
+        #endregion
+
+        #region Update and Draw
+        public override void Update(GameTime theGameTime)
+        {
+            if (mColor.A == 0)
+                Done = true;
+
+            mColor.A = (byte)MathHelper.Clamp(mColor.A - (float)theGameTime.ElapsedGameTime.TotalSeconds * 255 / TIME_TO_FADE, 0, 255);
+            mPosition.Y += VELOCITY_Y * (float)theGameTime.ElapsedGameTime.TotalSeconds;
+            mPosition.X = VELOCITY_X * (float)Math.Sin(theGameTime.TotalGameTime.TotalSeconds * 3 * (MathHelper.Pi)) + mBaseX;
+        }
+
+        public override void Draw(SpriteBatch theSpriteBatch, SpriteFont font)
+        {
+            theSpriteBatch.DrawString(font, "You died!", mPosition, mColor, 0,
+                                  Vector2.Zero, 1f, SpriteEffects.None, 0);
+        }
+        #endregion
+    }
 }
