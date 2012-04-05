@@ -66,7 +66,7 @@ namespace Half_Caked
             lvl.Tiles.Add(new Tile(new Rectangle(1700, 680, 1998 - 1700, 150), Surface.Normal));
             
             lvl.Checkpoints.Add(new Checkpoint(120, 500, 0, 0, 4)); 
-            lvl.Checkpoints.Add(new Checkpoint(0, 0, 1900, 0, 4));
+            lvl.Checkpoints.Add(new Checkpoint(1900, 680, 1800, 0, 4));
 
 
             //Boundaries
@@ -114,7 +114,6 @@ namespace Half_Caked
             return lvl;
         }*/
 
-
         private static Level CreateLevel1() // Second Level
         {
             Level lvl = new Level();
@@ -135,8 +134,7 @@ namespace Half_Caked
             lvl.Tiles.Add(new Tile(new Rectangle(1650, 150, 50, 300), Surface.Absorbs));
 
             lvl.Checkpoints.Add(new Checkpoint(120, 500, 0, 0, 4));
-            lvl.Checkpoints.Add(new Checkpoint(0, 0, 1800, 0, 4));
-
+            lvl.Checkpoints.Add(new Checkpoint(1850, 600, 1800, 0, 4));
 
             //Boundaries
             lvl.Tiles.Add(new Tile(new Rectangle(0, 1500 - 2, 2000, 2), Surface.Death));
@@ -159,9 +157,7 @@ namespace Half_Caked
             Door d1 = new Door(System.Guid.NewGuid(), new Vector2(1650, 450), Door.DoorState.Stationary);
             d1.Actions.Add(new KeyValuePair<Guid, int>(switch2.Guid, (int)Door.DoorState.Opening));
             lvl.Obstacles.Add(d1);
-
-
-
+                        
             return lvl;
         }
 
@@ -200,7 +196,7 @@ namespace Half_Caked
             lvl.Tiles.Add(new Tile(new Rectangle(913, 320, 587, 533), Surface.Normal));
 
             lvl.Checkpoints.Add(new Checkpoint(100, 800, 0, 0, 4));
-            lvl.Checkpoints.Add(new Checkpoint(0, 0, 1300, 850, 4));
+            lvl.Checkpoints.Add(new Checkpoint(1400, 1000, 1300, 850, 4));
 
 
             //Boundaries
@@ -245,8 +241,7 @@ namespace Half_Caked
             lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 1400, 118), Surface.Normal));
 
             lvl.Checkpoints.Add(new Checkpoint(50, 850, 0, 0, 4));
-            lvl.Checkpoints.Add(new Checkpoint(0, 0, 165, 415, 2));
-
+            lvl.Checkpoints.Add(new Checkpoint(0, 401, 165, 415, 2));
 
             //Boundaries
             lvl.Tiles.Add(new Tile(new Rectangle(0, 1000 - 2, 1500, 2), Surface.Absorbs));
@@ -302,7 +297,7 @@ namespace Half_Caked
             lvl.Checkpoints.Add(new Checkpoint(680, 1136 - 134, 680, 1024, 1));
             lvl.Checkpoints.Add(new Checkpoint(1180, 1079 - 134, 1180, 1500, 1));
             lvl.Checkpoints.Add(new Checkpoint(1165, 473 - 134, 1275, 473, 2));
-            lvl.Checkpoints.Add(new Checkpoint(75, 473 - 134, 100, 473, 2));
+            lvl.Checkpoints.Add(new Checkpoint(0, 473, 150, 473, 2));
 
             Switch switch1 = new Switch(System.Guid.NewGuid(), new Vector2(1980, 815), Switch.SwitchState.Active);
             switch1.Actions.Add(new KeyValuePair<Guid, int>(Character.CharacterGuid, (int)Switch.SwitchState.Pressed));

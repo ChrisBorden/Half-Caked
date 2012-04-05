@@ -228,19 +228,6 @@
       </Dimensions>
       <Type>Absorbs</Type>
     </Tile>
-	<Tile>
-      <Dimensions>
-        <X>0</X>
-        <Y>1498</Y>
-        <Width>2000</Width>
-        <Height>2</Height>
-        <Location>
-          <X>0</X>
-          <Y>-50</Y>
-        </Location>
-      </Dimensions>
-      <Type>Death</Type>
-    </Tile>
   </Tiles>
   <Obstacles>
     <Obstacle xsi:type="Switch">
@@ -255,7 +242,7 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>6c4754c4-c031-436b-afbd-513a1ea96a0c</Guid>
+      <Guid>5ca2c9e6-cd13-4001-b71f-38dd3faf482d</Guid>
       <InitialState>2</InitialState>
     </Obstacle>
     <Obstacle xsi:type="Platform">
@@ -266,11 +253,11 @@
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>6c4754c4-c031-436b-afbd-513a1ea96a0c</Key>
+          <Key>5ca2c9e6-cd13-4001-b71f-38dd3faf482d</Key>
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>6dfddd7e-d8f4-4087-8a1b-5a764513462c</Guid>
+      <Guid>9efc133d-ea30-453a-b34b-b239e4983240</Guid>
       <InitialState>0</InitialState>
       <Path>
         <Vector2>
@@ -303,8 +290,8 @@
     </Checkpoint>
     <Checkpoint>
       <Location>
-        <X>0</X>
-        <Y>0</Y>
+        <X>1400</X>
+        <Y>1000</Y>
       </Location>
       <Quadrant>
         <X>-1</X>

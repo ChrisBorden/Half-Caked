@@ -62,6 +62,7 @@ namespace Half_Caked
 
         private Sprite mBackground;        
         private SpriteFont mGameFont;
+        private Sprite mCakeSprite;
 
         #endregion
 
@@ -70,6 +71,7 @@ namespace Half_Caked
         {
             LevelStatistics = new Statistics();
             mBackground = new Sprite();
+            mCakeSprite = new Sprite();
             Obstacles = new List<Obstacle>();
             Actors = new List<Actor>();
             Checkpoints = new List<Checkpoint>();
@@ -84,6 +86,10 @@ namespace Half_Caked
             AssetName = "Levels\\" + AssetName;
             base.LoadContent(theContentManager, AssetName);
             mBackground.LoadContent(theContentManager, AssetName + "b");
+
+            mCakeSprite.LoadContent(theContentManager, "Sprites\\Cake");
+            mCakeSprite.Scale = .25f;
+            mCakeSprite.Position = Checkpoints[Checkpoints.Count - 1].Location - Vector2.UnitY * mCakeSprite.Size.Height;
 
             mDimensions = activeProfile.Graphics.Resolution;
             mCenterVector = new Vector2(mDimensions.X / 2 - 100, mDimensions.Y * 3 / 4 - 100);
@@ -202,7 +208,8 @@ namespace Half_Caked
             Player.Draw(theSpriteBatch, Position);
 
             Portals.Draw(theSpriteBatch, Position);
-            
+
+            mCakeSprite.Draw(theSpriteBatch, Position);
             base.Draw(theSpriteBatch, theGameTime);
             Portals.DrawPortals(theSpriteBatch, Position);
 
@@ -221,6 +228,7 @@ namespace Half_Caked
 
             //This draws non-animated parts of the player
             Player.Draw(theSpriteBatch, offset, scale);
+            mCakeSprite.Draw(theSpriteBatch, offset, scale);
 
             base.Draw(theSpriteBatch, offset - Position * scale, scale);
         }

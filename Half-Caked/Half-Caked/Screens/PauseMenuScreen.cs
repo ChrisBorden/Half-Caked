@@ -112,12 +112,13 @@ namespace Half_Caked
         {
             ScreenManager.FadeBackBufferToBlack(TransitionAlpha * 2 / 3);
 
-            //var viewport = ScreenManager.GraphicsDevice.Viewport;
+            var viewport = ScreenManager.GraphicsDevice.Viewport;
+            float scale = MathHelper.Min((viewport.Width - 550f) / mLevel.Size.Width, (viewport.Height - 290f) / mLevel.Size.Height); 
 
-            if (ScreenState != Half_Caked.ScreenState.TransitionOff && ScreenState != Half_Caked.ScreenState.Hidden)
+            if (ScreenState != Half_Caked.ScreenState.TransitionOff && ScreenState != Half_Caked.ScreenState.Hidden && scale >= .05f)
             {
                 ScreenManager.SpriteBatch.Begin();
-                mLevel.DrawMap(ScreenManager.SpriteBatch, gameTime, new Vector2(400, 150), .2f );
+                mLevel.DrawMap(ScreenManager.SpriteBatch, gameTime, new Vector2(400, 140), scale );
                 ScreenManager.SpriteBatch.End();
             }
 

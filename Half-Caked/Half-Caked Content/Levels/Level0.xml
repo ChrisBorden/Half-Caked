@@ -144,15 +144,15 @@
     </Checkpoint>
     <Checkpoint>
       <Location>
-        <X>0</X>
-        <Y>0</Y>
+        <X>1900</X>
+        <Y>680</Y>
       </Location>
       <Quadrant>
         <X>-1</X>
         <Y>-1</Y>
       </Quadrant>
       <Bound>
-        <X>1900</X>
+        <X>1800</X>
         <Y>0</Y>
       </Bound>
     </Checkpoint>

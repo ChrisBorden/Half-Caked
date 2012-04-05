@@ -242,7 +242,7 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>31f483b3-3069-48bc-a95e-c95fd8d8b411</Guid>
+      <Guid>45f89a73-8400-4484-b6d4-a92f36627ca6</Guid>
       <InitialState>2</InitialState>
     </Obstacle>
     <Obstacle xsi:type="Platform">
@@ -253,11 +253,11 @@
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>31f483b3-3069-48bc-a95e-c95fd8d8b411</Key>
+          <Key>45f89a73-8400-4484-b6d4-a92f36627ca6</Key>
           <Value>0</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>8d1b3b77-7c60-4050-8a22-d80e1a18e4ec</Guid>
+      <Guid>6eed58fb-4b8f-42b8-8f83-dfab0175dcf5</Guid>
       <InitialState>1</InitialState>
       <Path>
         <Vector2>
@@ -287,11 +287,11 @@
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>31f483b3-3069-48bc-a95e-c95fd8d8b411</Key>
+          <Key>45f89a73-8400-4484-b6d4-a92f36627ca6</Key>
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>58053773-d27b-40cc-af64-3c2c714021aa</Guid>
+      <Guid>c8cecd39-7c7d-4dc0-b616-2c2a0ed8aae4</Guid>
       <InitialState>0</InitialState>
     </Obstacle>
   </Obstacles>
@@ -364,15 +364,15 @@
     </Checkpoint>
     <Checkpoint>
       <Location>
-        <X>75</X>
-        <Y>339</Y>
+        <X>0</X>
+        <Y>473</Y>
       </Location>
       <Quadrant>
         <X>1</X>
         <Y>1</Y>
       </Quadrant>
       <Bound>
-        <X>100</X>
+        <X>150</X>
         <Y>473</Y>
       </Bound>
     </Checkpoint>
