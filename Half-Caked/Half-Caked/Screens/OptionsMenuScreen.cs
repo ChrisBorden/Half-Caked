@@ -115,6 +115,7 @@ namespace Half_Caked
             MenuEntry saveMenuEntry = new MenuEntry("Save");
             MenuEntry backMenuEntry = new MenuEntry("Back");
 
+
             saveMenuEntry.Pressed += SaveButton;
             saveMenuEntry.Pressed += OnCancel;
             backMenuEntry.Pressed += OnCancel;
@@ -123,8 +124,9 @@ namespace Half_Caked
             MenuEntries.Add(musicEffectSlider);
             MenuEntries.Add(soundEffectSlider);
             MenuEntries.Add(narrationVolumeSlider);
-            MenuEntries.Add(saveMenuEntry);
-            MenuEntries.Add(backMenuEntry);
+
+            StackPanel btmPanel = new StackPanel(new UIElement[]{saveMenuEntry, backMenuEntry});
+            MenuEntries.Add(btmPanel);
 
             mProfile = curProfile;
         }
@@ -201,9 +203,9 @@ namespace Half_Caked
             // Add entries to the menu.
             MenuEntries.Add(mDisplayModePicker);
             MenuEntries.Add(mResolutionPicker);
-            MenuEntries.Add(testMenuEntry);
-            MenuEntries.Add(saveMenuEntry);
-            MenuEntries.Add(backMenuEntry);
+
+            StackPanel btmPanel = new StackPanel(new UIElement[] {testMenuEntry, saveMenuEntry, backMenuEntry });
+            MenuEntries.Add(btmPanel);
 
             mProfile = curProfile;
         }
@@ -295,8 +297,8 @@ namespace Half_Caked
             cancelMenuEntry.Pressed += CancelButton;
 
             // Menu entries on our list
-            MenuEntries.Add(acceptMenuEntry);
-            MenuEntries.Add(cancelMenuEntry);
+            StackPanel btmPanel = new StackPanel(new UIElement[] { acceptMenuEntry, cancelMenuEntry });
+            MenuEntries.Add(btmPanel);
         }
 
         // Keybindings Dialog event generator

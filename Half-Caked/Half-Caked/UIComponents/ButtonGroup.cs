@@ -136,7 +136,7 @@ namespace Half_Caked
         #region Events
 
         public override bool HandleMouseInput(InputState input)
-        {
+        {            
             for(int i = 0; i < buttons.Length; i++)
                 if (buttons[i].HandleMouseInput(input))
                 {

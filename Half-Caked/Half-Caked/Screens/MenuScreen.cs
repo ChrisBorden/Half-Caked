@@ -37,7 +37,6 @@ namespace Half_Caked
 
         #region Properties
 
-
         /// <summary>
         /// Gets the list of menu entries, so derived classes can add
         /// or change the menu contents.
@@ -51,7 +50,6 @@ namespace Half_Caked
         #endregion
 
         #region Initialization
-
 
         /// <summary>
         /// Constructor.
@@ -202,7 +200,6 @@ namespace Half_Caked
         #endregion
 
         #region Update and Draw
-
 
         /// <summary>
         /// Updates the menu.
