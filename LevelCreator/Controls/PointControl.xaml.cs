@@ -106,9 +106,11 @@ namespace LevelCreator
 
             pointIndicator = new DesignerItem();
             pointIndicator.CanResize = false;
-            pointIndicator.Height = 5;
-            pointIndicator.Width = 5;
+            pointIndicator.Height = 15;
+            pointIndicator.Width = 15;
             pointIndicator.Content = gr;
+            pointIndicator.MinHeight = 2;
+            pointIndicator.MinWidth = 2;
 
             Canvas.SetLeft(pointIndicator, point.X);
             Canvas.SetTop(pointIndicator, point.Y);

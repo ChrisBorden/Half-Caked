@@ -158,6 +158,7 @@ namespace LevelCreator
                 mCheckpointRegion = new System.Windows.Shapes.Rectangle();
                 mCheckpointRegion.Fill = new SolidColorBrush(Colors.Yellow);
                 mCheckpointRegion.Fill.Opacity = .25;
+                mCheckpointRegion.IsHitTestVisible = false;
 
                 Ellipse rindicator = new Ellipse();
                 rindicator.Fill = Brushes.SpringGreen;
@@ -179,6 +180,8 @@ namespace LevelCreator
                 mRespawnIndicator.Model = this;
                 mRespawnIndicator.Height = 30;
                 mRespawnIndicator.Width = 30;
+                mRespawnIndicator.MinWidth = 30;
+                mRespawnIndicator.MinHeight = 30;
                 mRespawnIndicator.Content = gr;
 
                 canvas.Children.Add(mCheckpointRegion);

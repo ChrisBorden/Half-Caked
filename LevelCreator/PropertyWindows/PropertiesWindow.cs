@@ -61,7 +61,9 @@ namespace LevelCreator
 
             this.LayoutTransform = canvas.LayoutTransform.Inverse as Transform;
 
-            if(canvas.Width / 2 > (DataContext as MovingModel).X)
+            if ((DataContext as MovingModel).Item.Width > canvas.Width * 3 / 4)
+                Canvas.SetLeft(this, (DataContext as MovingModel).X + 5);            
+            else if(canvas.Width / 2 > (DataContext as MovingModel).X)
                 Canvas.SetLeft(this, (DataContext as MovingModel).Item.Width + (DataContext as MovingModel).X + 5);
             else if (ActualWidth != 0)
                 Canvas.SetLeft(this, -this.ActualWidth / (canvas.LayoutTransform as ScaleTransform).ScaleX + (DataContext as MovingModel).X - 5);
@@ -69,6 +71,12 @@ namespace LevelCreator
                 Canvas.SetLeft(this, -200 / (canvas.LayoutTransform as ScaleTransform).ScaleX + (DataContext as MovingModel).X - 5);
 
             Canvas.SetTop(this, (DataContext as MovingModel).Y);
+            if (canvas.Height / 2 > (DataContext as MovingModel).Y)
+                Canvas.SetTop(this, (DataContext as MovingModel).Y);
+            else if (ActualHeight != 0)
+                Canvas.SetTop(this, -this.ActualHeight / (canvas.LayoutTransform as ScaleTransform).ScaleY + (DataContext as MovingModel).Y + (DataContext as MovingModel).Item.Height);
+            else
+                Canvas.SetTop(this, -200 / (canvas.LayoutTransform as ScaleTransform).ScaleY + (DataContext as MovingModel).Y + (DataContext as MovingModel).Item.Height);
         }
     }
 

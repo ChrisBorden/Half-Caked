@@ -137,16 +137,10 @@ namespace LevelCreator
                     }
                     else
                     {
-                        if (content.MinHeight != 0 && content.MinWidth != 0)
-                        {
-                            newItem.Width = content.MinWidth * 2; ;
-                            newItem.Height = content.MinHeight * 2;
-                        }
-                        else
-                        {
-                            newItem.Width = 65;
-                            newItem.Height = 65;
-                        }
+                        newItem.Width = 50;
+                        newItem.Height = 50;
+                        newItem.MinHeight = 2;
+                        newItem.MinWidth = 2;
                     }
                     
                     switch (image.ToolTip.ToString())
@@ -196,6 +190,9 @@ namespace LevelCreator
             Rectangle rect=  new Rectangle();
             rect.IsHitTestVisible = false;
             rect.Fill = Brushes.Gray;
+            rect.MinHeight = 2;
+            rect.MinWidth = 2;
+
             item.Content = rect;
 
             Tile t = new Tile();

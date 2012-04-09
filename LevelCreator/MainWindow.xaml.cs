@@ -28,7 +28,7 @@ namespace LevelCreator
         private GridLength mPrevCol = GridLength.Auto;
         private Level mLevel;
         private string mFileLocation;
-        private bool mUnsavedWork = false;
+        private bool mUnsavedWork = false, mFirstSave = false;
 
         public MainWindow()
         {
@@ -99,7 +99,6 @@ namespace LevelCreator
             BitmapImage src = new BitmapImage(new Uri(ofd.FileName.Remove(ofd.FileName.Length - 3) + "png", UriKind.RelativeOrAbsolute));
             MyDesignerCanvas.Width = src.PixelWidth;
             MyDesignerCanvas.Height = src.PixelHeight;
-            MyDesignerCanvas.Background = new ImageBrush(src);
 
             List<Image> gameImages = (ToolboxContainer.Content as Toolbox).Items.OfType<Image>().ToList();
 
@@ -284,29 +283,54 @@ namespace LevelCreator
         private void SaveImage(string path)
         {
             MyDesignerCanvas.DeselectAll();
-
-            FileStream fs = new FileStream(path + ".bmp", FileMode.Create);
-            RenderTargetBitmap bmp = new RenderTargetBitmap((int)MyDesignerCanvas.ActualWidth,
-                (int)MyDesignerCanvas.ActualHeight, 1 / 96, 1 / 96, PixelFormats.Pbgra32);
-
             var temp = MyDesignerCanvas.Background;
             MyDesignerCanvas.Background = Brushes.Transparent;
 
-            bmp.Render(MyDesignerCanvas);
-            BitmapEncoder encoder = new TiffBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(bmp));
+            foreach (DesignerItem item in MyDesignerCanvas.Children.OfType<DesignerItem>())
+                item.Visibility = item.Content is Rectangle ? item.Visibility : Visibility.Hidden;
+
+            MyDesignerCanvas.UpdateLayout();
+
+            FileStream fs = new FileStream(path + ".png", FileMode.Create);
+            RenderTargetBitmap png = new RenderTargetBitmap((int)MyDesignerCanvas.ActualWidth,
+                (int)MyDesignerCanvas.ActualHeight, 1 / 96, 1 / 96, PixelFormats.Pbgra32);
+            
+            png.Render(MyDesignerCanvas);
+            PngBitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(png));
             encoder.Save(fs);
             fs.Close();
 
             MyDesignerCanvas.Background = temp;
+
+            foreach (DesignerItem item in MyDesignerCanvas.Children.OfType<DesignerItem>())
+                item.Visibility = Visibility.Visible;
+            foreach (DesignerItem item in MyDesignerCanvas.Children.OfType<DesignerItem>())
+                item.IsSelected = true;
+            MyDesignerCanvas.DeselectAll();
         }
 
         private void SaveLevel(string path)
         {
+            Tile[] boundaries = null;
+            if (mFirstSave)
+            {
+                boundaries = new Tile[]{ new Tile(new Microsoft.Xna.Framework.Rectangle(-2, 0, 2,(int) MyDesignerCanvas.ActualHeight), Surface.Absorbs), 
+                                            new Tile(new Microsoft.Xna.Framework.Rectangle(0, -2, (int) MyDesignerCanvas.ActualWidth, 2), Surface.Absorbs),    
+                                            new Tile(new Microsoft.Xna.Framework.Rectangle(0, (int) MyDesignerCanvas.ActualHeight + 1, (int) MyDesignerCanvas.ActualWidth, 2), Surface.Absorbs), 
+                                            new Tile(new Microsoft.Xna.Framework.Rectangle((int) MyDesignerCanvas.ActualWidth + 1, 0, 2, (int) MyDesignerCanvas.ActualHeight), Surface.Absorbs) };
+
+                mLevel.Tiles.AddRange(boundaries);
+            }
+
             XmlSerializer serializer = new XmlSerializer(typeof(Level));
             TextWriter textWriter = new StreamWriter(path + ".xml");
             serializer.Serialize(textWriter, mLevel);
-            textWriter.Close(); 
+            textWriter.Close();
+
+            if (mFirstSave)
+                mLevel.Tiles.RemoveAll(t => boundaries.Contains(t));
+            mFirstSave = false;
         }
 
         #endregion
