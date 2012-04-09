@@ -142,7 +142,7 @@ namespace Half_Caked
             lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 2, 2000), Surface.Absorbs));
             lvl.Tiles.Add(new Tile(new Rectangle(2000 - 2, 0, 2, 1500), Surface.Absorbs));
 
-            Switch switch1 = new Switch(System.Guid.NewGuid(), new Vector2(0, 590), Switch.SwitchState.Active);
+            Switch switch1 = new Switch(System.Guid.NewGuid(), new Vector2(0, 590), Switch.SwitchState.Enabled);
             switch1.Actions.Add(new KeyValuePair<Guid, int>(Character.CharacterGuid, (int)Switch.SwitchState.Pressed));
             lvl.Obstacles.Add(switch1);
 
@@ -150,7 +150,7 @@ namespace Half_Caked
             pf1.Actions.Add(new KeyValuePair<Guid, int>(switch1.Guid, (int)Platform.PlatformState.Forward));
             lvl.Obstacles.Add(pf1);
 
-            Switch switch2 = new Switch(System.Guid.NewGuid(), new Vector2(920, 600), Switch.SwitchState.Active);
+            Switch switch2 = new Switch(System.Guid.NewGuid(), new Vector2(920, 600), Switch.SwitchState.Enabled);
             switch2.Actions.Add(new KeyValuePair<Guid, int>(Character.CharacterGuid, (int)Switch.SwitchState.Pressed));
             lvl.Obstacles.Add(switch2);
 
@@ -205,7 +205,7 @@ namespace Half_Caked
             lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 2, 1000), Surface.Absorbs));
             lvl.Tiles.Add(new Tile(new Rectangle(1500 - 2, 0, 2, 1000), Surface.Absorbs));
 
-            Switch switch1 = new Switch(System.Guid.NewGuid(), new Vector2(925, 250), Switch.SwitchState.Active);
+            Switch switch1 = new Switch(System.Guid.NewGuid(), new Vector2(925, 250), Switch.SwitchState.Enabled);
             switch1.Actions.Add(new KeyValuePair<Guid, int>(Character.CharacterGuid, (int)Switch.SwitchState.Pressed));
             lvl.Obstacles.Add(switch1);
 
@@ -299,7 +299,7 @@ namespace Half_Caked
             lvl.Checkpoints.Add(new Checkpoint(1165, 473 - 134, 1275, 473, 2));
             lvl.Checkpoints.Add(new Checkpoint(0, 473, 150, 473, 2));
 
-            Switch switch1 = new Switch(System.Guid.NewGuid(), new Vector2(1980, 815), Switch.SwitchState.Active);
+            Switch switch1 = new Switch(System.Guid.NewGuid(), new Vector2(1980, 815), Switch.SwitchState.Enabled);
             switch1.Actions.Add(new KeyValuePair<Guid, int>(Character.CharacterGuid, (int)Switch.SwitchState.Pressed));
             lvl.Obstacles.Add(switch1);
 

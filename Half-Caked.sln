@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Half-Caked", "Half-Caked\Ha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Half-Caked Content", "Half-Caked\Half-Caked Content\Half-Caked Content.contentproj", "{0D2F41CE-28A0-4DAD-9271-842F0ED5095B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Level Creator", "Level Creator\Level Creator.csproj", "{6A6B42A7-485C-412D-9ADE-298843177B7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -17,6 +19,10 @@ Global
 		{32700E40-FC11-488A-B09C-C23AAB232379}.Release|x86.Build.0 = Release|x86
 		{0D2F41CE-28A0-4DAD-9271-842F0ED5095B}.Debug|x86.ActiveCfg = Debug|x86
 		{0D2F41CE-28A0-4DAD-9271-842F0ED5095B}.Release|x86.ActiveCfg = Release|x86
+		{6A6B42A7-485C-412D-9ADE-298843177B7D}.Debug|x86.ActiveCfg = Debug|x86
+		{6A6B42A7-485C-412D-9ADE-298843177B7D}.Debug|x86.Build.0 = Debug|x86
+		{6A6B42A7-485C-412D-9ADE-298843177B7D}.Release|x86.ActiveCfg = Release|x86
+		{6A6B42A7-485C-412D-9ADE-298843177B7D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
