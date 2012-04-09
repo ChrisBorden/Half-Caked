@@ -169,7 +169,7 @@ namespace Half_Caked
                     else
                     {
                         mTextEffects.Add(new CheckpointNotification(Player.Position+Position));
-                        if(Checkpoints[mCheckpointIndex - 1].NarrationText != null)
+                        if (Checkpoints[mCheckpointIndex - 1].NarrationText != null || Checkpoints[mCheckpointIndex - 1].NarrationText.Length <= 0)
                             mTextEffects.Add(new NarrationEffect(Checkpoints[mCheckpointIndex - 1].NarrationText, manager));
 
                         PlaySoundEffect(mCheckpointSound);
