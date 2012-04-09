@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="LevelCreator.PointControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             Height="Auto" Width="Auto">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Name="PointBlock" Text="Point " VerticalAlignment="Center" Margin="5" />
+        <StackPanel Margin="5" Orientation="Horizontal" Grid.Column="1">
+            <TextBlock Margin="0,0,3,0" Text="X:" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding Converter={StaticResource StringToIntegerConverter}, Path=X}" Width="35" VerticalAlignment="Center"/>
+            <TextBlock Margin="10,0,3,0" Text="Y:" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding Converter={StaticResource StringToIntegerConverter}, Path=Y}" Width="35"  VerticalAlignment="Center"/>
+        </StackPanel>
+        <Button Content="↑" Margin="5" Width="20" Grid.Column="2" IsEnabled="{Binding CanUp}" Click="UpButton_Click" />
+        <Button Content="↓" Margin="5" Width="20" Grid.Column="3" IsEnabled="{Binding CanDown}" Click="DownButton_Click" />
+        <Button Content="-" Margin="5" Width="20" Grid.Column="4" Click="RemoveButton_Click" />
+    </Grid>
+</UserControl>

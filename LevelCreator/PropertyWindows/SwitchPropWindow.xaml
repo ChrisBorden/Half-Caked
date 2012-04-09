@@ -1,0 +1,32 @@
+﻿<s:PropertiesWindow x:Class="LevelCreator.SwitchPropertiesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:s="clr-namespace:LevelCreator"
+        xmlns:hc="clr-namespace:Half_Caked;assembly=Half-Caked"
+        Title="Switch Properties">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="Position" VerticalAlignment="Center" Margin="5" />
+        <StackPanel Margin="5" Orientation="Horizontal" Grid.Column="1">
+            <TextBlock Margin="0,0,3,0" Text="X:" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding Converter={StaticResource StringToIntegerConverter}, Path=X}" Width="35" VerticalAlignment="Center"/>
+            <TextBlock Margin="10,0,3,0" Text="Y:" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding Converter={StaticResource StringToIntegerConverter}, Path=Y}" Width="35" VerticalAlignment="Center"/>
+        </StackPanel>
+        <TextBlock Text="Initial State" VerticalAlignment="Center" Grid.Row="1" Margin="5" />
+        <ComboBox SelectedIndex="{Binding State}" ItemsSource="{Binding Source={StaticResource ResourceKey=switchState}}" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Margin="5"/>
+        <TextBlock Text="On Trigger:" VerticalAlignment="Center" Grid.Row="2" Margin="5" />
+        <StackPanel Grid.Row="3" Name="mTriggers" Grid.ColumnSpan="2" SizeChanged="mTriggers_SizeChanged" />
+        <Button Content="Add Action" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Grid.Row="4" Click="Button_Click" />
+    </Grid>
+</s:PropertiesWindow>
