@@ -242,7 +242,7 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>13bb5686-6c29-4c2d-a5d7-66336787deb4</Guid>
+      <Guid>ea148d65-a5df-4e3e-8ee6-fd06c6e65453</Guid>
       <InitialState>2</InitialState>
     </Obstacle>
     <Obstacle xsi:type="Platform">
@@ -253,11 +253,11 @@
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>13bb5686-6c29-4c2d-a5d7-66336787deb4</Key>
+          <Key>ea148d65-a5df-4e3e-8ee6-fd06c6e65453</Key>
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>8b122e9e-549c-458e-bd63-effeb377e65d</Guid>
+      <Guid>d3bc56fc-23c2-4df7-a9a0-51a1818ab108</Guid>
       <InitialState>0</InitialState>
       <Path>
         <Vector2>
@@ -287,6 +287,7 @@
         <X>0</X>
         <Y>0</Y>
       </Bound>
+      <NarrationText>Good Job! Unfortunately, this next test is impossible. Please remain where you are and wait for extraction. The extractor will remove you within the next 48 days.</NarrationText>
     </Checkpoint>
     <Checkpoint>
       <Location>

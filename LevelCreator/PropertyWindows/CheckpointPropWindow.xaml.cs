@@ -136,6 +136,16 @@ namespace LevelCreator
                 }
             }
 
+            public string Text
+            {
+                get { return mCheckpoint.NarrationText; }
+                set
+                {
+                    mCheckpoint.NarrationText = value;
+                    OnPropertyChanged("Text");
+                }
+            }
+
             public CheckpointModel(Checkpoint checkpoint, DesignerItem item, Level level, Canvas canvas)
                 : base(item, level)
             {

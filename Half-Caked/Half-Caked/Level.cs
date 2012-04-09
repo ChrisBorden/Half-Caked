@@ -51,7 +51,7 @@ namespace Half_Caked
 
         private Vector2 mDimensions;
         private Vector2 mCenterVector;
-        private int mCheckpointIndex = 1;
+        private int mCheckpointIndex = 0;
 
         private List<TextEffect> mTextEffects;
         private AudioSettings mAudio;
@@ -126,7 +126,7 @@ namespace Half_Caked
         #endregion
 
         #region Update and Draw
-        public void Update(GameTime theGameTime, InputState inputState)
+        public void Update(GameTime theGameTime, ScreenManager manager, InputState inputState)
         {
             if (MediaPlayer.State == MediaState.Stopped && mCanPlayerMusic)
                 try
@@ -158,7 +158,27 @@ namespace Half_Caked
             }
 
             Portals.Update(theGameTime);
+                        
+            if(Player.IsGrounded())
+                while (Checkpoints[mCheckpointIndex].InBounds(Player.Position))
+                {
+                    if (++mCheckpointIndex >= Checkpoints.Count)
+                    {
+                        GameOver();
+                    }
+                    else
+                    {
+                        mTextEffects.Add(new CheckpointNotification(Player.Position+Position));
+                        if (Checkpoints[mCheckpointIndex - 1].NarrationText != null || Checkpoints[mCheckpointIndex - 1].NarrationText.Length <= 0)
+                            mTextEffects.Add(new NarrationEffect(Checkpoints[mCheckpointIndex - 1].NarrationText, manager));
 
+                        PlaySoundEffect(mCheckpointSound);
+                    }
+                }
+        }
+
+        public override void Draw(SpriteBatch theSpriteBatch, GameTime theGameTime)
+        {
             Vector2 offset = new Vector2(MathHelper.Clamp((mCenterVector - Player.Position).X, mDimensions.X - Size.Width, 0), MathHelper.Clamp((mCenterVector - Player.Position).Y, mDimensions.Y - Size.Height, 0)) - Position;
             float dist = offset.Length();// Vector2.Multiply(offset, new Vector2(1, this.Size.Height / (float)Size.Width)).Length();
 
@@ -176,24 +196,7 @@ namespace Half_Caked
             }
 
             mBackground.Position = Position;
-            
-            if(Player.IsGrounded())
-                while (Checkpoints[mCheckpointIndex].InBounds(Player.Position))
-                {
-                    if (++mCheckpointIndex >= Checkpoints.Count)
-                    {
-                        GameOver();
-                    }
-                    else
-                    {
-                        mTextEffects.Add(new CheckpointNotification(Player.Position+Position));
-                        PlaySoundEffect(mCheckpointSound);
-                    }
-                }
-        }
 
-        public override void Draw(SpriteBatch theSpriteBatch, GameTime theGameTime)
-        {
             mBackground.Draw(theSpriteBatch, theGameTime);
             foreach (Obstacle spr in Obstacles)
                 spr.Draw(theSpriteBatch, Position);

@@ -164,6 +164,16 @@
       <Name>cursor</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Compile Include="UI\NarrationBackground.png">
+      <Name>NarrationBackground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="UI\Narrator.png">
+      <Name>Narrator</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Sprites\Portal1.png">
@@ -336,11 +346,6 @@
     </Compile>
     <Compile Include="Sprites\EnemyBullet.png">
       <Name>EnemyBullet</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="UI\background_backup.png">
-      <Name>background_backup</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -13,6 +13,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock Text="Position" VerticalAlignment="Center" Margin="5" />
         <StackPanel Margin="5" Orientation="Horizontal" Grid.Column="1">
@@ -35,5 +36,8 @@
             <ComboBoxItem Content="III" />
             <ComboBoxItem Content="IV" />
         </ComboBox>
+        <TextBlock Text="Narration Text" VerticalAlignment="Top" Grid.Row="3" Margin="5" />
+        <TextBlock Text="     (if any)" VerticalAlignment="Top" Grid.Row="3" Margin="5,25,5,5" />
+        <TextBox Grid.Column="1" Grid.Row="3" MinHeight="23"  Text="{Binding Text}" Margin="5" AcceptsReturn="True" />
     </Grid>
 </s:PropertiesWindow>

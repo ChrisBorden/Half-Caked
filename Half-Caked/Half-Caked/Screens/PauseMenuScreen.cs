@@ -9,6 +9,8 @@
 
 #region Using Statements
 using Microsoft.Xna.Framework;
+using System.Speech.Synthesis;
+using System.Linq;
 #endregion
 
 namespace Half_Caked
@@ -95,6 +97,7 @@ namespace Half_Caked
 
         void ConfirmResetMessageBoxAccepted(object sender, PlayerIndexEventArgs e)
         {
+            ScreenManager.GetScreens().OfType<GameplayScreen>().First().Narrator.SpeakAsyncCancelAll();
             mLevel.Reset();
             OnCancel(sender, e);
         }

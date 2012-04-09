@@ -12,6 +12,7 @@ namespace Half_Caked
     {
         #region Fields
         public Vector2 Location, Quadrant, Bound;
+        public string NarrationText;
         #endregion
 
         #region Initialization
@@ -19,15 +20,16 @@ namespace Half_Caked
         {
         }
 
-        public Checkpoint(int x, int y, int xBound, int yBound, int quadrant) 
-            : this(new Vector2(x,y), new Vector2(xBound, yBound), quadrant)
+        public Checkpoint(int x, int y, int xBound, int yBound, int quadrant, string text) 
+            : this(new Vector2(x,y), new Vector2(xBound, yBound), quadrant, text)
         {
         }
 
-        public Checkpoint(Vector2 loc, Vector2 boundary, int quadrant)
+        public Checkpoint(Vector2 loc, Vector2 boundary, int quadrant, string text)
         {
             Location = loc;
             Bound = boundary;
+            NarrationText = text;
 
             Quadrant = new Vector2(quadrant % 3 == 1 ? -1 : 1, quadrant > 2 ? -1 : 1);
         }
