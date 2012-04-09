@@ -307,7 +307,7 @@ namespace Half_Caked
         /// instantly kills the screen, this method respects the transition timings
         /// and will give the screen a chance to gradually transition off.
         /// </summary>
-        public void ExitScreen()
+        public virtual void ExitScreen()
         {
             this.ScreenManager.Game.IsMouseVisible = false;
 

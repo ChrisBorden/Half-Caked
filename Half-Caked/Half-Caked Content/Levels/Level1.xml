@@ -151,7 +151,7 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>a3ce40cd-f383-4de4-a34f-38d3fa092c37</Guid>
+      <Guid>316e70c6-0285-4539-a597-182125fc2d1f</Guid>
       <InitialState>2</InitialState>
     </Obstacle>
     <Obstacle xsi:type="Platform">
@@ -162,11 +162,11 @@
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>a3ce40cd-f383-4de4-a34f-38d3fa092c37</Key>
+          <Key>316e70c6-0285-4539-a597-182125fc2d1f</Key>
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>5b995043-0a76-4e7e-b3d3-ec5dcf720cbb</Guid>
+      <Guid>4b6d5e89-afbf-4b07-b648-4b04154d48a1</Guid>
       <InitialState>0</InitialState>
       <Path>
         <Vector2>
@@ -192,7 +192,7 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>0496f89b-2286-4ad0-83e7-96febe10bdcd</Guid>
+      <Guid>9671c513-f1b8-43f1-988b-7688f74e4ad0</Guid>
       <InitialState>2</InitialState>
     </Obstacle>
     <Obstacle xsi:type="Door">
@@ -203,11 +203,11 @@
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>0496f89b-2286-4ad0-83e7-96febe10bdcd</Key>
+          <Key>9671c513-f1b8-43f1-988b-7688f74e4ad0</Key>
           <Value>2</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>f804a1ff-2943-4303-8e52-7e5ac40b64bc</Guid>
+      <Guid>fc803d8a-8c53-4c79-b336-be7f77401a85</Guid>
       <InitialState>1</InitialState>
     </Obstacle>
   </Obstacles>
@@ -226,6 +226,7 @@
         <X>0</X>
         <Y>0</Y>
       </Bound>
+      <NarrationText>Well done. Your performance on the last test places you in the 23rd percentile of test participants. You should be proud. From here on out, the tests will become increasingly more challenging. Please refrain from dying.</NarrationText>
     </Checkpoint>
     <Checkpoint>
       <Location>

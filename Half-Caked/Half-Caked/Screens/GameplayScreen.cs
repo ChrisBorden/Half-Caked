@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using System.Speech.Synthesis; 
 #endregion
 
 namespace Half_Caked
@@ -38,6 +39,8 @@ namespace Half_Caked
 
         #endregion
 
+        public SpeechSynthesizer Narrator;
+
         #region Initialization
 
 
@@ -46,6 +49,7 @@ namespace Half_Caked
         /// </summary>
         public GameplayScreen(int levelNumber)
         {
+            Narrator = new SpeechSynthesizer();
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
             mLevel = Level.LoadLevel(levelNumber);
@@ -99,6 +103,9 @@ namespace Half_Caked
 
             if (IsActive)
             {
+                if (Narrator.State == SynthesizerState.Paused)
+                    Narrator.Resume();
+
                 ScreenManager.Game.IsMouseVisible = true;
                 // Prevent mouse cursor from leaving window when in game.
                 if (!mIsBound)
@@ -118,7 +125,7 @@ namespace Half_Caked
 
                 try
                 {
-                    mLevel.Update(gameTime, mInputState);
+                    mLevel.Update(gameTime, this.ScreenManager, mInputState);
                 }
                 catch (Exception E)
                 {
@@ -134,12 +141,23 @@ namespace Half_Caked
             }
             else
             {
+                if (Narrator.State == SynthesizerState.Speaking)
+                    Narrator.Pause();
+
                 ClipCursor(ref mOldClip);
 
                 Form.FromHandle(this.ScreenManager.Game.Window.Handle).Cursor = ScreenManager.DefaultCursor;
                 mIsBound = false;
             }
 
+        }
+
+        public override void ExitScreen()
+        {
+            if (Narrator.State != SynthesizerState.Ready)
+                Narrator.SpeakAsyncCancelAll();
+
+            base.ExitScreen();
         }
 
         /// <summary>

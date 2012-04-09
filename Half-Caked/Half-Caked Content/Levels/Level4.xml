@@ -242,7 +242,7 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>65ab58bd-a1cd-46ac-b137-153a983462c6</Guid>
+      <Guid>7e865d59-1753-40aa-9473-4a9392e69f0d</Guid>
       <InitialState>2</InitialState>
     </Obstacle>
     <Obstacle xsi:type="Platform">
@@ -253,11 +253,11 @@
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>65ab58bd-a1cd-46ac-b137-153a983462c6</Key>
+          <Key>7e865d59-1753-40aa-9473-4a9392e69f0d</Key>
           <Value>0</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>9991ee33-e385-4c32-a072-dcbf2c9ee806</Guid>
+      <Guid>ff00dbe2-8949-4486-a77d-42f93eb14f10</Guid>
       <InitialState>1</InitialState>
       <Path>
         <Vector2>
@@ -287,11 +287,11 @@
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
-          <Key>65ab58bd-a1cd-46ac-b137-153a983462c6</Key>
+          <Key>7e865d59-1753-40aa-9473-4a9392e69f0d</Key>
           <Value>2</Value>
         </KeyValuePairOfGuidInt32>
       </Actions>
-      <Guid>f831f406-2e43-4c8d-a38a-826fd882c98f</Guid>
+      <Guid>367b81a6-6efc-4e7c-ae5d-bf4496f5ce2b</Guid>
       <InitialState>1</InitialState>
     </Obstacle>
   </Obstacles>
@@ -319,6 +319,7 @@
         <X>0</X>
         <Y>0</Y>
       </Bound>
+      <NarrationText>Keep in mind, when a subject is traversing a portal, minor radioactive particles may cause damages and mutations to the subject's DNA. Test subjects are required to sign a wavier taking sole responsibility for all costs incurred by this unfortunate fact.</NarrationText>
     </Checkpoint>
     <Checkpoint>
       <Location>

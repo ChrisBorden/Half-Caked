@@ -65,8 +65,8 @@ namespace Half_Caked
             lvl.Tiles.Add(new Tile(new Rectangle(999, 691, 1252 - 999, 150), Surface.Normal));
             lvl.Tiles.Add(new Tile(new Rectangle(1700, 680, 1998 - 1700, 150), Surface.Normal));
             
-            lvl.Checkpoints.Add(new Checkpoint(120, 500, 0, 0, 4)); 
-            lvl.Checkpoints.Add(new Checkpoint(1900, 680, 1800, 0, 4));
+            lvl.Checkpoints.Add(new Checkpoint(120, 500, 0, 0, 4, "Welcome to the experiment. I hope your performance meets expectations. For test subjects who manage to complete each test, cake will be provided.")); 
+            lvl.Checkpoints.Add(new Checkpoint(1900, 680, 1800, 0, 4, null));
 
 
             //Boundaries
@@ -133,8 +133,8 @@ namespace Half_Caked
             lvl.Tiles.Add(new Tile(new Rectangle(1950, 150, 50, 450), Surface.Normal));
             lvl.Tiles.Add(new Tile(new Rectangle(1650, 150, 50, 300), Surface.Absorbs));
 
-            lvl.Checkpoints.Add(new Checkpoint(120, 500, 0, 0, 4));
-            lvl.Checkpoints.Add(new Checkpoint(1850, 600, 1800, 0, 4));
+            lvl.Checkpoints.Add(new Checkpoint(120, 500, 0, 0, 4, "Well done. Your performance on the last test places you in the 23rd percentile of test participants. You should be proud. From here on out, the tests will become increasingly more challenging. Please refrain from dying."));
+            lvl.Checkpoints.Add(new Checkpoint(1850, 600, 1800, 0, 4, null));
 
             //Boundaries
             lvl.Tiles.Add(new Tile(new Rectangle(0, 1500 - 2, 2000, 2), Surface.Death));
@@ -195,8 +195,8 @@ namespace Half_Caked
             lvl.Tiles.Add(new Tile(new Rectangle(946, 170, 554, 150), Surface.Normal));
             lvl.Tiles.Add(new Tile(new Rectangle(913, 320, 587, 533), Surface.Normal));
 
-            lvl.Checkpoints.Add(new Checkpoint(100, 800, 0, 0, 4));
-            lvl.Checkpoints.Add(new Checkpoint(1400, 1000, 1300, 850, 4));
+            lvl.Checkpoints.Add(new Checkpoint(100, 800, 0, 0, 4, "Good Job! Unfortunately, this next test is impossible. Please remain where you are and wait for extraction. The extractor will remove you within the next 48 days."));
+            lvl.Checkpoints.Add(new Checkpoint(1400, 1000, 1300, 850, 4, null));
 
 
             //Boundaries
@@ -240,8 +240,8 @@ namespace Half_Caked
             //Ceiling
             lvl.Tiles.Add(new Tile(new Rectangle(0, 0, 1400, 118), Surface.Normal));
 
-            lvl.Checkpoints.Add(new Checkpoint(50, 850, 0, 0, 4));
-            lvl.Checkpoints.Add(new Checkpoint(0, 401, 165, 415, 2));
+            lvl.Checkpoints.Add(new Checkpoint(50, 850, 0, 0, 4, "I am very impressed by your progress. The turrets you find in the next test are very valuable. If you cause damage to them, you will be liable for all repair and replacement costs."));
+            lvl.Checkpoints.Add(new Checkpoint(0, 401, 165, 415, 2, null));
 
             //Boundaries
             lvl.Tiles.Add(new Tile(new Rectangle(0, 1000 - 2, 1500, 2), Surface.Absorbs));
@@ -293,11 +293,11 @@ namespace Half_Caked
 
             lvl.Tiles.Add(new Tile(new Rectangle(1718, 915, 282, 585), Surface.Absorbs));
 
-            lvl.Checkpoints.Add(new Checkpoint(270, 1136 - 134, 0, 0, 4));
-            lvl.Checkpoints.Add(new Checkpoint(680, 1136 - 134, 680, 1024, 1));
-            lvl.Checkpoints.Add(new Checkpoint(1180, 1079 - 134, 1180, 1500, 1));
-            lvl.Checkpoints.Add(new Checkpoint(1165, 473 - 134, 1275, 473, 2));
-            lvl.Checkpoints.Add(new Checkpoint(0, 473, 150, 473, 2));
+            lvl.Checkpoints.Add(new Checkpoint(270, 1136 - 134, 0, 0, 4, "Keep in mind, when a subject is traversing a portal, minor radioactive particles may cause damages and mutations to the subject's DNA. Test subjects are required to sign a wavier taking sole responsibility for all costs incurred by this unfortunate fact."));
+            lvl.Checkpoints.Add(new Checkpoint(680, 1136 - 134, 680, 1024, 1, null));
+            lvl.Checkpoints.Add(new Checkpoint(1180, 1079 - 134, 1180, 1500, 1, null));
+            lvl.Checkpoints.Add(new Checkpoint(1165, 473 - 134, 1275, 473, 2, null));
+            lvl.Checkpoints.Add(new Checkpoint(0, 473, 150, 473, 2, null));
 
             Switch switch1 = new Switch(System.Guid.NewGuid(), new Vector2(1980, 815), Switch.SwitchState.Enabled);
             switch1.Actions.Add(new KeyValuePair<Guid, int>(Character.CharacterGuid, (int)Switch.SwitchState.Pressed));
