@@ -27,7 +27,9 @@ namespace Half_Caked
         #endregion
 
         #region Fields
-        public float Gravity;
+        public float Gravity { get; set; }
+
+        public string Name { get; set; }
 
         private int mLevelID = -1;
         public int LevelIdentifier
@@ -69,6 +71,8 @@ namespace Half_Caked
         #region Initialization
         public Level()
         {
+            Gravity = 9.81f;
+
             LevelStatistics = new Statistics();
             mBackground = new Sprite();
             mCakeSprite = new Sprite();

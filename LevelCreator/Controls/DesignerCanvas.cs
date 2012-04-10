@@ -61,35 +61,39 @@ namespace LevelCreator
                 this.dragStartPoint = null;
             }
 
-            ScrollViewer parent = Parent as ScrollViewer;
-
+            ScrollViewer parent = null;
+            if(Parent is Border)
+                parent = (Parent as Border).Parent as ScrollViewer;
+            else
+                parent = Parent as ScrollViewer;
+            
             if (parent != null)
             {
-                var point = e.GetPosition(parent.Parent as Border);
-                if (point.X < parent.ActualWidth / 6)
+                var point = e.GetPosition(parent);
+                if (point.X < parent.ViewportWidth / 6)
                 {
-                    if (point.Y < parent.ActualHeight / 6)
+                    if (point.Y < parent.ViewportHeight / 6)
                     {
-                        parent.ScrollToHorizontalOffset(Math.Max(parent.HorizontalOffset - 40 / (1 + point.X * 300 / parent.ActualWidth), 0));
-                        parent.ScrollToVerticalOffset(Math.Max(parent.VerticalOffset - 40 / (1 + point.Y * 300 / parent.ActualHeight), 0));
+                        parent.ScrollToHorizontalOffset(Math.Max(parent.HorizontalOffset - 40 / (1 + point.X * 300 / parent.ViewportWidth), 0));
+                        parent.ScrollToVerticalOffset(Math.Max(parent.VerticalOffset - 40 / (1 + point.Y * 300 / parent.ViewportHeight), 0));
                     }
-                    else if (point.Y > parent.ActualHeight * 5.0 / 6 && point.Y < parent.ActualHeight)
+                    else if (point.Y > parent.ViewportHeight * 5.0 / 6 && point.Y < parent.ViewportHeight)
                     {
-                        parent.ScrollToHorizontalOffset(Math.Max(parent.HorizontalOffset - 40 / (1 + point.X * 300 / parent.ActualWidth), 0));
-                        parent.ScrollToVerticalOffset(Math.Min(parent.VerticalOffset + 40 / (1 + 300 * (parent.ActualHeight - point.Y) / parent.ActualHeight), parent.ScrollableHeight));
+                        parent.ScrollToHorizontalOffset(Math.Max(parent.HorizontalOffset - 40 / (1 + point.X * 300 / parent.ViewportWidth), 0));
+                        parent.ScrollToVerticalOffset(Math.Min(parent.VerticalOffset + 40 / (1 + 300 * (parent.ViewportHeight - point.Y) / parent.ViewportHeight), parent.ScrollableHeight));
                     }
                 }
-                else if (point.X > parent.ActualWidth * 5.0 / 6 && point.X < parent.ActualWidth)
+                else if (point.X > parent.ViewportWidth * 5.0 / 6 && point.X < parent.ViewportWidth)
                 {
-                    if (point.Y < parent.ActualHeight / 6)
+                    if (point.Y < parent.ViewportHeight / 6)
                     {
-                        parent.ScrollToHorizontalOffset(Math.Min(parent.HorizontalOffset + 40 / (1 + 300 * (parent.ActualWidth - point.X) / parent.ActualWidth), parent.ScrollableWidth));
-                        parent.ScrollToVerticalOffset(Math.Max(parent.VerticalOffset - 40 / (1 + point.Y * 300 / parent.ActualHeight), 0));
+                        parent.ScrollToHorizontalOffset(Math.Min(parent.HorizontalOffset + 40 / (1 + 300 * (parent.ViewportWidth - point.X) / parent.ViewportWidth), parent.ScrollableWidth));
+                        parent.ScrollToVerticalOffset(Math.Max(parent.VerticalOffset - 40 / (1 + point.Y * 300 / parent.ViewportHeight), 0));
                     }
-                    else if (point.Y > parent.ActualHeight * 5.0 / 6 && point.Y < parent.ActualHeight)
+                    else if (point.Y > parent.ViewportHeight * 5.0 / 6 && point.Y < parent.ViewportHeight)
                     {
-                        parent.ScrollToHorizontalOffset(Math.Min(parent.HorizontalOffset + 40 / (1 + 300 * (parent.ActualWidth - point.X) / parent.ActualWidth), parent.ScrollableWidth));
-                        parent.ScrollToVerticalOffset(Math.Min(parent.VerticalOffset + 40 / (1 + 300 * (parent.ActualHeight - point.Y) / parent.ActualHeight), parent.ScrollableHeight));
+                        parent.ScrollToHorizontalOffset(Math.Min(parent.HorizontalOffset + 40 / (1 + 300 * (parent.ViewportWidth - point.X) / parent.ViewportWidth), parent.ScrollableWidth));
+                        parent.ScrollToVerticalOffset(Math.Min(parent.VerticalOffset + 40 / (1 + 300 * (parent.ViewportHeight - point.Y) / parent.ViewportHeight), parent.ScrollableHeight));
                     }
                 }
             }                

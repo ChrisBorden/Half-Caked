@@ -10,28 +10,54 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Half_Caked;
 
 namespace LevelCreator
 {
     /// <summary>
     /// Interaction logic for ResizeWindow.xaml
     /// </summary>
-    public partial class ResizeWindow : Window
+    public partial class DetailsWindow : Window
     {
         bool mRevert = true;
         double mWidth, mHeight;
+        float mGravity;
+        string mName;
 
-        public ResizeWindow(Canvas canvas)
+        class DetailsModel
+        {
+            public Level Level
+            {
+                get;
+                set;
+            }
+            public Canvas Canvas
+            {
+                get;
+                set;
+            }
+
+            public DetailsModel(Level l, Canvas c)
+            {
+                Level = l;
+                Canvas = c;
+            }
+        }
+
+        public DetailsWindow(Canvas canvas, Level level)
         {
             InitializeComponent();
-            DataContext = canvas;
+            DataContext = new DetailsModel(level, canvas);
             mWidth = canvas.Width;
             mHeight = canvas.Height;
+            mGravity = level.Gravity;
+            mName = level.Name;
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             mRevert = false;
+            DialogResult = true;
             this.Close();
         }
 
@@ -44,9 +70,12 @@ namespace LevelCreator
         {
             if (!mRevert)
                 return;
+            DialogResult = false;
 
-            (DataContext as Canvas).Width = mWidth;
-            (DataContext as Canvas).Height = mHeight;
+            (DataContext as DetailsModel).Canvas.Width = mWidth;
+            (DataContext as DetailsModel).Canvas.Height = mHeight;
+            (DataContext as DetailsModel).Level.Gravity = mGravity;
+            (DataContext as DetailsModel).Level.Name = mName;
         }
     }
 }

@@ -36,8 +36,9 @@ namespace LevelCreator
 
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, OpenCmdExecuted));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, DeleteCmdExecuted, DeleteCmdCanExecute));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, SaveCmdExecute));
-            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.SaveAs, SaveAsCmdExecute));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, SaveCmdExecuted));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.SaveAs, SaveAsCmdExecuted));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, NewCmdExecuted));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.IncreaseZoom, ZoomIn, CanZoomIn));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.DecreaseZoom, ZoomOut, CanZoomOut));
 
@@ -75,12 +76,38 @@ namespace LevelCreator
 
         #endregion
 
+        #region New Command
+
+        void NewCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        {
+            if (mUnsavedWork)
+                if (!ConfirmAction("You have currently unsaved work. Creating a new level will cause all your unsaved progress to be lost. Do you wish to continue?"))
+                    return;
+
+            Level lvl = new Level();
+            Canvas c = new Canvas();
+            c.Width = 2000;
+            c.Height = 1500;
+
+            DetailsWindow dw = new DetailsWindow(c, lvl);
+            if (dw.ShowDialog() != true)
+                return;
+
+            MyDesignerCanvas.Children.Clear();
+            MyDesignerCanvas.Background = Brushes.Transparent;
+            MyDesignerCanvas.Width  = c.Width;
+            MyDesignerCanvas.Height = c.Height;
+            mLevel = lvl;
+        }
+
+        #endregion
+
         #region Open Command
 
         void OpenCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             if (mUnsavedWork)
-                if (!ConfirmAction("You have currently unsaved work, opening another level will lose all your unsaved progress. Do you want to continue?"))
+                if (!ConfirmAction("You have currently unsaved work. Opening a level will cause all your unsaved progress to be lost. Do you wish to continue?"))
                     return;
 
             System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
@@ -250,11 +277,11 @@ namespace LevelCreator
 
         #region Save Commands
 
-        void SaveCmdExecute(object target, ExecutedRoutedEventArgs e)
+        void SaveCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             if (mFileLocation == null)
             {
-                SaveAsCmdExecute(target, e);
+                SaveAsCmdExecuted(target, e);
                 return;
             }
 
@@ -262,7 +289,7 @@ namespace LevelCreator
             SaveLevel(mFileLocation);
         }
 
-        void SaveAsCmdExecute(object target, ExecutedRoutedEventArgs e)
+        void SaveAsCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
             System.Windows.Forms.SaveFileDialog ofd = new System.Windows.Forms.SaveFileDialog();
             ofd.Filter =
@@ -381,12 +408,7 @@ namespace LevelCreator
 
         private void EditDetails_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void ResizeLevel_Click(object sender, RoutedEventArgs e)
-        {
-            ResizeWindow rw = new ResizeWindow(MyDesignerCanvas);
+            DetailsWindow rw = new DetailsWindow(MyDesignerCanvas, mLevel);
             rw.ShowDialog();
         }
     }

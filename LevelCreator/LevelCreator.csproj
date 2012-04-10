@@ -94,8 +94,8 @@
     <Compile Include="Controls\Toolbox.cs" />
     <Compile Include="Controls\ToolboxItem.cs" />
     <Compile Include="Controls\ZoomBox.cs" />
-    <Compile Include="ResizeWindow.xaml.cs">
-      <DependentUpon>ResizeWindow.xaml</DependentUpon>
+    <Compile Include="DetailsWindow.xaml.cs">
+      <DependentUpon>DetailsWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="PropertyWindows\CheckpointPropWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -109,7 +109,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ResizeWindow.xaml">
+    <Page Include="DetailsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

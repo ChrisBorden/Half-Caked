@@ -44,7 +44,13 @@ namespace LevelCreator
         public PropertiesWindow()
         {
             SelectionHandler += new EventHandler<BoolEventArgs>(HandleSelection);
+            this.SizeChanged += new SizeChangedEventHandler(PropertiesWindow_SizeChanged);
             Visibility = Visibility.Hidden;
+        }
+
+        void PropertiesWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Moved();
         }
 
         public virtual void HandleSelection(object sender, BoolEventArgs e)

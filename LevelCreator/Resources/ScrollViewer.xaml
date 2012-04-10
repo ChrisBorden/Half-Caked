@@ -23,8 +23,8 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <ScrollContentPresenter Grid.Column="1" />
-
+                        <ScrollContentPresenter Grid.Column="1"  />
+                 
                         <ScrollBar Name="PART_VerticalScrollBar"
                                    Value="{TemplateBinding VerticalOffset}"
                                    Maximum="{TemplateBinding ScrollableHeight}"

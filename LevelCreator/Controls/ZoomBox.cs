@@ -31,7 +31,11 @@ namespace LevelCreator
             if (this.ScrollViewer == null)
                 return;
 
-            this.designerCanvas = this.ScrollViewer.Content as DesignerCanvas;
+            if(this.ScrollViewer.Content is Border)
+                this.designerCanvas = (this.ScrollViewer.Content as Border).Child as DesignerCanvas;
+            else
+                this.designerCanvas = this.ScrollViewer.Content as DesignerCanvas;
+
             if (this.designerCanvas == null)
                 throw new Exception("DesignerCanvas must not be null!");
             

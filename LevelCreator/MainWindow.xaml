@@ -40,9 +40,7 @@
             </MenuItem>
             <MenuItem Header="Level">
                 <MenuItem Header="Select Background" Click="SelectBackground_Click"/>
-                <MenuItem Header="Edit Details"  Click="EditDetails_Click" IsEnabled="False"/>
-                <Separator />
-                <MenuItem Header="Resize Level" Click="ResizeLevel_Click" />
+                <MenuItem Header="Edit Details"  Click="EditDetails_Click"/>
             </MenuItem>
             <MenuItem Header="Test">
                 <MenuItem Header="Run"  IsEnabled="False"/>
@@ -67,28 +65,33 @@
                     BorderThickness="1">
                 <Grid>                    
                     <ScrollViewer Name="DesignerScrollViewer"
-                                  Background="Transparent"
+                                  Background="Transparent" 
                                   HorizontalScrollBarVisibility="Auto"
-                                  VerticalScrollBarVisibility="Auto"> 
-                        <s:DesignerCanvas x:Name="MyDesignerCanvas"
+                                  VerticalScrollBarVisibility="Auto">
+                        <Border BorderBrush="Black"
+                                Background="Transparent"
+                                Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                BorderThickness="2">
+                            <s:DesignerCanvas x:Name="MyDesignerCanvas"
                                             Height="600"
                                             Width="800"
-                                            AllowDrop="True" Background="#01FFFFFF">
-                            <Rectangle Stroke="Black" StrokeThickness="2" Fill="Transparent" Width="{Binding ElementName=MyDesignerCanvas, Path=Width}" Height="{Binding ElementName=MyDesignerCanvas, Path=Height}" IsHitTestVisible="False"/>
-                        </s:DesignerCanvas>      
+                                            AllowDrop="True" Background="#01FFFFFF" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            </s:DesignerCanvas>
+                        </Border>
                     </ScrollViewer>
+                    
                     <s:ZoomBox Width="180"
                                x:Name="Zoombox"
                                HorizontalAlignment="Right"
-                               VerticalAlignment="Top"
+                               VerticalAlignment="Bottom"
                                ScrollViewer="{Binding ElementName=DesignerScrollViewer}"
-                               Margin="0,5,25,0" />
+                               Margin="25,25,25,25" />
                 </Grid>
             </Border>
             <Border Grid.Column="0" Margin="0,1,0,0"
                     BorderBrush="LightGray"
                     BorderThickness="1">
-                <Expander Name="ToolboxContainer" ExpandDirection="Left" Content="{StaticResource GameStencil}" Expanded="Expander_Expanded" Collapsed="Expander_Collapsed">
+                <Expander Name="ToolboxContainer" ExpandDirection="Left" Content="{StaticResource GameStencil}" Expanded="Expander_Expanded" Collapsed="Expander_Collapsed" MaxWidth="200">
                     <Expander.Header>
                         <StackPanel>
                             <TextBlock Text="Toolbox" />
