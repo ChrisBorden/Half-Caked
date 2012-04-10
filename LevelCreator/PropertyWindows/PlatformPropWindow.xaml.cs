@@ -72,7 +72,7 @@ namespace LevelCreator
             public PlatformModel(PlatformPropertiesWindow ppw, Platform platform, Canvas canvas, DesignerItem item, Level level)
                 : base(item, level)
             {
-                mPlatform = platform;
+                Data = mPlatform = platform;
                 mCanvas = canvas;
 
                 if (!level.Obstacles.Contains(platform))
@@ -95,17 +95,15 @@ namespace LevelCreator
                 return list;
             }
 
-            public void AddPoint(PlatformPropertiesWindow parent)
+            public void AddPoint(PlatformPropertiesWindow parent, int index)
             {
-                Vector2 newPoint = Vector2.Zero;
-                mPlatform.Path.Add(newPoint);
+                if (index == -1)
+                {
+                    mPlatform.Path.Add(Vector2.Zero);
+                    index = mPlatform.Path.Count;
+                }
 
-                AddPoint(parent, newPoint);
-            }
-
-            public void AddPoint(PlatformPropertiesWindow parent, Vector2 point)
-            {
-                PointControl pc = new PointControl(parent, mCanvas, point, mPlatform.Path.Count, mPlatform.Path);
+                PointControl pc = new PointControl(parent, mCanvas, index, mPlatform.Path);
                 parent.mPoints.Children.Add(pc);
 
                 pc.OrderChanged += (object sender, EventArgs e) =>
@@ -129,8 +127,8 @@ namespace LevelCreator
             item.PropertyWindow = this;
             DataContext = new PlatformModel(this, platform, canvas, item, level);
 
-            foreach (Vector2 point in platform.Path)
-                (DataContext as PlatformModel).AddPoint(this, point);
+            for(int i = 1; i <= platform.Path.Count; i++)
+                (DataContext as PlatformModel).AddPoint(this, i);
         }
 
         public override void HandleSelection(object sender, BoolEventArgs e)
@@ -142,8 +140,8 @@ namespace LevelCreator
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            (DataContext as PlatformModel).AddPoint(this);
+        {            
+            (DataContext as PlatformModel).AddPoint(this, -1);
         }
     }
 }

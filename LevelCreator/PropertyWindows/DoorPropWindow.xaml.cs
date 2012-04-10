@@ -73,7 +73,7 @@ namespace LevelCreator
         public DoorModel(Door door, DesignerItem item, Level level)
             : base(item, level)
         {
-            mDoor = door;
+            Data = mDoor = door;
 
             if(!level.Obstacles.Contains(door))
                 level.Obstacles.Add(door);

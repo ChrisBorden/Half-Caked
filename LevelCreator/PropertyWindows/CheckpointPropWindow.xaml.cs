@@ -152,7 +152,7 @@ namespace LevelCreator
                 if(!level.Checkpoints.Contains(checkpoint))
                     level.Checkpoints.Add(checkpoint);
 
-                mCheckpoint = checkpoint;
+                Data = mCheckpoint = checkpoint;
                 mCanvas = canvas;
 
                 mCheckpointRegion = new System.Windows.Shapes.Rectangle();

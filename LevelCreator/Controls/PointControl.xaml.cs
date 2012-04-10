@@ -27,42 +27,42 @@ namespace LevelCreator
         class PointControlModel : MovingModel
         {
             int mIndex;
-            Vector2 mPoint;
+            List<Vector2> mPoints;
             StackPanel mParent;
             Canvas mCanvas;
             TextBlock mLabel;
 
-            public PointControlModel(StackPanel parent, Canvas canvas, Vector2 pnt, int indx, DesignerItem item, TextBlock txt)
+            public PointControlModel(StackPanel parent, Canvas canvas, List<Vector2> points, int indx, DesignerItem item, TextBlock txt)
                 : base(item, null)
             {
-                mIndex = indx;
                 mCanvas = canvas;
-                mPoint = pnt;
+                mPoints = points;
                 mParent = parent;
                 mLabel = txt;
+                Index = indx;
             }
 
             public int Index
             {
                 get { return mIndex; }
-                set { mIndex = value; mLabel.Text = "" + value;  OnPropertyChanged("Index"); OnPropertyChanged("CanDown"); OnPropertyChanged("CanUp"); }
+                set { mIndex = value - 1; mLabel.Text = "" + value; X = (int)mPoints[mIndex].X; Y = (int)mPoints[mIndex].Y; OnPropertyChanged("Index"); OnPropertyChanged("CanDown"); OnPropertyChanged("CanUp"); }
             }
 
             public override int X
             {
                 get { return base.X; }
-                set { mPoint.X = value; base.X = value; }
+                set { mPoints[mIndex] = new Vector2(value, mPoints[mIndex].Y); base.X = value; }
             }
 
             public override int Y
             {
                 get { return base.Y; }
-                set { mPoint.Y = value; base.Y = value; }
+                set { mPoints[mIndex] = new Vector2(mPoints[mIndex].X, value); base.Y = value; }
             }
 
-            public Vector2 Point
+            public List<Vector2> Points
             {
-                get { return mPoint; }
+                get { return mPoints; }
             }
 
             public StackPanel Parent
@@ -75,14 +75,14 @@ namespace LevelCreator
                 get { return mCanvas; }
             }
             
-            public bool CanDown { get { return mIndex < mParent.Children.Count; } }
-            public bool CanUp { get { return mIndex > 1; } }
+            public bool CanDown { get { return mIndex < mParent.Children.Count - 1; } }
+            public bool CanUp { get { return mIndex > 0; } }
         }
 
         PointControlModel mData;
         List<Vector2> mPath;
 
-        public PointControl(PlatformPropertiesWindow parent, Canvas canvas, Vector2 point, int index, List<Vector2> path)
+        public PointControl(PlatformPropertiesWindow parent, Canvas canvas, int index, List<Vector2> path)
             : base()
         {
             InitializeComponent();
@@ -112,13 +112,13 @@ namespace LevelCreator
             pointIndicator.MinHeight = 2;
             pointIndicator.MinWidth = 2;
 
-            Canvas.SetLeft(pointIndicator, point.X);
-            Canvas.SetTop(pointIndicator, point.Y);
+            Canvas.SetLeft(pointIndicator, path[index-1].X);
+            Canvas.SetTop(pointIndicator, path[index-1].Y);
             Canvas.SetZIndex(pointIndicator, 1);
 
             canvas.Children.Add(pointIndicator);
 
-            this.DataContext = pointIndicator.Model = mData = new PointControlModel(parent.mPoints, canvas, point, index, pointIndicator, txt);
+            this.DataContext = pointIndicator.Model = mData = new PointControlModel(parent.mPoints, canvas, path, index, pointIndicator, txt);
             mData.Delete += RemoveItem;
             mData.Item.OnSelected += parent.HandleSelection;
 
@@ -129,7 +129,7 @@ namespace LevelCreator
         {
             mData.Parent.Children.Remove(this);
             mData.Canvas.Children.Remove(mData.Item);
-            mPath.Remove(mData.Point);
+            mPath.RemoveAt(mData.Index);
             OrderChanged.Invoke(this, new EventArgs());
         }
 
@@ -140,17 +140,17 @@ namespace LevelCreator
 
         private void UpButton_Click(object sender, RoutedEventArgs e)
         {
-            var temp = mData.Parent.Children[mData.Index - 1];
-            mData.Parent.Children.RemoveAt(mData.Index - 1);
-            mData.Parent.Children.Insert(mData.Index - 2, temp);
+            var temp = mData.Points[mData.Index - 1];
+            mData.Points[mData.Index - 1] = mData.Points[mData.Index];
+            mData.Points[mData.Index ] = temp;
             OrderChanged.Invoke(this, new EventArgs());
         }
 
         private void DownButton_Click(object sender, RoutedEventArgs e)
         {
-            var temp = mData.Parent.Children[mData.Index - 1];
-            mData.Parent.Children.RemoveAt(mData.Index - 1);
-            mData.Parent.Children.Insert(mData.Index, temp);
+            var temp = mData.Points[mData.Index];
+            mData.Points[mData.Index] = mData.Points[mData.Index + 1];
+            mData.Points[mData.Index + 1] = temp;
             OrderChanged.Invoke(this, new EventArgs());
         }
 

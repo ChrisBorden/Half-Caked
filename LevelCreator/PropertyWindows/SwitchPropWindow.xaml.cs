@@ -59,7 +59,7 @@ namespace LevelCreator
             public SwitchModel(Switch mswitch, DesignerItem item, Level level)
                 : base(item, level)
             {
-                mSwitch = mswitch;
+                Data = mSwitch = mswitch;
 
                 if(!level.Obstacles.Contains(mSwitch))
                     level.Obstacles.Add(mSwitch);

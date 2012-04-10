@@ -24,18 +24,31 @@ namespace LevelCreator
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MouseEventHandler ActiveMouseHandler;
+        Image mCheckpointImage, mEnemyImage, mPlatformImage, mSwitchImage, mDoorImage;
+
         private GridLength mPrevCol = GridLength.Auto;
         private Level mLevel;
         private string mFileLocation;
         private bool mUnsavedWork = false, mFirstSave = false;
+        private List<object> mClipboard; // using custom clipboard because kept running into OOM exceptions
 
         public MainWindow()
         {
             InitializeComponent();
+            
+            List<Image> gameImages = (ToolboxContainer.Content as Toolbox).Items.OfType<Image>().ToList();
+
+            mCheckpointImage = gameImages.Find(x => x.ToolTip.Equals("Checkpoint"));
+            mEnemyImage = gameImages.Find(x => x.ToolTip.Equals("Enemy"));
+            mPlatformImage = gameImages.Find(x => x.ToolTip.Equals("Platform"));
+            mSwitchImage = gameImages.Find(x => x.ToolTip.Equals("Switch"));
+            mDoorImage = gameImages.Find(x => x.ToolTip.Equals("Door"));
 
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, OpenCmdExecuted));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Delete, DeleteCmdExecuted, DeleteCmdCanExecute));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, CopyCmdExecuted, CopyCmdCanExecute));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, CutCmdExecuted, CopyCmdCanExecute));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, PasteCmdExecuted, PasteCmdCanExecute));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, SaveCmdExecuted));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.SaveAs, SaveAsCmdExecuted));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, NewCmdExecuted));
@@ -126,86 +139,28 @@ namespace LevelCreator
             BitmapImage src = new BitmapImage(new Uri(ofd.FileName.Remove(ofd.FileName.Length - 3) + "png", UriKind.RelativeOrAbsolute));
             MyDesignerCanvas.Width = src.PixelWidth;
             MyDesignerCanvas.Height = src.PixelHeight;
-
-            List<Image> gameImages = (ToolboxContainer.Content as Toolbox).Items.OfType<Image>().ToList();
-
-            Image checkpointImage = gameImages.Find(x => x.ToolTip.Equals("Checkpoint"));
-            Image enemyImage = gameImages.Find(x => x.ToolTip.Equals("Enemy"));
-            Image platformImage = gameImages.Find(x => x.ToolTip.Equals("Platform"));
-            Image switchImage = gameImages.Find(x => x.ToolTip.Equals("Switch"));
-            Image doorImage = gameImages.Find(x => x.ToolTip.Equals("Door"));
-
+            
             MyDesignerCanvas.Children.Clear();
 
             foreach (Tile t in mLevel.Tiles)
-            {            
-                Rectangle rect=  new Rectangle();
-                rect.IsHitTestVisible = false;
-                rect.Fill = Brushes.Gray;
-
-                DesignerItem item = new DesignerItem();
-                item.Content = rect;
-                item.MinHeight = item.MinWidth = 1;
-                MyDesignerCanvas.Children.Add(item);
-
-                PropertiesWindow pw = new TilePropertiesWindow(t, item, mLevel);
-                MyDesignerCanvas.Children.Add(pw);
-
-                item.OnSelected += pw.SelectionHandler;
-            }
+                AddTile(t);
 
             foreach (Enemy enemy in mLevel.Actors)
-            {
-                DesignerItem item = CreateDesignerImage(enemyImage);
-
-                PropertiesWindow pw = new EnemyPropertiesWindow(enemy, MyDesignerCanvas, item, mLevel);
-                MyDesignerCanvas.Children.Add(pw);
-
-                item.OnSelected += pw.SelectionHandler;
-            }
+                AddEnemy(enemy);
 
             foreach (Checkpoint cp in mLevel.Checkpoints)
+                AddCheckpoint(cp);
+
+            foreach (Obstacle obs in mLevel.Obstacles)
             {
-                DesignerItem item = CreateDesignerImage(checkpointImage);
-
-                PropertiesWindow pw = new CheckpointPropertiesWindow(cp, MyDesignerCanvas, item, mLevel);
-                MyDesignerCanvas.Children.Add(pw);
-
-                item.OnSelected += pw.SelectionHandler;
+                if(obs is Switch)
+                    AddSwitch(obs as Switch);
+                else if (obs is Door)
+                    AddDoor(obs as Door);
+                else if (obs is Platform)
+                    AddPlatform(obs as Platform);
             }
-
-            foreach (Switch sw in mLevel.Obstacles.OfType<Switch>())
-            {
-                DesignerItem item = CreateDesignerImage(switchImage);
-
-                PropertiesWindow pw = new SwitchPropertiesWindow(sw, item, mLevel);
-                MyDesignerCanvas.Children.Add(pw);
-
-                item.OnSelected += pw.SelectionHandler;
-            }
-
-            foreach (Door dr in mLevel.Obstacles.OfType<Door>())
-            {
-                DesignerItem item = CreateDesignerImage(doorImage);
-
-                DoorModel dm = new DoorModel(dr, item, mLevel);
-                PropertiesWindow pw = new DoorPropertiesWindow();
-                pw.DataContext = dm;
-                item.PropertyWindow = pw;
-                MyDesignerCanvas.Children.Add(pw);
-
-                item.OnSelected += pw.SelectionHandler;
-            }
-
-            foreach (Platform pltfrm in mLevel.Obstacles.OfType<Platform>())
-            {
-                DesignerItem item = CreateDesignerImage(platformImage);
-
-                PropertiesWindow pw = new PlatformPropertiesWindow(pltfrm, MyDesignerCanvas, item, mLevel);
-                MyDesignerCanvas.Children.Add(pw);
-                item.OnSelected += pw.SelectionHandler;
-            }
-
+            
             MyDesignerCanvas.DeselectAll();
         }
 
@@ -230,29 +185,10 @@ namespace LevelCreator
             }
         }
 
-        private DesignerItem CreateDesignerImage(Image source)
-        {
-            DesignerItem item = new DesignerItem();
-            item.IsSelected = true;
-            item.CanResize = false;
-            Image img = new Image();
-            img.IsHitTestVisible = false;
-            img.Source = source.Source;
-            item.Content = img;
-            item.Width = img.Source.Width;
-            item.Height = img.Source.Height;
-
-            item.MinWidth = 2;
-            item.MinHeight = 2;
-                
-            MyDesignerCanvas.Children.Add(item);
-            return item;
-        }
-
         #endregion
 
         #region Zoom Commands
-        
+
         public void ZoomIn(object target, ExecutedRoutedEventArgs e)
         {
             this.Zoombox.ZoomIn();
@@ -361,26 +297,86 @@ namespace LevelCreator
         }
 
         #endregion
+        
+        #region Copy Cmmand
+
+        void CopyCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        {
+            mClipboard = new List<object>();
+            var selected = MyDesignerCanvas.SelectedItems.Where(x => x.PropertyWindow != null && (x.PropertyWindow.DataContext as MovingModel).Data != null).Select(x => (x.PropertyWindow.DataContext as MovingModel).Data).ToList();
+
+            foreach(object obj in selected)
+            {
+                XmlSerializer serializer = new XmlSerializer(obj.GetType());
+                using (MemoryStream mem = new MemoryStream())
+                {
+                    serializer.Serialize(mem, obj);
+                    mem.Position = 0;
+                    mClipboard.Add(serializer.Deserialize(mem));           
+                }
+            }
+        }
+
+        void CopyCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = MyDesignerCanvas.SelectedItems.Count() > 0;
+        }
 
         #endregion
 
-        private void Window_Closed(object sender, EventArgs e)
+        #region Cut Cmmand
+
+        void CutCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            CopyCmdExecuted(target, e);
+            DeleteCmdExecuted(target, e);
+        }
+        
+        #endregion
+
+        #region Paste Command
+
+        void PasteCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        {
+            foreach (object obj in mClipboard)
+            {
+                switch (obj.GetType().Name)
+                {
+                    case "Tile":
+                        AddTile(obj as Tile);
+                        break;
+                    case "Checkpoint":
+                        AddCheckpoint(obj as Checkpoint);
+                        break;
+                    case "Door":
+                        (obj as Obstacle).Guid = Guid.NewGuid();
+                        AddDoor(obj as Door);
+                        break;
+                    case "Switch":
+                        (obj as Obstacle).Guid = Guid.NewGuid();
+                        AddSwitch(obj as Switch);
+                        break;
+                    case "Platform":
+                        (obj as Obstacle).Guid = Guid.NewGuid();
+                        AddPlatform(obj as Platform);
+                        break;
+                    case "Enemy":
+                        AddEnemy(obj as Enemy);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
-        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        void PasteCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            Col1.MinWidth = 90;
-            Col1.Width = mPrevCol;
+            e.CanExecute = mClipboard != null && mClipboard.Count > 0;
         }
 
-        private void Expander_Collapsed(object sender, RoutedEventArgs e)
-        {
-            Col1.MinWidth = 25;
-            mPrevCol = Col1.Width;
-            Col1.Width = GridLength.Auto;
-        }
+        #endregion
+
+        #region Level MenuItem Commands
 
         private void SelectBackground_Click(object sender, RoutedEventArgs e)
         {
@@ -399,17 +395,136 @@ namespace LevelCreator
             }
         }
 
+        private void EditDetails_Click(object sender, RoutedEventArgs e)
+        {
+            DetailsWindow rw = new DetailsWindow(MyDesignerCanvas, mLevel);
+            rw.ShowDialog();
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Helper Item Methods
+
+        private DesignerItem CreateDesignerImage(Image source)
+        {
+            DesignerItem item = new DesignerItem();
+            item.IsSelected = true;
+            item.CanResize = false;
+            Image img = new Image();
+            img.IsHitTestVisible = false;
+            img.Source = source.Source;
+            item.Content = img;
+            item.Width = img.Source.Width;
+            item.Height = img.Source.Height;
+
+            item.MinWidth = 2;
+            item.MinHeight = 2;
+                
+            MyDesignerCanvas.Children.Add(item);
+            return item;
+        }
+
+        private void AddCheckpoint(Checkpoint cp)
+        {
+            DesignerItem item = CreateDesignerImage(mCheckpointImage);
+
+            PropertiesWindow pw = new CheckpointPropertiesWindow(cp, MyDesignerCanvas, item, mLevel);
+            MyDesignerCanvas.Children.Add(pw);
+
+            item.OnSelected += pw.SelectionHandler;
+            item.IsSelected = true;
+        }
+
+        private void AddEnemy(Enemy enemy)
+        {
+            DesignerItem item = CreateDesignerImage(mEnemyImage);
+
+            PropertiesWindow pw = new EnemyPropertiesWindow(enemy, MyDesignerCanvas, item, mLevel);
+            MyDesignerCanvas.Children.Add(pw);
+
+            item.OnSelected += pw.SelectionHandler;
+            item.IsSelected = true;
+        }
+
+        private void AddDoor(Door door)
+        {
+            DesignerItem item = CreateDesignerImage(mDoorImage);
+
+            DoorModel dm = new DoorModel(door, item, mLevel);
+            PropertiesWindow pw = new DoorPropertiesWindow();
+            pw.DataContext = dm;
+            item.PropertyWindow = pw;
+            MyDesignerCanvas.Children.Add(pw);
+
+            item.OnSelected += pw.SelectionHandler;
+            item.IsSelected = true;
+        }
+
+        private void AddSwitch(Switch sw)
+        {
+            DesignerItem item = CreateDesignerImage(mSwitchImage);
+
+            PropertiesWindow pw = new SwitchPropertiesWindow(sw, item, mLevel);
+            MyDesignerCanvas.Children.Add(pw);
+
+            item.OnSelected += pw.SelectionHandler;
+            item.IsSelected = true;
+        }
+
+        private void AddPlatform(Platform pltfrm)
+        {
+            DesignerItem item = CreateDesignerImage(mPlatformImage);
+
+            PropertiesWindow pw = new PlatformPropertiesWindow(pltfrm, MyDesignerCanvas, item, mLevel);
+            MyDesignerCanvas.Children.Add(pw);
+            item.OnSelected += pw.SelectionHandler;
+            item.IsSelected = true;
+        }
+        
+        private void AddTile(Tile t)
+        {
+            Rectangle rect = new Rectangle();
+            rect.IsHitTestVisible = false;
+            rect.Fill = Brushes.Gray;
+
+            DesignerItem item = new DesignerItem();
+            item.Content = rect;
+            item.MinHeight = item.MinWidth = 1;
+            MyDesignerCanvas.Children.Add(item);
+
+            PropertiesWindow pw = new TilePropertiesWindow(t, item, mLevel);
+            MyDesignerCanvas.Children.Add(pw);
+
+            item.OnSelected += pw.SelectionHandler;
+            item.IsSelected = true;
+        }
+        #endregion
+        
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        {
+            Col1.MinWidth = 90;
+            Col1.Width = mPrevCol;
+        }
+
+        private void Expander_Collapsed(object sender, RoutedEventArgs e)
+        {
+            Col1.MinWidth = 25;
+            mPrevCol = Col1.Width;
+            Col1.Width = GridLength.Auto;
+        }
+        
         private bool ConfirmAction(string s)
         {
             var dr = System.Windows.Forms.MessageBox.Show(s, "Confirmation Dialog", System.Windows.Forms.MessageBoxButtons.YesNo);
 
             return dr == System.Windows.Forms.DialogResult.Yes;
-        }
-
-        private void EditDetails_Click(object sender, RoutedEventArgs e)
-        {
-            DetailsWindow rw = new DetailsWindow(MyDesignerCanvas, mLevel);
-            rw.ShowDialog();
         }
     }
 }

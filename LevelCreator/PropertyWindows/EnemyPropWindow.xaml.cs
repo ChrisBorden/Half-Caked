@@ -93,7 +93,7 @@ namespace LevelCreator
         public EnemyModel(Enemy enemy, Ellipse rangeFinder, DesignerItem item, Level level)
             : base(item, level)
         {
-            mEnemy = enemy;
+            Data = mEnemy = enemy;
             mRangeFinder = rangeFinder;
 
             if(!level.Actors.Contains(mEnemy))

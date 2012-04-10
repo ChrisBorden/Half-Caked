@@ -92,6 +92,7 @@ namespace LevelCreator
         protected Level mLevel;
 
         public DesignerItem Item { get { return mItem; } }
+        public object Data;
         public event EventHandler Delete;
 
         public virtual int X

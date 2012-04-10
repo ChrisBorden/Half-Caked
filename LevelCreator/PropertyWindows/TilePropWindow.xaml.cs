@@ -95,7 +95,7 @@ namespace LevelCreator
             public TileModel(Tile tile, DesignerItem item, Level level)
                 : base(item, level)
             {
-                mTile = tile;
+                Data = mTile = tile;
                 
                 if(!level.Tiles.Contains(mTile))
                     level.Tiles.Add(mTile);
