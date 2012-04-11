@@ -75,7 +75,7 @@
                             <s:DesignerCanvas x:Name="MyDesignerCanvas"
                                             Height="600"
                                             Width="800"
-                                            AllowDrop="True" Background="#01FFFFFF" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            AllowDrop="True" Background="#01FFFFFF" VerticalAlignment="Center" HorizontalAlignment="Center" >
                             </s:DesignerCanvas>
                         </Border>
                     </ScrollViewer>

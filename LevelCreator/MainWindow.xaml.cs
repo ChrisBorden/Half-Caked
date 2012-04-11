@@ -35,7 +35,8 @@ namespace LevelCreator
         public MainWindow()
         {
             InitializeComponent();
-            
+            EventManager.RegisterClassHandler(typeof(MainWindow), UIElement.PreviewKeyDownEvent, new KeyEventHandler(KeyDownHandler));
+
             List<Image> gameImages = (ToolboxContainer.Content as Toolbox).Items.OfType<Image>().ToList();
 
             mCheckpointImage = gameImages.Find(x => x.ToolTip.Equals("Checkpoint"));
@@ -525,6 +526,36 @@ namespace LevelCreator
             var dr = System.Windows.Forms.MessageBox.Show(s, "Confirmation Dialog", System.Windows.Forms.MessageBoxButtons.YesNo);
 
             return dr == System.Windows.Forms.DialogResult.Yes;
+        }
+
+        private void KeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (MyDesignerCanvas.SelectedItems.Count() > 0)
+            {
+                int deltaX = 0, deltaY = 0;
+
+                switch (e.Key)
+                {
+                    case Key.Left: deltaX--; break;
+                    case Key.Right: deltaX++; break;
+                    case Key.Up: deltaY--; break;
+                    case Key.Down: deltaY++; break;
+                    default: return;
+                }
+
+                foreach (DesignerItem item in MyDesignerCanvas.SelectedItems)
+                {
+                    Canvas.SetLeft(item, Math.Max(Math.Min(Canvas.GetLeft(item) + deltaX, MyDesignerCanvas.ActualWidth - item.Width), 0));
+                    Canvas.SetTop(item, Math.Max(Math.Min(Canvas.GetTop(item) + deltaY, MyDesignerCanvas.ActualHeight - item.Height), 0));
+
+                    if (item.PropertyWindow != null)
+                        item.PropertyWindow.Moved();
+                    else if (item.Model != null)
+                        item.Model.Moved();
+                }
+
+                e.Handled = true;
+            }
         }
     }
 }
