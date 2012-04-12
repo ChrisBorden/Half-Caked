@@ -28,7 +28,7 @@ namespace Half_Caked
                 prof.CurrentLevel++;
 
             if (prof.LevelStatistics[mLevel.LevelIdentifier] == null ||
-                prof.LevelStatistics[mLevel.LevelIdentifier].Score > level.LevelStatistics.Score)
+                prof.LevelStatistics[mLevel.LevelIdentifier].Score < level.LevelStatistics.Score)
             {
                 mContentLabel.Text = "Congratulations! You set a new High Score: " + level.LevelStatistics.Score;
                 level.LevelStatistics.Date = DateTime.Now;
