@@ -254,7 +254,7 @@ namespace Half_Caked
         {
             get
             {
-                return (int)TimeElapsed;
+                return 10000/(int)TimeElapsed;
             }
         }
 
