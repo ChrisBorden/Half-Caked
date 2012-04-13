@@ -15,7 +15,7 @@ namespace Half_Caked
         {
             try
             {
-                return Int32.Parse(PostAndReceive("newUser.php", name));
+                return Int32.Parse(PostAndReceive("newUser.php", "name=" + name));
             }
             catch { return -1; }
         }
@@ -24,7 +24,7 @@ namespace Half_Caked
         {
             try
             {
-                PostAndReceive("updateScore.php", guid + "," + stats.Level + "," + stats.Score);
+                PostAndReceive("updateScore.php","uid=" + guid + "&level=" + stats.Level + "&score=" + stats.Score);
             }
             catch { }
         }
@@ -34,7 +34,7 @@ namespace Half_Caked
             WebRequest request = WebRequest.Create(URL +"/" + dest);
 
             request.Method = "POST";
-            request.ContentType = "text/html";
+            request.ContentType = "application/x-www-form-urlencoded";
 
             byte[] byteArray = Encoding.UTF8.GetBytes(s);
             request.ContentLength = byteArray.Length;
