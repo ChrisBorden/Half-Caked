@@ -57,7 +57,7 @@ namespace Half_Caked
 
         private List<TextEffect> mTextEffects;
         private AudioSettings mAudio;
-        private Song mExitReached;
+        private SoundEffect mExitReached;
         private Song mBackgroundMusic;
         private SoundEffect mCheckpointSound;
         private bool mCanPlayerMusic = true;
@@ -102,7 +102,7 @@ namespace Half_Caked
             SoundEffect.MasterVolume = mAudio.MasterVolume / 100f;
             MediaPlayer.Volume = mAudio.MasterVolume * mAudio.MusicVolume / 10000f;
             MediaPlayer.Stop();
-            mExitReached = theContentManager.Load<Song>("Sounds\\ExitReached");
+            mExitReached = theContentManager.Load<SoundEffect>("Sounds\\ExitReached");
 			try
 			{
 				mBackgroundMusic = theContentManager.Load<Song>(backgroundMusicName);
@@ -281,7 +281,7 @@ namespace Half_Caked
         #region Private Methods
         private void GameOver()
         {
-            MediaPlayer.Play(mExitReached);
+            PlaySoundEffect(mExitReached);
             throw new Exception("LevelComplete");
         }
         #endregion

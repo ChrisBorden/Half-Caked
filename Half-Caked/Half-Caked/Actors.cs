@@ -149,7 +149,7 @@ namespace Half_Caked
 
             dir.Normalize();
 
-            Vector2 firingPosition = 60 * dir + Position;
+            Vector2 firingPosition = 20 * dir + Position;
 
             foreach (Tile tile in lvl.Tiles)
             {
