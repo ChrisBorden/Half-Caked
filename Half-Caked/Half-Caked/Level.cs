@@ -282,6 +282,7 @@ namespace Half_Caked
         private void GameOver()
         {
             PlaySoundEffect(mExitReached);
+            Player.GameOver();
             throw new Exception("LevelComplete");
         }
         #endregion

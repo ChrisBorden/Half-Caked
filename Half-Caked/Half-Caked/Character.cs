@@ -277,6 +277,11 @@ namespace Half_Caked
             return State.Platform == mCurrentState || State.Ground == mCurrentState;
         }
 
+        public void GameOver()
+        {
+            animator.PlayAnimation(victoryAnimation);
+        }
+
         #endregion
 
         #region Private Methods
