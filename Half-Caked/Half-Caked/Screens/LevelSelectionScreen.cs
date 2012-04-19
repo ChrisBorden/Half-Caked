@@ -18,7 +18,6 @@ namespace Half_Caked
     {
         #region Private Fields
         Level[] mLevels;
-        Thread levelFinder;
         #endregion
 
         #region Initialization
@@ -108,9 +107,7 @@ namespace Half_Caked
 
                     ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, text, textpos, Color.White);      
                     ScreenManager.SpriteBatch.End();
-                }
-
-                
+                }               
             }
         }
 

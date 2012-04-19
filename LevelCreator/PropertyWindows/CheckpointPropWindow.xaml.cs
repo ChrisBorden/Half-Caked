@@ -116,10 +116,10 @@ namespace LevelCreator
 
             public int LocationX
             {
-                get { return (int)(Canvas.GetLeft(mRespawnIndicator)); }
+                get { return (int)(Canvas.GetLeft(mRespawnIndicator) + mRespawnIndicator.Width / 2); }
                 set
                 {
-                    Canvas.SetLeft(mRespawnIndicator, value);
+                    Canvas.SetLeft(mRespawnIndicator, value - mRespawnIndicator.Width/2);
                     mCheckpoint.Location.X = (float)value;
                     OnPropertyChanged("LocationX");
                 }
@@ -127,10 +127,10 @@ namespace LevelCreator
 
             public int LocationY
             {
-                get { return (int)(Canvas.GetTop(mRespawnIndicator)); }
+                get { return (int)(Canvas.GetTop(mRespawnIndicator) + mRespawnIndicator.Height / 2); }
                 set
                 {
-                    Canvas.SetTop(mRespawnIndicator, value);
+                    Canvas.SetTop(mRespawnIndicator, value - mRespawnIndicator.Height / 2);
                     mCheckpoint.Location.Y = (float)value;
                     OnPropertyChanged("LocationY");
                 }
@@ -149,6 +149,8 @@ namespace LevelCreator
             public CheckpointModel(Checkpoint checkpoint, DesignerItem item, Level level, Canvas canvas)
                 : base(item, level)
             {
+                IsCentered = true;
+
                 if(!level.Checkpoints.Contains(checkpoint))
                     level.Checkpoints.Add(checkpoint);
 

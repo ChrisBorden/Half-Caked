@@ -60,7 +60,7 @@ namespace LevelCreator
             get { return base.X; }
             set
             {
-                Canvas.SetLeft(mRangeFinder, value + mItem.Width / 2 - mEnemy.Range);
+                Canvas.SetLeft(mRangeFinder, value - mEnemy.Range);
                 mEnemy.InitialPosition = new Vector2(value, mEnemy.InitialPosition.Y); base.X = value;
             }
         }
@@ -70,7 +70,7 @@ namespace LevelCreator
             get { return base.Y; }
             set
             {
-                Canvas.SetTop(mRangeFinder, value + mItem.Height / 2 - mEnemy.Range);
+                Canvas.SetTop(mRangeFinder, value - mEnemy.Range);
                 mEnemy.InitialPosition = new Vector2(mEnemy.InitialPosition.X, value); base.Y = value;
             }
         }
@@ -93,6 +93,7 @@ namespace LevelCreator
         public EnemyModel(Enemy enemy, Ellipse rangeFinder, DesignerItem item, Level level)
             : base(item, level)
         {
+            IsCentered = true;
             Data = mEnemy = enemy;
             mRangeFinder = rangeFinder;
 

@@ -65,7 +65,6 @@ namespace LevelCreator
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.DecreaseZoom, ZoomOut, CanZoomOut));
 
             Level = new Level();
-            MyDesignerCanvas.Level = Level;
         }
 
         #region Commands
