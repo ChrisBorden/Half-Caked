@@ -24,7 +24,7 @@ namespace Half_Caked
 
             Profile prof = game.CurrentProfile;
 
-            if (prof.CurrentLevel < Level.MAX_LEVELS - 1 && prof.CurrentLevel == level.LevelIdentifier)
+            if (prof.CurrentLevel < Level.MAX_LEVELS && prof.CurrentLevel == level.LevelIdentifier)
                 prof.CurrentLevel++;
 
             if (prof.LevelStatistics[mLevel.LevelIdentifier] == null ||

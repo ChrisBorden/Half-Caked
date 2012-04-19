@@ -28,6 +28,14 @@ namespace LevelCreator
 
         private GridLength mPrevCol = GridLength.Auto;
         private Level mLevel;
+
+        public Level Level
+        {
+            get { return mLevel; }
+            set { mLevel = value; MyDesignerCanvas.Level = mLevel; }
+        }
+
+        
         private string mFileLocation;
         private bool mUnsavedWork = false, mFirstSave = false;
         private List<object> mClipboard; // using custom clipboard because kept running into OOM exceptions
@@ -56,8 +64,8 @@ namespace LevelCreator
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.IncreaseZoom, ZoomIn, CanZoomIn));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.DecreaseZoom, ZoomOut, CanZoomOut));
 
-            mLevel = new Level();
-            MyDesignerCanvas.Level = mLevel;
+            Level = new Level();
+            MyDesignerCanvas.Level = Level;
         }
 
         #region Commands
@@ -111,7 +119,7 @@ namespace LevelCreator
             MyDesignerCanvas.Background = Brushes.Transparent;
             MyDesignerCanvas.Width  = c.Width;
             MyDesignerCanvas.Height = c.Height;
-            mLevel = lvl;
+            Level = lvl;
         }
 
         #endregion
@@ -135,7 +143,7 @@ namespace LevelCreator
             if (result != System.Windows.Forms.DialogResult.OK)
                 return;
 
-            mLevel = LoadLevel(ofd.FileName);
+            Level = LoadLevel(ofd.FileName);
 
             BitmapImage src = new BitmapImage(new Uri(ofd.FileName.Remove(ofd.FileName.Length - 3) + "png", UriKind.RelativeOrAbsolute));
             MyDesignerCanvas.Width = src.PixelWidth;
@@ -143,16 +151,16 @@ namespace LevelCreator
             
             MyDesignerCanvas.Children.Clear();
 
-            foreach (Tile t in mLevel.Tiles)
+            foreach (Tile t in Level.Tiles)
                 AddTile(t);
 
-            foreach (Enemy enemy in mLevel.Actors)
+            foreach (Enemy enemy in Level.Actors)
                 AddEnemy(enemy);
 
-            foreach (Checkpoint cp in mLevel.Checkpoints)
+            foreach (Checkpoint cp in Level.Checkpoints)
                 AddCheckpoint(cp);
 
-            foreach (Obstacle obs in mLevel.Obstacles)
+            foreach (Obstacle obs in Level.Obstacles)
             {
                 if(obs is Switch)
                     AddSwitch(obs as Switch);
@@ -284,16 +292,16 @@ namespace LevelCreator
                                             new Tile(new Microsoft.Xna.Framework.Rectangle(0, (int) MyDesignerCanvas.ActualHeight + 1, (int) MyDesignerCanvas.ActualWidth, 2), Surface.Absorbs), 
                                             new Tile(new Microsoft.Xna.Framework.Rectangle((int) MyDesignerCanvas.ActualWidth + 1, 0, 2, (int) MyDesignerCanvas.ActualHeight), Surface.Absorbs) };
 
-                mLevel.Tiles.AddRange(boundaries);
+                Level.Tiles.AddRange(boundaries);
             }
 
             XmlSerializer serializer = new XmlSerializer(typeof(Level));
             TextWriter textWriter = new StreamWriter(path + ".xml");
-            serializer.Serialize(textWriter, mLevel);
+            serializer.Serialize(textWriter, Level);
             textWriter.Close();
 
             if (mFirstSave)
-                mLevel.Tiles.RemoveAll(t => boundaries.Contains(t));
+                Level.Tiles.RemoveAll(t => boundaries.Contains(t));
             mFirstSave = false;
         }
 
@@ -398,7 +406,7 @@ namespace LevelCreator
 
         private void EditDetails_Click(object sender, RoutedEventArgs e)
         {
-            DetailsWindow rw = new DetailsWindow(MyDesignerCanvas, mLevel);
+            DetailsWindow rw = new DetailsWindow(MyDesignerCanvas, Level);
             rw.ShowDialog();
         }
 
@@ -431,7 +439,7 @@ namespace LevelCreator
         {
             DesignerItem item = CreateDesignerImage(mCheckpointImage);
 
-            PropertiesWindow pw = new CheckpointPropertiesWindow(cp, MyDesignerCanvas, item, mLevel);
+            PropertiesWindow pw = new CheckpointPropertiesWindow(cp, MyDesignerCanvas, item, Level);
             MyDesignerCanvas.Children.Add(pw);
 
             item.OnSelected += pw.SelectionHandler;
@@ -442,7 +450,7 @@ namespace LevelCreator
         {
             DesignerItem item = CreateDesignerImage(mEnemyImage);
 
-            PropertiesWindow pw = new EnemyPropertiesWindow(enemy, MyDesignerCanvas, item, mLevel);
+            PropertiesWindow pw = new EnemyPropertiesWindow(enemy, MyDesignerCanvas, item, Level);
             MyDesignerCanvas.Children.Add(pw);
 
             item.OnSelected += pw.SelectionHandler;
@@ -453,7 +461,7 @@ namespace LevelCreator
         {
             DesignerItem item = CreateDesignerImage(mDoorImage);
 
-            DoorModel dm = new DoorModel(door, item, mLevel);
+            DoorModel dm = new DoorModel(door, item, Level);
             PropertiesWindow pw = new DoorPropertiesWindow();
             pw.DataContext = dm;
             item.PropertyWindow = pw;
@@ -467,7 +475,7 @@ namespace LevelCreator
         {
             DesignerItem item = CreateDesignerImage(mSwitchImage);
 
-            PropertiesWindow pw = new SwitchPropertiesWindow(sw, item, mLevel);
+            PropertiesWindow pw = new SwitchPropertiesWindow(sw, item, Level);
             MyDesignerCanvas.Children.Add(pw);
 
             item.OnSelected += pw.SelectionHandler;
@@ -478,7 +486,7 @@ namespace LevelCreator
         {
             DesignerItem item = CreateDesignerImage(mPlatformImage);
 
-            PropertiesWindow pw = new PlatformPropertiesWindow(pltfrm, MyDesignerCanvas, item, mLevel);
+            PropertiesWindow pw = new PlatformPropertiesWindow(pltfrm, MyDesignerCanvas, item, Level);
             MyDesignerCanvas.Children.Add(pw);
             item.OnSelected += pw.SelectionHandler;
             item.IsSelected = true;
@@ -495,7 +503,7 @@ namespace LevelCreator
             item.MinHeight = item.MinWidth = 1;
             MyDesignerCanvas.Children.Add(item);
 
-            PropertiesWindow pw = new TilePropertiesWindow(t, item, mLevel);
+            PropertiesWindow pw = new TilePropertiesWindow(t, item, Level);
             MyDesignerCanvas.Children.Add(pw);
 
             item.OnSelected += pw.SelectionHandler;
