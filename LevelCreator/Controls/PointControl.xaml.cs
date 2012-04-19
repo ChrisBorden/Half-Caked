@@ -35,6 +35,7 @@ namespace LevelCreator
             public PointControlModel(StackPanel parent, Canvas canvas, List<Vector2> points, int indx, DesignerItem item, TextBlock txt)
                 : base(item, null)
             {
+                IsCentered = true;
                 mCanvas = canvas;
                 mPoints = points;
                 mParent = parent;

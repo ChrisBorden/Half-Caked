@@ -67,22 +67,31 @@ namespace LevelCreator
 
             this.LayoutTransform = canvas.LayoutTransform.Inverse as Transform;
 
-            if ((DataContext as MovingModel).Item.Width > canvas.Width * 3 / 4)
-                Canvas.SetLeft(this, (DataContext as MovingModel).X + 5);            
-            else if(canvas.Width / 2 > (DataContext as MovingModel).X)
-                Canvas.SetLeft(this, (DataContext as MovingModel).Item.Width + (DataContext as MovingModel).X + 5);
-            else if (ActualWidth != 0)
-                Canvas.SetLeft(this, -this.ActualWidth / (canvas.LayoutTransform as ScaleTransform).ScaleX + (DataContext as MovingModel).X - 5);
-            else
-                Canvas.SetLeft(this, -200 / (canvas.LayoutTransform as ScaleTransform).ScaleX + (DataContext as MovingModel).X - 5);
+            var item = (DataContext as MovingModel).Item;
 
-            Canvas.SetTop(this, (DataContext as MovingModel).Y);
-            if (canvas.Height / 2 > (DataContext as MovingModel).Y)
-                Canvas.SetTop(this, (DataContext as MovingModel).Y);
-            else if (ActualHeight != 0)
-                Canvas.SetTop(this, -this.ActualHeight / (canvas.LayoutTransform as ScaleTransform).ScaleY + (DataContext as MovingModel).Y + (DataContext as MovingModel).Item.Height);
+            double left = (DataContext as MovingModel).X + 5;
+            double top = (DataContext as MovingModel).Y;
+            if ((DataContext as MovingModel).IsCentered)
+            {
+                left -= item.Width / 2;
+                top  -= item.Height / 2;
+            }
+
+            if (item.Width > canvas.Width * 3 / 4)
+                Canvas.SetLeft(this, left);
+            else if (canvas.Width / 2 > (DataContext as MovingModel).X)
+                Canvas.SetLeft(this, item.Width + left);
+            else if (ActualWidth != 0)
+                Canvas.SetLeft(this, -this.ActualWidth / (canvas.LayoutTransform as ScaleTransform).ScaleX + left);
             else
-                Canvas.SetTop(this, -200 / (canvas.LayoutTransform as ScaleTransform).ScaleY + (DataContext as MovingModel).Y + (DataContext as MovingModel).Item.Height);
+                Canvas.SetLeft(this, -200  / (canvas.LayoutTransform as ScaleTransform).ScaleX + left);
+
+            if (canvas.Height / 2 > (DataContext as MovingModel).Y)
+                Canvas.SetTop(this, top);
+            else if (ActualHeight != 0)
+                Canvas.SetTop(this, -this.ActualHeight / (canvas.LayoutTransform as ScaleTransform).ScaleY + top + item.Height);
+            else
+                Canvas.SetTop(this, -200 / (canvas.LayoutTransform as ScaleTransform).ScaleY + top + item.Height);
         }
     }
 
@@ -94,23 +103,24 @@ namespace LevelCreator
         public DesignerItem Item { get { return mItem; } }
         public object Data;
         public event EventHandler Delete;
+        public bool IsCentered;
 
         public virtual int X
         {
-            get { return (int)Canvas.GetLeft(mItem); }
+            get { return (int)(Canvas.GetLeft(mItem) + (IsCentered ? (mItem.Width / 2) : 0)); }
             set
             {
-                Canvas.SetLeft(mItem, value);
+                Canvas.SetLeft(mItem, value - (IsCentered ? (mItem.Width / 2) : 0));
                 OnPropertyChanged("X");
             }
         }
 
         public virtual int Y
         {
-            get { return (int)Canvas.GetTop(mItem); }
+            get { return (int)(Canvas.GetTop(mItem) + (IsCentered ? (mItem.Height / 2) : 0)); }
             set
             {
-                Canvas.SetTop(mItem, value);
+                Canvas.SetTop(mItem, value - (IsCentered ? (mItem.Height / 2) : 0));
                 OnPropertyChanged("Y");
             }
         }

@@ -42,22 +42,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Levels\Custom\readme.txt">
+      <Name>readme</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Levels\Level0.xml">
       <Name>Level0</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Compile Include="Levels\Level5.png">
-      <Name>Level5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Level5b.png">
-      <Name>Level5b</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="Sounds\ExitReached.wav">
       <Name>ExitReached</Name>
       <Importer>WavImporter</Importer>
@@ -172,6 +166,11 @@
     </Compile>
     <Compile Include="Sprites\Cake.png">
       <Name>Cake</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Level5.png">
+      <Name>Level5</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -384,6 +383,7 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

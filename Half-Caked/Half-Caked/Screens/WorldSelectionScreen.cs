@@ -14,46 +14,32 @@ using System.Threading;
 
 namespace Half_Caked
 {
-    class LevelSelectionScreen : MenuScreen
+    class WorldSelectionScreen : MenuScreen
     {
-        #region Private Fields
-        Level[] mLevels;
-        #endregion
-
         #region Initialization
 
         /// <summary>
         /// Constructor fills in the menu contents.
         /// </summary>
-        public LevelSelectionScreen(Profile p, int world)
-            : base(Level.WORLD_NAMES[world] +  ": Level Selection")
+        public WorldSelectionScreen(Profile p)
+            : base("World Selection")
         {
-            int min = (int)MathHelper.Min(Level.INIT_LID_FOR_WORLD[world + 1], p.CurrentLevel + 1);
-            mLevels = new Level[min];
-
-            for (int i = 0; i < min; i++)
+            for (int i = 0; Level.INIT_LID_FOR_WORLD[i] <= p.CurrentLevel && i < Level.WORLD_NAMES.Length; i++)
             {
-                mLevels[i] = Level.LoadLevel(Level.INIT_LID_FOR_WORLD[world] + i);
-                MenuEntry entry = new MenuEntry(mLevels[i].Name);
+                MenuEntry entry = new MenuEntry(Level.WORLD_NAMES[i]);
                 entry.Pressed += EntrySelected;
                 MenuEntries.Add(entry);
             }
+            
+            MenuEntry cstmButton = new MenuEntry("Custom Levels");
+            cstmButton.Pressed += CustomEntrySelected;
+            MenuEntries.Add(cstmButton);
 
             MenuEntry backButton = new MenuEntry("Back");
             backButton.Pressed += OnCancel;
             MenuEntries.Add(backButton);
         }
 
-        public override void LoadContent()
-        {
-            base.LoadContent();
-            ThreadStart ts = delegate()
-            {
-                foreach (Level lvl in mLevels)
-                    lvl.LoadContent(ScreenManager.Game.Content, (ScreenManager.Game as HalfCakedGame).CurrentProfile);
-            };
-            new Thread(ts).Start();
-        }
 
         #endregion
 
@@ -64,18 +50,23 @@ namespace Half_Caked
         /// </summary>
         void EntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
-                               new GameplayScreen(mLevels[selectedEntry]));
+            ScreenManager.AddScreen(new LevelSelectionScreen((ScreenManager.Game as HalfCakedGame).CurrentProfile, selectedEntry), e.PlayerIndex);
         }
+
+        void CustomEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            ScreenManager.AddScreen(new CustomLevelSelectionScreen((ScreenManager.Game as HalfCakedGame).CurrentProfile), e.PlayerIndex);
+        }
+        
         #endregion
 
-        #region Draw
+ /*       #region Draw
 
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
 
-            if (this.selectedEntry < mLevels.Length && mLevels[this.selectedEntry].IsLoaded)
+            if (mLoaded[this.selectedEntry])
             {
                 var mCurLevel = mLevels[selectedEntry];
 
@@ -107,10 +98,12 @@ namespace Half_Caked
 
                     ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, text, textpos, Color.White);      
                     ScreenManager.SpriteBatch.End();
-                }               
+                }
+
+                
             }
         }
 
-        #endregion
+        #endregion*/
     }
 }

@@ -47,12 +47,12 @@ namespace Half_Caked
         /// <summary>
         /// Constructor.
         /// </summary>
-        public GameplayScreen(int levelNumber)
+        public GameplayScreen(Level lvl)
         {
             Narrator = new SpeechSynthesizer();
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
-            mLevel = Level.LoadLevel(levelNumber);
+            mLevel = lvl;
             Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
         }
 

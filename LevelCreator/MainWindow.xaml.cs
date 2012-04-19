@@ -34,10 +34,9 @@ namespace LevelCreator
             get { return mLevel; }
             set { mLevel = value; MyDesignerCanvas.Level = mLevel; }
         }
-
         
         private string mFileLocation;
-        private bool mUnsavedWork = false, mFirstSave = false;
+        private bool mUnsavedWork = false, mFirstSave = true;
         private List<object> mClipboard; // using custom clipboard because kept running into OOM exceptions
 
         public MainWindow()
@@ -63,9 +62,6 @@ namespace LevelCreator
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, NewCmdExecuted));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.IncreaseZoom, ZoomIn, CanZoomIn));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.DecreaseZoom, ZoomOut, CanZoomOut));
-
-            Level = new Level();
-            MyDesignerCanvas.Level = Level;
         }
 
         #region Commands
@@ -107,6 +103,7 @@ namespace LevelCreator
                     return;
 
             Level lvl = new Level();
+            lvl.CustomLevelIdentifier = Guid.NewGuid();
             Canvas c = new Canvas();
             c.Width = 2000;
             c.Height = 1500;
@@ -115,10 +112,15 @@ namespace LevelCreator
             if (dw.ShowDialog() != true)
                 return;
 
+            mFileLocation = null;
+            mFirstSave = true;
+
             MyDesignerCanvas.Children.Clear();
             MyDesignerCanvas.Background = Brushes.Transparent;
             MyDesignerCanvas.Width  = c.Width;
             MyDesignerCanvas.Height = c.Height;
+            MyDesignerCanvas.IsEnabled = true;
+            MainGrid.Visibility = Visibility.Visible;
             Level = lvl;
         }
 
@@ -249,6 +251,7 @@ namespace LevelCreator
 
                 SaveImage(mFileLocation);
                 SaveLevel(mFileLocation);
+                mFirstSave = false;
             }
         }
 
@@ -294,6 +297,8 @@ namespace LevelCreator
 
                 Level.Tiles.AddRange(boundaries);
             }
+
+            Level.AssetName = path.Substring(path.LastIndexOf('\\'));
 
             XmlSerializer serializer = new XmlSerializer(typeof(Level));
             TextWriter textWriter = new StreamWriter(path + ".xml");

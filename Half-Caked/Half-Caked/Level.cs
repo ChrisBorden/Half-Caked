@@ -20,7 +20,9 @@ namespace Half_Caked
     {
         #region Constants
         public static float METERS_TO_UNITS = 20;
-        public static int MAX_LEVELS = 6;
+
+        public static int[] INIT_LID_FOR_WORLD = { 0, 6 };
+        public static string[] WORLD_NAMES = { "Training Grounds" };
 
         private const float LONG_DIST = .4f;
         private const float SHORT_DIST = .01f;
@@ -28,7 +30,7 @@ namespace Half_Caked
 
         #region Fields
         public float Gravity { get; set; }
-
+        public Guid CustomLevelIdentifier { get; set; }
         public string Name { get; set; }
 
         private int mLevelID = -1;
@@ -66,12 +68,19 @@ namespace Half_Caked
         private SpriteFont mGameFont;
         private Sprite mCakeSprite;
 
+        private bool mLoaded = false;
+        public bool IsLoaded
+        {
+            get { return mLoaded; }
+        }
+
         #endregion
 
         #region Initialization
         public Level()
         {
-            Gravity = 9.81f;
+            Gravity = 40f;
+            Name = "New Level";
 
             LevelStatistics = new Statistics();
             mBackground = new Sprite();
@@ -86,11 +95,22 @@ namespace Half_Caked
 
         public virtual void LoadContent(ContentManager theContentManager, Profile activeProfile)
         {
+            if (mLoaded)
+                return;
+
 			String backgroundMusicName = "Sounds\\" + AssetName;
             AssetName = "Levels\\" + AssetName;
             base.LoadContent(theContentManager, AssetName);
-            mBackground.LoadContent(theContentManager, AssetName + "b");
-            mBackground.Position = Position;
+
+            try
+            {
+                mBackground.LoadContent(theContentManager, AssetName + "b");
+                mBackground.Position = Position;
+            }
+            catch
+            {
+                mBackground = null;
+            }
 
             mCakeSprite.LoadContent(theContentManager, "Sprites\\Cake");
             mCakeSprite.Scale = .25f;
@@ -127,6 +147,8 @@ namespace Half_Caked
                 spr.LoadContent(theContentManager, spr.AssetName);
 
             mGameFont = theContentManager.Load<SpriteFont>("Fonts\\gamefont");
+
+            mLoaded = true;
         }
         #endregion
 
@@ -200,9 +222,12 @@ namespace Half_Caked
                 base.Update(theGameTime);
             }
 
-            mBackground.Position = Position;
+            if (mBackground != null)
+            {
+                mBackground.Position = Position;
+                mBackground.Draw(theSpriteBatch, theGameTime);
+            }
 
-            mBackground.Draw(theSpriteBatch, theGameTime);
             foreach (Obstacle spr in Obstacles)
                 spr.Draw(theSpriteBatch, Position);
 
@@ -227,7 +252,8 @@ namespace Half_Caked
 
         public void DrawMap(SpriteBatch theSpriteBatch, GameTime theGameTime, Vector2 offset, float scale)
         {
-            mBackground.Draw(theSpriteBatch, offset - Position*scale, scale);
+            if(mBackground != null)
+                mBackground.Draw(theSpriteBatch, offset - Position*scale, scale);
             foreach (Obstacle spr in Obstacles)
                 spr.Draw(theSpriteBatch, offset, scale);
 
@@ -250,7 +276,8 @@ namespace Half_Caked
             Portals.Reset();
             LevelStatistics = new Statistics(mLevelID);
 
-            mBackground.Position = Position;
+            if(mBackground != null)
+                mBackground.Position = Position;
 
             foreach (Obstacle spr in Obstacles)
                 spr.Reset();
@@ -307,6 +334,27 @@ namespace Half_Caked
             catch
             {
                 return null;       
+            }
+        }
+
+        public static Level LoadLevel(string path)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(Level));
+            try
+            {
+                FileStream fs = new FileStream(path, FileMode.Open);
+                XmlReader reader = new XmlTextReader(fs);
+
+                Level lvl = (Level)serializer.Deserialize(reader);
+
+                fs.Close();
+                reader.Close();
+
+                return lvl;
+            }
+            catch
+            {
+                return null;
             }
         }
         #endregion

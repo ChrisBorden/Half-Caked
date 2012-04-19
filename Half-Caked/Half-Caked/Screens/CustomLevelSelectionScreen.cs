@@ -10,14 +10,16 @@
 #region Using Statements
 using Microsoft.Xna.Framework;
 using System.Threading;
+using System.IO;
+using System.Collections.Generic;
 #endregion
 
 namespace Half_Caked
 {
-    class LevelSelectionScreen : MenuScreen
+    class CustomLevelSelectionScreen : MenuScreen
     {
         #region Private Fields
-        Level[] mLevels;
+        List<Level> mLevels = new List<Level>();
         #endregion
 
         #region Initialization
@@ -25,16 +27,15 @@ namespace Half_Caked
         /// <summary>
         /// Constructor fills in the menu contents.
         /// </summary>
-        public LevelSelectionScreen(Profile p, int world)
-            : base(Level.WORLD_NAMES[world] +  ": Level Selection")
+        public CustomLevelSelectionScreen(Profile p)
+            : base("Custom Level Selection")
         {
-            int min = (int)MathHelper.Min(Level.INIT_LID_FOR_WORLD[world + 1], p.CurrentLevel + 1);
-            mLevels = new Level[min];
-
-            for (int i = 0; i < min; i++)
+            foreach(string s in Directory.GetFiles(@"Content\Levels\Custom\", "*.xml", SearchOption.AllDirectories))
             {
-                mLevels[i] = Level.LoadLevel(Level.INIT_LID_FOR_WORLD[world] + i);
-                MenuEntry entry = new MenuEntry(mLevels[i].Name);
+                Level curLevel = Level.LoadLevel(s);
+                mLevels.Add(curLevel);
+                MenuEntry entry = new MenuEntry(curLevel.Name);
+
                 entry.Pressed += EntrySelected;
                 MenuEntries.Add(entry);
             }
@@ -75,7 +76,7 @@ namespace Half_Caked
         {
             base.Draw(gameTime);
 
-            if (this.selectedEntry < mLevels.Length && mLevels[this.selectedEntry].IsLoaded)
+            if (this.selectedEntry < mLevels.Count && mLevels[this.selectedEntry].IsLoaded)
             {
                 var mCurLevel = mLevels[selectedEntry];
 

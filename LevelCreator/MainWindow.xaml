@@ -29,7 +29,7 @@
                 <Separator />
                 <MenuItem Header="Exit" />
             </MenuItem>
-            <MenuItem Header="Edit">
+            <MenuItem Header="Edit" IsEnabled="{Binding ElementName=MyDesignerCanvas, Path=IsEnabled}">
                 <MenuItem Command="ApplicationCommands.Redo" Header="Redo" />
                 <MenuItem Command="ApplicationCommands.Undo" Header="Undo" />
                 <Separator />
@@ -38,11 +38,11 @@
                 <MenuItem Command="ApplicationCommands.Cut" Header="Cut" />
                 <MenuItem Command="ApplicationCommands.Delete" Header="Delete" />
             </MenuItem>
-            <MenuItem Header="Level">
-                <MenuItem Header="Select Background" Click="SelectBackground_Click"/>
+            <MenuItem Header="Level" IsEnabled="{Binding ElementName=MyDesignerCanvas, Path=IsEnabled}">
+                <MenuItem Header="Select Background" Click="SelectBackground_Click" />
                 <MenuItem Header="Edit Details"  Click="EditDetails_Click"/>
             </MenuItem>
-            <MenuItem Header="Test">
+            <MenuItem Header="Test" IsEnabled="{Binding ElementName=MyDesignerCanvas, Path=IsEnabled}">
                 <MenuItem Header="Run"  IsEnabled="False"/>
                 <MenuItem Header="Check Collisions"  IsEnabled="False"/>
             </MenuItem>
@@ -63,7 +63,7 @@
                     BorderBrush="LightGray"
                     Background="Transparent"
                     BorderThickness="1">
-                <Grid>                    
+                <Grid Name="MainGrid"  Visibility="Hidden">                    
                     <ScrollViewer Name="DesignerScrollViewer"
                                   Background="Transparent" 
                                   HorizontalScrollBarVisibility="Auto"
@@ -73,6 +73,7 @@
                                 Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center"
                                 BorderThickness="2">
                             <s:DesignerCanvas x:Name="MyDesignerCanvas"
+                                            IsEnabled="False"
                                             Height="600"
                                             Width="800"
                                             AllowDrop="True" Background="#01FFFFFF" VerticalAlignment="Center" HorizontalAlignment="Center" >

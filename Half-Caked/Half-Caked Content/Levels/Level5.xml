@@ -8,156 +8,39 @@
   <Tiles>
     <Tile>
       <Dimensions>
-        <X>919</X>
-        <Y>197</Y>
-        <Width>0</Width>
-        <Height>0</Height>
+        <X>0</X>
+        <Y>479</Y>
+        <Width>158</Width>
+        <Height>121</Height>
         <Location>
-          <X>919</X>
-          <Y>197</Y>
+          <X>0</X>
+          <Y>479</Y>
         </Location>
       </Dimensions>
-      <Type>Absorbs</Type>
+      <Type>Normal</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>583</X>
+        <Y>481</Y>
+        <Width>217</Width>
+        <Height>119</Height>
+        <Location>
+          <X>583</X>
+          <Y>481</Y>
+        </Location>
+      </Dimensions>
+      <Type>Normal</Type>
     </Tile>
     <Tile>
       <Dimensions>
         <X>0</X>
         <Y>0</Y>
-        <Width>0</Width>
-        <Height>0</Height>
+        <Width>800</Width>
+        <Height>197</Height>
         <Location>
           <X>0</X>
           <Y>0</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>425</X>
-        <Y>142</Y>
-        <Width>0</Width>
-        <Height>0</Height>
-        <Location>
-          <X>425</X>
-          <Y>142</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>2</X>
-        <Y>0</Y>
-        <Width>0</Width>
-        <Height>0</Height>
-        <Location>
-          <X>2</X>
-          <Y>0</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>425</X>
-        <Y>392</Y>
-        <Width>0</Width>
-        <Height>0</Height>
-        <Location>
-          <X>425</X>
-          <Y>392</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>658</X>
-        <Y>392</Y>
-        <Width>0</Width>
-        <Height>0</Height>
-        <Location>
-          <X>658</X>
-          <Y>392</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>541</X>
-        <Y>711</Y>
-        <Width>0</Width>
-        <Height>0</Height>
-        <Location>
-          <X>541</X>
-          <Y>711</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>792</X>
-        <Y>0</Y>
-        <Width>0</Width>
-        <Height>0</Height>
-        <Location>
-          <X>792</X>
-          <Y>0</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>190</X>
-        <Y>167</Y>
-        <Width>0</Width>
-        <Height>0</Height>
-        <Location>
-          <X>190</X>
-          <Y>167</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>190</X>
-        <Y>167</Y>
-        <Width>0</Width>
-        <Height>0</Height>
-        <Location>
-          <X>190</X>
-          <Y>167</Y>
-        </Location>
-      </Dimensions>
-      <Type>Normal</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>453</X>
-        <Y>0</Y>
-        <Width>0</Width>
-        <Height>0</Height>
-        <Location>
-          <X>453</X>
-          <Y>0</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>274</X>
-        <Y>711</Y>
-        <Width>0</Width>
-        <Height>0</Height>
-        <Location>
-          <X>274</X>
-          <Y>711</Y>
         </Location>
       </Dimensions>
       <Type>Normal</Type>
@@ -167,20 +50,20 @@
     <Obstacle xsi:type="Platform">
       <AssetName>Sprites\Platform</AssetName>
       <InitialPosition>
-        <X>127</X>
-        <Y>644</Y>
+        <X>169</X>
+        <Y>481</Y>
       </InitialPosition>
       <Actions />
-      <Guid>511baa2c-33cd-4ddd-bc62-c02cb44b9ec4</Guid>
-      <InitialState>3</InitialState>
+      <Guid>3525a129-cb9f-401c-927c-1f23a07d3c14</Guid>
+      <InitialState>1</InitialState>
       <Path>
         <Vector2>
-          <X>176</X>
-          <Y>650</Y>
+          <X>170</X>
+          <Y>481</Y>
         </Vector2>
         <Vector2>
-          <X>176</X>
-          <Y>258</Y>
+          <X>436</X>
+          <Y>481</Y>
         </Vector2>
       </Path>
       <Speed>150</Speed>
@@ -190,35 +73,41 @@
     <Actor xsi:type="Enemy">
       <AssetName>Sprites\Enemy</AssetName>
       <InitialPosition>
-        <X>484</X>
-        <Y>335</Y>
+        <X>400</X>
+        <Y>193</Y>
       </InitialPosition>
-      <Range>200</Range>
-    </Actor>
-    <Actor xsi:type="Enemy">
-      <AssetName>Sprites\Enemy</AssetName>
-      <InitialPosition>
-        <X>664</X>
-        <Y>335</Y>
-      </InitialPosition>
-      <Range>200</Range>
+      <Range>100</Range>
     </Actor>
   </Actors>
   <Checkpoints>
     <Checkpoint>
       <Location>
-        <X>48</X>
-        <Y>667</Y>
+        <X>39</X>
+        <Y>380</Y>
       </Location>
       <Quadrant>
-        <X>1</X>
+        <X>-1</X>
         <Y>-1</Y>
       </Quadrant>
       <Bound>
-        <X>26</X>
-        <Y>646</Y>
+        <X>0</X>
+        <Y>0</Y>
       </Bound>
-      <NarrationText>We are still beta testing this level. Your death is a natural part of software development.</NarrationText>
+      <NarrationText>David's Test Lvl</NarrationText>
+    </Checkpoint>
+    <Checkpoint>
+      <Location>
+        <X>730</X>
+        <Y>481</Y>
+      </Location>
+      <Quadrant>
+        <X>-1</X>
+        <Y>-1</Y>
+      </Quadrant>
+      <Bound>
+        <X>583</X>
+        <Y>351</Y>
+      </Bound>
     </Checkpoint>
   </Checkpoints>
   <Gravity>40</Gravity>
