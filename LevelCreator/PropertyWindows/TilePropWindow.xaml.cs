@@ -49,6 +49,7 @@ namespace LevelCreator
                 {
                     mTile.Dimensions.Width = value;
                     mItem.Width = value;
+                    OnPropertyChanged("Width");
                 }
             }
 
@@ -59,6 +60,7 @@ namespace LevelCreator
                 {
                     mTile.Dimensions.Height = value;
                     mItem.Height = value;
+                    OnPropertyChanged("Height");
                 }
             }
 
@@ -125,8 +127,8 @@ namespace LevelCreator
 
         void item_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            (this.DataContext as TileModel).OnPropertyChanged("Width");
-            (this.DataContext as TileModel).OnPropertyChanged("Height");
+            (this.DataContext as TileModel).Width = (this.DataContext as TileModel).Width;
+            (this.DataContext as TileModel).Height = (this.DataContext as TileModel).Height;
             Moved();
         }
     }
