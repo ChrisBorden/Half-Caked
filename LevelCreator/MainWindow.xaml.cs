@@ -294,6 +294,8 @@ namespace LevelCreator
                 Level.Tiles.AddRange(boundaries);
             }
 
+            Level.AssetName = path.Substring(path.LastIndexOf('\\'));
+
             XmlSerializer serializer = new XmlSerializer(typeof(Level));
             TextWriter textWriter = new StreamWriter(path + ".xml");
             serializer.Serialize(textWriter, Level);

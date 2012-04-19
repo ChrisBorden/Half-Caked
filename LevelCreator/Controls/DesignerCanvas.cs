@@ -201,6 +201,8 @@ namespace LevelCreator
 
             Tile t = new Tile();
             t.Type = Surface.Normal;
+            t.Dimensions.Width = 50;
+            t.Dimensions.Height = 50;
 
             TilePropertiesWindow tpw = new TilePropertiesWindow(t, item, Level);
             this.Children.Add(tpw);

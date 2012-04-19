@@ -79,7 +79,8 @@ namespace Half_Caked
         #region Initialization
         public Level()
         {
-            Gravity = 9.81f;
+            Gravity = 40f;
+            Name = "New Level";
 
             LevelStatistics = new Statistics();
             mBackground = new Sprite();
@@ -100,8 +101,16 @@ namespace Half_Caked
 			String backgroundMusicName = "Sounds\\" + AssetName;
             AssetName = "Levels\\" + AssetName;
             base.LoadContent(theContentManager, AssetName);
-            mBackground.LoadContent(theContentManager, AssetName + "b");
-            mBackground.Position = Position;
+
+            try
+            {
+                mBackground.LoadContent(theContentManager, AssetName + "b");
+                mBackground.Position = Position;
+            }
+            catch
+            {
+                mBackground = null;
+            }
 
             mCakeSprite.LoadContent(theContentManager, "Sprites\\Cake");
             mCakeSprite.Scale = .25f;
@@ -213,9 +222,12 @@ namespace Half_Caked
                 base.Update(theGameTime);
             }
 
-            mBackground.Position = Position;
+            if (mBackground != null)
+            {
+                mBackground.Position = Position;
+                mBackground.Draw(theSpriteBatch, theGameTime);
+            }
 
-            mBackground.Draw(theSpriteBatch, theGameTime);
             foreach (Obstacle spr in Obstacles)
                 spr.Draw(theSpriteBatch, Position);
 
@@ -240,7 +252,8 @@ namespace Half_Caked
 
         public void DrawMap(SpriteBatch theSpriteBatch, GameTime theGameTime, Vector2 offset, float scale)
         {
-            mBackground.Draw(theSpriteBatch, offset - Position*scale, scale);
+            if(mBackground != null)
+                mBackground.Draw(theSpriteBatch, offset - Position*scale, scale);
             foreach (Obstacle spr in Obstacles)
                 spr.Draw(theSpriteBatch, offset, scale);
 
@@ -263,7 +276,8 @@ namespace Half_Caked
             Portals.Reset();
             LevelStatistics = new Statistics(mLevelID);
 
-            mBackground.Position = Position;
+            if(mBackground != null)
+                mBackground.Position = Position;
 
             foreach (Obstacle spr in Obstacles)
                 spr.Reset();

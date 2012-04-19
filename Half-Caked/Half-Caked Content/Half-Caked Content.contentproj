@@ -48,16 +48,6 @@
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Compile Include="Levels\Level5.png">
-      <Name>Level5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Level5b.png">
-      <Name>Level5b</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="Sounds\ExitReached.wav">
       <Name>ExitReached</Name>
       <Importer>WavImporter</Importer>
@@ -172,6 +162,11 @@
     </Compile>
     <Compile Include="Sprites\Cake.png">
       <Name>Cake</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Level5.png">
+      <Name>Level5</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

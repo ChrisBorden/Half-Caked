@@ -28,7 +28,7 @@ namespace Half_Caked
         public LevelSelectionScreen(Profile p, int world)
             : base(Level.WORLD_NAMES[world] +  ": Level Selection")
         {
-            int min = (int)MathHelper.Min(Level.INIT_LID_FOR_WORLD[world + 1], p.CurrentLevel) + 1;
+            int min = (int)MathHelper.Min(Level.INIT_LID_FOR_WORLD[world + 1], p.CurrentLevel + 1);
             mLevels = new Level[min];
 
             for (int i = 0; i < min; i++)

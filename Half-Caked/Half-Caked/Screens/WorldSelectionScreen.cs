@@ -24,7 +24,7 @@ namespace Half_Caked
         public WorldSelectionScreen(Profile p)
             : base("World Selection")
         {
-            for (int i = 0; Level.INIT_LID_FOR_WORLD[i] <= p.CurrentLevel; i++)
+            for (int i = 0; Level.INIT_LID_FOR_WORLD[i] <= p.CurrentLevel && i < Level.WORLD_NAMES.Length; i++)
             {
                 MenuEntry entry = new MenuEntry(Level.WORLD_NAMES[i]);
                 entry.Pressed += EntrySelected;

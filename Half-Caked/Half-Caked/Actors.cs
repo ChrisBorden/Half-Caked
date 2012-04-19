@@ -69,13 +69,13 @@ namespace Half_Caked
         public Enemy()
         {
             AssetName = "Sprites\\Enemy";
-            Center = new Vector2(24, 60);
+            Center = new Vector2(23.5f, 24.5f);
         }
 
         public Enemy(Vector2 pos, int range)
         {
             AssetName = "Sprites\\Enemy";
-            Center = new Vector2(24, 60);
+            Center = new Vector2(23.5f, 24.5f);
             InitialPosition = pos;
             Range = range;
             mTimeSinceFired = mReloadingTime;
