@@ -179,6 +179,7 @@
       <Name>Level5</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="UI\cursor.cur">
       <Name>cursor</Name>
