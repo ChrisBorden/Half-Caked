@@ -30,7 +30,7 @@ namespace Half_Caked
         /// <summary>
         /// Event raised when the button is pressed.
         /// </summary>
-        public event EventHandler<PlayerIndexEventArgs> Pressed;
+        public event EventHandler<PlayerIndexEventArgs> Pressed, Focused;
         
         /// <summary>
         /// Method for raising the Pressed event.
@@ -39,6 +39,15 @@ namespace Half_Caked
         {
             if (Pressed != null)
                 Pressed(this, new PlayerIndexEventArgs(playerIndex));
+        }
+
+        /// <summary>
+        /// Method for raising theFocused event.
+        /// </summary>
+        public virtual void OnFocusedElement(PlayerIndex playerIndex, int direction)
+        {
+            if (Focused != null)
+                Focused(this, new PlayerIndexEventArgs(playerIndex));
         }
 
         #endregion

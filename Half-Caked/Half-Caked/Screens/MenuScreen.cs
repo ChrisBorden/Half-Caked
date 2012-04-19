@@ -136,6 +136,7 @@ namespace Half_Caked
             {
                 menuEntries[before].State = UIState.Active;
                 menuEntries[selectedEntry].State = UIState.Selected;
+                menuEntries[selectedEntry].OnFocusedElement(ControllingPlayer.HasValue ? ControllingPlayer.Value : PlayerIndex.One, 0);
 
                 AudioSettings settings = (ScreenManager.Game as HalfCakedGame).CurrentProfile.Audio;
 
