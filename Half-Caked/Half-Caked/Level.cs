@@ -90,6 +90,7 @@ namespace Half_Caked
             AssetName = "Levels\\" + AssetName;
             base.LoadContent(theContentManager, AssetName);
             mBackground.LoadContent(theContentManager, AssetName + "b");
+            mBackground.Position = Position;
 
             mCakeSprite.LoadContent(theContentManager, "Sprites\\Cake");
             mCakeSprite.Scale = .25f;
@@ -101,7 +102,7 @@ namespace Half_Caked
             mAudio = activeProfile.Audio;
             SoundEffect.MasterVolume = mAudio.MasterVolume / 100f;
             MediaPlayer.Volume = mAudio.MasterVolume * mAudio.MusicVolume / 10000f;
-            MediaPlayer.Stop();
+
             mExitReached = theContentManager.Load<SoundEffect>("Sounds\\ExitReached");
 			try
 			{

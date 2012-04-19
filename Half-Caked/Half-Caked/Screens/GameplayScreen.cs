@@ -53,6 +53,7 @@ namespace Half_Caked
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
             mLevel = Level.LoadLevel(levelNumber);
+            Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
         }
 
 
