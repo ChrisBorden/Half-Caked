@@ -28,7 +28,7 @@
         <TextBox HorizontalAlignment="Left" Margin="6" Grid.Row="2" Grid.Column="1" Text="{Binding Level.Gravity}" Width="50" VerticalAlignment="Center" />
 
         <TextBlock HorizontalAlignment="Left" Margin="6" Grid.Row="2" Grid.Column="2" Text="Level ID" VerticalAlignment="Center" />
-        <TextBox HorizontalAlignment="Left" Margin="6" Grid.Row="2" Grid.Column="3" Text="{Binding Level.LevelIdentifier}" Width="50" VerticalAlignment="Center" IsEnabled="False"/>
+        <TextBox HorizontalAlignment="Left" Margin="6" Grid.Row="2" Grid.Column="3" Text="{Binding Level.CustomLevelIdentifier}" Width="50" VerticalAlignment="Center" IsReadOnly="True"/>
         
         <Button Content="Accept" Height="23" HorizontalAlignment="Center" Name="button1" VerticalAlignment="Center" Width="75" Grid.Row="3" Margin="6" Click="button1_Click" Grid.ColumnSpan="2" />
         <Button Content="Cancel" Height="23" HorizontalAlignment="Center" Name="button2" VerticalAlignment="Center" Width="75" Grid.Column="2" Margin="6" Grid.Row="3" Click="button2_Click" Grid.ColumnSpan="2" />

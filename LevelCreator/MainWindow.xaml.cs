@@ -34,7 +34,6 @@ namespace LevelCreator
             get { return mLevel; }
             set { mLevel = value; MyDesignerCanvas.Level = mLevel; }
         }
-
         
         private string mFileLocation;
         private bool mUnsavedWork = false, mFirstSave = true;
@@ -63,8 +62,6 @@ namespace LevelCreator
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, NewCmdExecuted));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.IncreaseZoom, ZoomIn, CanZoomIn));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.DecreaseZoom, ZoomOut, CanZoomOut));
-
-            Level = new Level();
         }
 
         #region Commands
@@ -106,6 +103,7 @@ namespace LevelCreator
                     return;
 
             Level lvl = new Level();
+            lvl.CustomLevelIdentifier = Guid.NewGuid();
             Canvas c = new Canvas();
             c.Width = 2000;
             c.Height = 1500;
@@ -121,6 +119,8 @@ namespace LevelCreator
             MyDesignerCanvas.Background = Brushes.Transparent;
             MyDesignerCanvas.Width  = c.Width;
             MyDesignerCanvas.Height = c.Height;
+            MyDesignerCanvas.IsEnabled = true;
+            MainGrid.Visibility = Visibility.Visible;
             Level = lvl;
         }
 
