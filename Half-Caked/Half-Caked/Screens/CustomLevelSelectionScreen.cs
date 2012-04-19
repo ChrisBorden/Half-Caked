@@ -10,36 +10,51 @@
 #region Using Statements
 using Microsoft.Xna.Framework;
 using System.Threading;
+using System.IO;
+using System.Collections.Generic;
 #endregion
 
 namespace Half_Caked
 {
-    class WorldSelectionScreen : MenuScreen
+    class CustomLevelSelectionScreen : MenuScreen
     {
+        #region Private Fields
+        List<Level> mLevels = new List<Level>();
+        #endregion
+
         #region Initialization
 
         /// <summary>
         /// Constructor fills in the menu contents.
         /// </summary>
-        public WorldSelectionScreen(Profile p)
-            : base("World Selection")
+        public CustomLevelSelectionScreen(Profile p)
+            : base("Custom Level Selection")
         {
-            for (int i = 0; Level.INIT_LID_FOR_WORLD[i] <= p.CurrentLevel && i < Level.WORLD_NAMES.Length; i++)
+            foreach(string s in Directory.GetFiles(@"Content\Levels\Custom\", "*.xml", SearchOption.AllDirectories))
             {
-                MenuEntry entry = new MenuEntry(Level.WORLD_NAMES[i]);
+                Level curLevel = Level.LoadLevel(s);
+                mLevels.Add(curLevel);
+                MenuEntry entry = new MenuEntry(curLevel.Name);
+
                 entry.Pressed += EntrySelected;
                 MenuEntries.Add(entry);
             }
-            
-            MenuEntry cstmButton = new MenuEntry("Custom Levels");
-            cstmButton.Pressed += CustomEntrySelected;
-            MenuEntries.Add(cstmButton);
 
             MenuEntry backButton = new MenuEntry("Back");
             backButton.Pressed += OnCancel;
             MenuEntries.Add(backButton);
         }
 
+        public override void LoadContent()
+        {
+            base.LoadContent();
+            ThreadStart ts = delegate()
+            {
+                foreach (Level lvl in mLevels)
+                    lvl.LoadContent(ScreenManager.Game.Content, (ScreenManager.Game as HalfCakedGame).CurrentProfile);
+            };
+            new Thread(ts).Start();
+        }
 
         #endregion
 
@@ -50,23 +65,18 @@ namespace Half_Caked
         /// </summary>
         void EntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            ScreenManager.AddScreen(new LevelSelectionScreen((ScreenManager.Game as HalfCakedGame).CurrentProfile, selectedEntry), e.PlayerIndex);
+            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
+                               new GameplayScreen(mLevels[selectedEntry]));
         }
-
-        void CustomEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            ScreenManager.AddScreen(new CustomLevelSelectionScreen((ScreenManager.Game as HalfCakedGame).CurrentProfile), e.PlayerIndex);
-        }
-        
         #endregion
 
- /*       #region Draw
+        #region Draw
 
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
 
-            if (mLoaded[this.selectedEntry])
+            if (this.selectedEntry < mLevels.Count && mLevels[this.selectedEntry].IsLoaded)
             {
                 var mCurLevel = mLevels[selectedEntry];
 
@@ -98,12 +108,10 @@ namespace Half_Caked
 
                     ScreenManager.SpriteBatch.DrawString(ScreenManager.Font, text, textpos, Color.White);      
                     ScreenManager.SpriteBatch.End();
-                }
-
-                
+                }               
             }
         }
 
-        #endregion*/
+        #endregion
     }
 }

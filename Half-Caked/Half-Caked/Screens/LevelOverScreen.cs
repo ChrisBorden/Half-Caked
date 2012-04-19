@@ -24,34 +24,53 @@ namespace Half_Caked
 
             Profile prof = game.CurrentProfile;
 
-            if (prof.CurrentLevel < Level.INIT_LID_FOR_WORLD.Aggregate((x, y) => x + y) && prof.CurrentLevel == level.LevelIdentifier)
-                prof.CurrentLevel++;
-
-            if (prof.LevelStatistics[mLevel.LevelIdentifier] == null ||
-                prof.LevelStatistics[mLevel.LevelIdentifier].Score < level.LevelStatistics.Score)
+            if (level.LevelIdentifier != -1) //One of the default levels
             {
-                mContentLabel.Text = "Congratulations! You set a new High Score: " + level.LevelStatistics.Score;
-                level.LevelStatistics.Date = DateTime.Now;
-                prof.LevelStatistics[mLevel.LevelIdentifier] = level.LevelStatistics;
+                if (prof.CurrentLevel < Level.INIT_LID_FOR_WORLD.Aggregate((x, y) => x + y) && prof.CurrentLevel == level.LevelIdentifier)
+                    prof.CurrentLevel++;
 
-                if (prof.GlobalIdentifer != -1)
-                    level.LevelStatistics.UploadScore(prof.GlobalIdentifer);
+                if (prof.LevelStatistics[mLevel.LevelIdentifier] == null ||
+                    prof.LevelStatistics[mLevel.LevelIdentifier].Score < level.LevelStatistics.Score)
+                {
+                    mContentLabel.Text = "Congratulations! You set a new High Score: " + level.LevelStatistics.Score;
+                    level.LevelStatistics.Date = DateTime.Now;
+                    prof.LevelStatistics[mLevel.LevelIdentifier] = level.LevelStatistics;
+
+                    if (prof.GlobalIdentifer != -1)
+                        level.LevelStatistics.UploadScore(prof.GlobalIdentifer);
+                    else
+                        prof.Register();
+
+                    Profile.SaveProfile(prof, "default.sav", game.Device);
+                }
                 else
-                    prof.Register();
-
-                Profile.SaveProfile(prof, "default.sav", game.Device);
+                {
+                    mContentLabel.Text = "High Score: " + prof.LevelStatistics[mLevel.LevelIdentifier].Score
+                                          + "   |   Your Score: " + level.LevelStatistics.Score;
+                }
             }
-            else
+            else //Custom level code
             {
-                mContentLabel.Text = "High Score: " + prof.LevelStatistics[mLevel.LevelIdentifier].Score
-                                      + "   |   Your Score: " + level.LevelStatistics.Score;
+                var entry = prof.CustomLevelStatistics.Find(x => x.Key == level.CustomLevelIdentifier); 
+                if (entry == null || entry.Value.Score < level.LevelStatistics.Score)
+                {
+                    mContentLabel.Text = "Congratulations! You set a new High Score: " + level.LevelStatistics.Score;
+                    entry.Value = level.LevelStatistics;
+                    level.LevelStatistics.Date = DateTime.Now;
+                    
+                    Profile.SaveProfile(prof, "default.sav", game.Device);
+                }
+                else
+                {
+                    mContentLabel.Text = "High Score: " + entry.Value.Score + "   |   Your Score: " + level.LevelStatistics.Score;
+                }
             }
         }
 
         public override void LoadContent()
         {
             base.LoadContent();
-            if (mLevel.LevelIdentifier + 1 >= Level.INIT_LID_FOR_WORLD.Aggregate((x, y) => x + y))
+            if (mLevel.LevelIdentifier + 1 >= Level.INIT_LID_FOR_WORLD.Aggregate((x, y) => x + y) || mLevel.LevelIdentifier == -1)
             {
                 Buttons[0].State = UIState.Inactive;
                 Buttons[1].State = UIState.Selected;

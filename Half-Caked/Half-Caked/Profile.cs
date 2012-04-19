@@ -25,6 +25,7 @@ namespace Half_Caked
         public int CurrentLevel = 0;
 
         public Statistics[] LevelStatistics = new Statistics[Level.INIT_LID_FOR_WORLD.Aggregate((x, y) => x + y)];
+        public List<KeyValuePair<Guid, Statistics>> CustomLevelStatistics = new List<KeyValuePair<Guid, Statistics>>();
         public AudioSettings Audio = new AudioSettings();
         public GraphicsSettings Graphics = new GraphicsSettings();
         public Keybindings KeyBindings = new Keybindings();
@@ -208,7 +209,7 @@ namespace Half_Caked
 
             if (Name == null || this.Name.Length <= 0)
             {
-                this.Name = " ";
+                this.Name = "No Namer";
                 madeChanges = true;
             }
 

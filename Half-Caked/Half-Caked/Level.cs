@@ -30,7 +30,7 @@ namespace Half_Caked
 
         #region Fields
         public float Gravity { get; set; }
-
+        public Guid CustomLevelIdentifier { get; set; }
         public string Name { get; set; }
 
         private int mLevelID = -1;
@@ -334,6 +334,27 @@ namespace Half_Caked
             catch
             {
                 return null;       
+            }
+        }
+
+        public static Level LoadLevel(string path)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(Level));
+            try
+            {
+                FileStream fs = new FileStream(path, FileMode.Open);
+                XmlReader reader = new XmlTextReader(fs);
+
+                Level lvl = (Level)serializer.Deserialize(reader);
+
+                fs.Close();
+                reader.Close();
+
+                return lvl;
+            }
+            catch
+            {
+                return null;
             }
         }
         #endregion

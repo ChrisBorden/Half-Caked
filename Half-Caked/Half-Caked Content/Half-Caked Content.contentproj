@@ -42,6 +42,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Levels\Custom\readme.txt">
+      <Name>readme</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Levels\Level0.xml">
       <Name>Level0</Name>
       <Importer>XmlImporter</Importer>
@@ -378,9 +382,7 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Levels\Custom\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

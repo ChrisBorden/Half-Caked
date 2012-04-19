@@ -37,7 +37,7 @@ namespace LevelCreator
 
         
         private string mFileLocation;
-        private bool mUnsavedWork = false, mFirstSave = false;
+        private bool mUnsavedWork = false, mFirstSave = true;
         private List<object> mClipboard; // using custom clipboard because kept running into OOM exceptions
 
         public MainWindow()
@@ -113,6 +113,9 @@ namespace LevelCreator
             DetailsWindow dw = new DetailsWindow(c, lvl);
             if (dw.ShowDialog() != true)
                 return;
+
+            mFileLocation = null;
+            mFirstSave = true;
 
             MyDesignerCanvas.Children.Clear();
             MyDesignerCanvas.Background = Brushes.Transparent;
@@ -248,6 +251,7 @@ namespace LevelCreator
 
                 SaveImage(mFileLocation);
                 SaveLevel(mFileLocation);
+                mFirstSave = false;
             }
         }
 
