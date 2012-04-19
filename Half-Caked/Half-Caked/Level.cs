@@ -20,7 +20,7 @@ namespace Half_Caked
     {
         #region Constants
         public static float METERS_TO_UNITS = 20;
-        public static int MAX_LEVELS = 5;
+        public static int MAX_LEVELS = 6;
 
         private const float LONG_DIST = .4f;
         private const float SHORT_DIST = .01f;
@@ -305,7 +305,7 @@ namespace Half_Caked
             }
             catch
             {
-                return null;
+                return null;       
             }
         }
         #endregion
