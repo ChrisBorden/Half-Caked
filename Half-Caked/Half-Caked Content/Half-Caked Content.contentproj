@@ -179,11 +179,8 @@
       <Name>Level5</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
-<<<<<<< HEAD
       <SubType>Designer</SubType>
-=======
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
->>>>>>> fd3253b7563b166140b1814ed57b5f1376d8ebcd
     </Content>
     <Content Include="UI\cursor.cur">
       <Name>cursor</Name>
