@@ -5,6 +5,7 @@
     <X>0</X>
     <Y>0</Y>
   </InitialPosition>
+  <Name>Reflecting</Name>
   <Gravity>40</Gravity>
   <Tiles>
     <Tile>

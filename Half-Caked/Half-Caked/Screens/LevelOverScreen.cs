@@ -24,7 +24,7 @@ namespace Half_Caked
 
             Profile prof = game.CurrentProfile;
 
-            if (prof.CurrentLevel < Level.MAX_LEVELS && prof.CurrentLevel == level.LevelIdentifier)
+            if (prof.CurrentLevel < Level.INIT_LID_FOR_WORLD.Aggregate((x, y) => x + y) && prof.CurrentLevel == level.LevelIdentifier)
                 prof.CurrentLevel++;
 
             if (prof.LevelStatistics[mLevel.LevelIdentifier] == null ||
@@ -51,7 +51,7 @@ namespace Half_Caked
         public override void LoadContent()
         {
             base.LoadContent();
-            if (mLevel.LevelIdentifier + 1 >= Level.MAX_LEVELS)
+            if (mLevel.LevelIdentifier + 1 >= Level.INIT_LID_FOR_WORLD.Aggregate((x, y) => x + y))
             {
                 Buttons[0].State = UIState.Inactive;
                 Buttons[1].State = UIState.Selected;
@@ -67,7 +67,7 @@ namespace Half_Caked
 
         void NextLevelMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex, new GameplayScreen(mLevel.LevelIdentifier+1));
+            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex, new GameplayScreen(Level.LoadLevel(mLevel.LevelIdentifier + 1)));
         }
 
         void ResetMenuEntrySelected(object sender, PlayerIndexEventArgs e)

@@ -20,7 +20,9 @@ namespace Half_Caked
     {
         #region Constants
         public static float METERS_TO_UNITS = 20;
-        public static int MAX_LEVELS = 6;
+
+        public static int[] INIT_LID_FOR_WORLD = { 0, 6 };
+        public static string[] WORLD_NAMES = { "Training Grounds" };
 
         private const float LONG_DIST = .4f;
         private const float SHORT_DIST = .01f;
@@ -66,6 +68,12 @@ namespace Half_Caked
         private SpriteFont mGameFont;
         private Sprite mCakeSprite;
 
+        private bool mLoaded = false;
+        public bool IsLoaded
+        {
+            get { return mLoaded; }
+        }
+
         #endregion
 
         #region Initialization
@@ -86,6 +94,9 @@ namespace Half_Caked
 
         public virtual void LoadContent(ContentManager theContentManager, Profile activeProfile)
         {
+            if (mLoaded)
+                return;
+
 			String backgroundMusicName = "Sounds\\" + AssetName;
             AssetName = "Levels\\" + AssetName;
             base.LoadContent(theContentManager, AssetName);
@@ -127,6 +138,8 @@ namespace Half_Caked
                 spr.LoadContent(theContentManager, spr.AssetName);
 
             mGameFont = theContentManager.Load<SpriteFont>("Fonts\\gamefont");
+
+            mLoaded = true;
         }
         #endregion
 

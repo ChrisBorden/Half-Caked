@@ -24,7 +24,7 @@ namespace Half_Caked
         public string Name = "";
         public int CurrentLevel = 0;
 
-        public Statistics[] LevelStatistics = new Statistics[Level.MAX_LEVELS];
+        public Statistics[] LevelStatistics = new Statistics[Level.INIT_LID_FOR_WORLD.Aggregate((x, y) => x + y)];
         public AudioSettings Audio = new AudioSettings();
         public GraphicsSettings Graphics = new GraphicsSettings();
         public Keybindings KeyBindings = new Keybindings();
@@ -183,25 +183,26 @@ namespace Half_Caked
         {
             bool madeChanges = false;
 
-            this.CurrentLevel = (int)MathHelper.Clamp(this.CurrentLevel, 0, Level.MAX_LEVELS - 1);
+            int maxLevels = Level.INIT_LID_FOR_WORLD.Aggregate((x, y) => x + y);
+            this.CurrentLevel = (int)MathHelper.Clamp(this.CurrentLevel, 0, maxLevels);
             
             if (LevelStatistics == null)
             {
-                this.LevelStatistics = new Statistics[Level.MAX_LEVELS];
+                this.LevelStatistics = new Statistics[maxLevels];
                 madeChanges = true;
             }
 
-            if (LevelStatistics.Length < Level.MAX_LEVELS)
+            if (LevelStatistics.Length < maxLevels)
             {
                 var stats = LevelStatistics.ToList();
-                stats.AddRange(new Statistics[Level.MAX_LEVELS - LevelStatistics.Length]);
+                stats.AddRange(new Statistics[maxLevels - LevelStatistics.Length]);
                 LevelStatistics = stats.ToArray();
 
                 madeChanges = true;
             }
-            else if (LevelStatistics.Length > Level.MAX_LEVELS)
+            else if (LevelStatistics.Length > maxLevels)
             {
-                this.LevelStatistics = LevelStatistics.Take(Level.MAX_LEVELS).ToArray();
+                this.LevelStatistics = LevelStatistics.Take(maxLevels).ToArray();
                 madeChanges = true;
             }
 
@@ -254,7 +255,7 @@ namespace Half_Caked
         {
             get
             {
-                return 10000/(int)TimeElapsed;
+                return (int) (10000/TimeElapsed);
             }
         }
 
