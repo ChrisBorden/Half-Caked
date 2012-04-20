@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Level xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <AssetName>\Level6updated2</AssetName>
+  <AssetName>Level6</AssetName>
   <InitialPosition>
     <X>0</X>
     <Y>0</Y>
   </InitialPosition>
-  <Name>Beta Test</Name>
   <Tiles>
     <Tile>
       <Dimensions>
@@ -282,12 +281,12 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>130</X>
+        <X>131</X>
         <Y>0</Y>
         <Width>2</Width>
         <Height>900</Height>
         <Location>
-          <X>130</X>
+          <X>131</X>
           <Y>0</Y>
         </Location>
       </Dimensions>
@@ -321,12 +320,64 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>2051</X>
+        <X>1977</X>
         <Y>0</Y>
         <Width>2</Width>
         <Height>900</Height>
         <Location>
-          <X>2051</X>
+          <X>1977</X>
+          <Y>0</Y>
+        </Location>
+      </Dimensions>
+      <Type>Absorbs</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>-2</X>
+        <Y>0</Y>
+        <Width>2</Width>
+        <Height>900</Height>
+        <Location>
+          <X>-2</X>
+          <Y>0</Y>
+        </Location>
+      </Dimensions>
+      <Type>Absorbs</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>0</X>
+        <Y>-2</Y>
+        <Width>2048</Width>
+        <Height>2</Height>
+        <Location>
+          <X>0</X>
+          <Y>-2</Y>
+        </Location>
+      </Dimensions>
+      <Type>Absorbs</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>0</X>
+        <Y>901</Y>
+        <Width>2048</Width>
+        <Height>2</Height>
+        <Location>
+          <X>0</X>
+          <Y>901</Y>
+        </Location>
+      </Dimensions>
+      <Type>Absorbs</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>1942</X>
+        <Y>0</Y>
+        <Width>2</Width>
+        <Height>900</Height>
+        <Location>
+          <X>1942</X>
           <Y>0</Y>
         </Location>
       </Dimensions>
@@ -446,6 +497,18 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
           <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
           <Value>2</Value>
         </KeyValuePairOfGuidInt32>
@@ -553,7 +616,6 @@
     </Checkpoint>
   </Checkpoints>
   <Gravity>40</Gravity>
-  <CustomLevelIdentifier>43d14924-ce1e-43c0-87fc-6af9d5bc5970</CustomLevelIdentifier>
-  <Name>Level6</Name>
-  <LevelIdentifier>-1</LevelIdentifier>
+  <Name>Beta Test</Name>
+  <LevelIdentifier>6</LevelIdentifier>
 </Level>
