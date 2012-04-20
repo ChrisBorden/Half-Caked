@@ -248,6 +248,7 @@ namespace LevelCreator
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 mFileLocation = ofd.FileName;
+                Level.CustomLevelIdentifier = Guid.NewGuid();
 
                 SaveImage(mFileLocation);
                 SaveLevel(mFileLocation);
@@ -298,7 +299,7 @@ namespace LevelCreator
                 Level.Tiles.AddRange(boundaries);
             }
 
-            Level.AssetName = path.Substring(path.LastIndexOf('\\'));
+            Level.AssetName = "Custom" + path.Substring(path.LastIndexOf('\\'));
 
             XmlSerializer serializer = new XmlSerializer(typeof(Level));
             TextWriter textWriter = new StreamWriter(path + ".xml");
