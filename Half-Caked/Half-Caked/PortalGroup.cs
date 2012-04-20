@@ -32,6 +32,7 @@ namespace Half_Caked
         PortalState mState = PortalState.Closed;
         List<Actor> mInPortal1 = new List<Actor>();
         List<Actor> mInPortal2 = new List<Actor>();
+        bool[] mIsAmplified = new bool[2];
         SoundEffect mOpenPortalEffect;
         #endregion
 
@@ -71,6 +72,16 @@ namespace Half_Caked
         public bool CanClose()
         {
             return mState != PortalState.InUse;
+        }
+
+        public void Amplify(int portalNumber, bool isAmplified)
+        {
+            mIsAmplified[portalNumber] = isAmplified;
+        }
+
+        public void Amplify(int portalNumber)
+        {
+            Amplify(portalNumber, true);
         }
 
         public void Open(Vector2 position, Orientation orientation, int portalNumber, Vector2 movement, Level lvl)
@@ -142,12 +153,12 @@ namespace Half_Caked
 
             foreach (Actor spr in mInPortal1)
             {
-                HandleSpriteInPortal(spr, Portal1, Portal2, (float)theGameTime.TotalGameTime.TotalSeconds);
+                HandleSpriteInPortal(spr, Portal1, Portal2, mIsAmplified[0], (float)theGameTime.TotalGameTime.TotalSeconds);
             }
 
             foreach (Actor spr in mInPortal2)
             {
-                HandleSpriteInPortal(spr, Portal2, Portal1, (float)theGameTime.TotalGameTime.TotalSeconds);
+                HandleSpriteInPortal(spr, Portal2, Portal1, mIsAmplified[1], (float)theGameTime.TotalGameTime.TotalSeconds);
             }
         }
 
@@ -183,7 +194,7 @@ namespace Half_Caked
         #endregion
 
         #region Private Methods
-        private void HandleSpriteInPortal(Actor spr, Sprite portalIn,  Sprite portalOut, float currentTime)
+        private void HandleSpriteInPortal(Actor spr, Sprite portalIn,  Sprite portalOut, bool amplify, float currentTime)
         {
             spr.PortalAngle = MathHelper.WrapAngle(MathHelper.PiOver2 * (2 - (portalIn.Oriented - portalOut.Oriented)));
             Matrix rotation = Matrix.CreateRotationZ(spr.PortalAngle);
@@ -225,7 +236,7 @@ namespace Half_Caked
                 spr.PortalAngle = spr.Angle;
                 spr.Angle = temp2;
 
-                spr.Velocity = Vector2.Transform(spr.Velocity, rotation);
+                spr.Velocity = Vector2.Transform(spr.Velocity, rotation) * (amplify ? 2 : 1);
                 spr.Acceleration = Vector2.Transform(spr.Acceleration, rotation);
 
                 if (portalOut.Oriented == Orientation.Up)
