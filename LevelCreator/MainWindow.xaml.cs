@@ -74,9 +74,9 @@ namespace LevelCreator
 
             for (int i = 0; i < selected.Count; i++)
             {
-                if (selected[i].Model != null)
+                if (selected[i].PropertyWindow != null)
                 {
-                    var list = selected[i].Model.RemoveFromLevel();
+                    var list = (selected[i].PropertyWindow.DataContext as MovingModel).RemoveFromLevel();
                     for (int j = 0; j < list.Count; j++)
                         MyDesignerCanvas.Children.Remove(list[j]);
                 }
