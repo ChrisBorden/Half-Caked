@@ -21,7 +21,7 @@ namespace Half_Caked
         #region Constants
         public static float METERS_TO_UNITS = 20;
 
-        public static int[] INIT_LID_FOR_WORLD = { 0, 7 };
+        public static int[] INIT_LID_FOR_WORLD = { 0, 6 };
         public static string[] WORLD_NAMES = { "Training Grounds" };
 
         private const float LONG_DIST = .4f;
@@ -97,6 +97,9 @@ namespace Half_Caked
         {
             if (mLoaded)
                 return;
+
+            if (LevelIdentifier == -1)
+                AssetName = "Custom\\" + AssetName;
 
 			String backgroundMusicName = "Sounds\\" + AssetName;
             AssetName = "Levels\\" + AssetName;

@@ -171,8 +171,12 @@ namespace LevelCreator
                 else if (obs is Platform)
                     AddPlatform(obs as Platform);
             }
-            
+
             MyDesignerCanvas.DeselectAll();
+
+            mFirstSave = false;
+            MyDesignerCanvas.IsEnabled = true;
+            MainGrid.Visibility = Visibility.Visible;
         }
 
         private static Level LoadLevel(string path)
@@ -231,9 +235,17 @@ namespace LevelCreator
                 SaveAsCmdExecuted(target, e);
                 return;
             }
-
-            SaveImage(mFileLocation);
-            SaveLevel(mFileLocation);
+            
+            try
+            {
+                SaveImage(mFileLocation);
+                SaveLevel(mFileLocation);
+                mFirstSave = false;
+            }
+            catch
+            {
+                MessageBox.Show("Unable to Save your level, an unexpected error occured.");
+            }
         }
 
         void SaveAsCmdExecuted(object target, ExecutedRoutedEventArgs e)
@@ -250,8 +262,16 @@ namespace LevelCreator
                 mFileLocation = ofd.FileName;
                 Level.CustomLevelIdentifier = Guid.NewGuid();
 
-                SaveImage(mFileLocation);
-                SaveLevel(mFileLocation);
+                try
+                {
+                    SaveImage(mFileLocation);
+                    SaveLevel(mFileLocation);
+                }
+                catch
+                {
+                    MessageBox.Show("Unable to Save your level, an unexpected error occured.");
+                }
+
                 mFirstSave = false;
             }
         }
@@ -275,6 +295,7 @@ namespace LevelCreator
             PngBitmapEncoder encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(png));
             encoder.Save(fs);
+
             fs.Close();
 
             MyDesignerCanvas.Background = temp;
@@ -291,19 +312,20 @@ namespace LevelCreator
             Tile[] boundaries = null;
             if (mFirstSave)
             {
-                boundaries = new Tile[]{ new Tile(new Microsoft.Xna.Framework.Rectangle(-2, 0, 2,(int) MyDesignerCanvas.ActualHeight), Surface.Absorbs), 
-                                            new Tile(new Microsoft.Xna.Framework.Rectangle(0, -2, (int) MyDesignerCanvas.ActualWidth, 2), Surface.Absorbs),    
-                                            new Tile(new Microsoft.Xna.Framework.Rectangle(0, (int) MyDesignerCanvas.ActualHeight + 1, (int) MyDesignerCanvas.ActualWidth, 2), Surface.Absorbs), 
-                                            new Tile(new Microsoft.Xna.Framework.Rectangle((int) MyDesignerCanvas.ActualWidth + 1, 0, 2, (int) MyDesignerCanvas.ActualHeight), Surface.Absorbs) };
+                boundaries = new Tile[]{ new Tile(new Microsoft.Xna.Framework.Rectangle(-2, 0, 2,(int) MyDesignerCanvas.Height), Surface.Absorbs), 
+                                            new Tile(new Microsoft.Xna.Framework.Rectangle(0, -2, (int) MyDesignerCanvas.Height, 2), Surface.Absorbs),    
+                                            new Tile(new Microsoft.Xna.Framework.Rectangle(0, (int) MyDesignerCanvas.Width + 1, (int) MyDesignerCanvas.Width, 2), Surface.Absorbs), 
+                                            new Tile(new Microsoft.Xna.Framework.Rectangle((int) MyDesignerCanvas.Width + 1, 0, 2, (int) MyDesignerCanvas.Width), Surface.Absorbs) };
 
                 Level.Tiles.AddRange(boundaries);
             }
 
-            Level.AssetName = "Custom" + path.Substring(path.LastIndexOf('\\'));
+            Level.AssetName = path.Substring(path.LastIndexOf('\\') + 1);
 
             XmlSerializer serializer = new XmlSerializer(typeof(Level));
             TextWriter textWriter = new StreamWriter(path + ".xml");
             serializer.Serialize(textWriter, Level);
+
             textWriter.Close();
 
             if (mFirstSave)
