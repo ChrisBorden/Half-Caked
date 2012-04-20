@@ -71,6 +71,13 @@ namespace Half_Caked
             }
             catch { }
 
+            if (MediaPlayer.State == MediaState.Stopped)
+                try
+                {
+                    MediaPlayer.Play(mMenuMusic);
+                }
+                catch { }
+
             menuEntries[selectedEntry].State = UIState.Selected;
 
             foreach (UIElement ui in menuEntries)
@@ -211,13 +218,6 @@ namespace Half_Caked
             base.Update(gameTime, topScreen, coveredByOtherScreen);
 
             ScreenManager.Game.IsMouseVisible = true;
-
-            if (MediaPlayer.State == MediaState.Stopped)
-                try
-                {
-                    MediaPlayer.Play(mMenuMusic);
-                }
-                catch { }
 
             // Update each nested MenuEntry object.
             for (int i = 0; i < menuEntries.Count; i++)
