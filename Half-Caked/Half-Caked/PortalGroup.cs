@@ -88,11 +88,27 @@ namespace Half_Caked
         {
             Sprite chosenOne = portalNumber == 1 ? Portal2 : Portal1;
             
-            chosenOne.Visible = true;
-            chosenOne.Angle = (int)orientation % 2== 0 ? MathHelper.PiOver2 : 0;
-            chosenOne.Position = position;
-            chosenOne.Oriented = orientation;
-            chosenOne.FrameVelocity = movement;
+            try
+            {
+                chosenOne.Visible = true;
+                chosenOne.Angle = (int)orientation % 2== 0 ? MathHelper.PiOver2 : 0;
+                chosenOne.Position = position;
+                chosenOne.Oriented = orientation;
+                chosenOne.FrameVelocity = movement;
+
+                int count = 0;
+
+                foreach (Tile t in lvl.Tiles)
+                    if (!Rectangle.Intersect(chosenOne.CollisionSurface, t.Dimensions).IsEmpty)
+                        ++count;
+
+                if (count > 1)
+                    throw new Exception("Invalid Portal Location");
+            }
+            catch
+            {
+                    return;
+            }
 
             if (Portal1.Visible == Portal2.Visible)
             {
