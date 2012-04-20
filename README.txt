@@ -1,3 +1,12 @@
+Update 4/20/12:
+
+-New Level menus and level editor
+-Level menu now has level previews
+-Pause menu now displays a map of the level
+-Added portal gun reticle
+-New Level!
+
+
 Update 4/1/12 (Chris Borden):
 
 -Check out the new character animations!
@@ -15,7 +24,7 @@ Update 3/31/12 (Chris Borden):
 -New bounding box code.
 
 
-Update 3/30/12 (Chris Borden): 
+Update 3/30/12 (Chris Borden: 
 
 -Audio Dialogue Completed
 -Fixed walljumping bug that could cause you to slide incorrectly. Walljumping is now easier to activate as well.
