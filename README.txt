@@ -1,3 +1,9 @@
+Update 4/21/12:
+
+-New Surface!
+-Level editor is now (mostly) bug free.
+
+
 Update 4/20/12:
 
 -New Level menus and level editor
