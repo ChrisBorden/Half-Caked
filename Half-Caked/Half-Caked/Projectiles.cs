@@ -117,34 +117,25 @@ namespace Half_Caked
 
         protected override void HandleTileCollision(Tile tile, Rectangle result, Level level)
         {
-            switch (tile.Type)
-            {
-                case Surface.Amplifies:
-                    Amplify(tile.Dimensions, result, level, Vector2.Zero);
-                    break;
-                case Surface.Normal:
-                    //(mPortalNumber == 0 ? level.Portals.Portal1 : level.Portals.Portal2).Scale = 1f;
-                    Act(tile.Dimensions, result, level, Vector2.Zero);
-                    break;
-                case Surface.Reflects:
-                    Reflect(result);
-                    break;
-                default:
-                    Absorb();
-                    break;
-            }
+            HandleCollision(tile.Dimensions, result, level, tile.Type, Vector2.Zero);
         }
 
         protected override void HandleObstacleCollision(Obstacle obs, Rectangle result, Level level)
         {
-            switch (obs.Contact(result))
+            HandleCollision(obs.CollisionSurface, result, level, obs.Contact(result), obs.Velocity);
+        }
+
+        private void HandleCollision(Rectangle collisionSurface, Rectangle result, Level level, Surface type, Vector2 frameVelocity)
+        {
+            switch (type)
             {
-                case Surface.Amplifies:                    
-                    Amplify(obs.CollisionSurface, result, level, obs.Velocity);
+                case Surface.Amplifies:
+                    level.Portals.Amplify(mPortalNumber, true);
+                    Act(collisionSurface, result, level, frameVelocity);
                     break;
                 case Surface.Normal:
                     level.Portals.Amplify(mPortalNumber, false);
-                    Act(obs.CollisionSurface, result, level, obs.Velocity);
+                    Act(collisionSurface, result, level, frameVelocity);
                     break;
                 case Surface.Reflects:
                     Reflect(result);
@@ -153,12 +144,6 @@ namespace Half_Caked
                     Absorb();
                     break;
             }
-        }
-
-        protected void Amplify(Rectangle target, Rectangle result, Level level, Vector2 targetVelocity)
-        {
-            level.Portals.Amplify(mPortalNumber);
-            Act(target, result, level, targetVelocity);
         }
 
         protected void Absorb()
