@@ -109,12 +109,11 @@ namespace Half_Caked
 
             base.Update(theGameTime);
 
-
             Vector2 offset = lvl.Player.Position + SPRITE_BODY_TARGET - Position;
             if (offset.Length() < Range)
             {
-                Fire(lvl);
-                mTimeSinceFired += theGameTime.ElapsedGameTime.Milliseconds;
+                if(Fire(lvl))
+                    mTimeSinceFired += theGameTime.ElapsedGameTime.Milliseconds;
             }
             else if (mTimeSinceFired > mReloadingTime)
                 mTimeSinceFired = mReloadingTime;
@@ -143,30 +142,29 @@ namespace Half_Caked
                 bullet.Draw(theSpriteBatch, Relative);
         }
 
-        public void Fire(Level lvl)
+        public bool Fire(Level lvl)
         {
             Vector2 dir = lvl.Player.Position + SPRITE_BODY_TARGET - Position;//MathHelper.Clamp((float)Math.Atan(dir.Y / dir.X), (int)(Oriented - 1) * MathHelper.PiOver2, (int)(Oriented + 1) * MathHelper.PiOver2);
 
             dir.Normalize();
+            Angle = MathHelper.WrapAngle((float)Math.Atan(dir.Y / dir.X)) + MathHelper.PiOver2 + (dir.X < 0 ? MathHelper.Pi : 0);
 
             Vector2 firingPosition = 20 * dir + Position;
 
             foreach (Tile tile in lvl.Tiles)
             {
                 if (Intersects(firingPosition, lvl.Player.Position + SPRITE_BODY_TARGET, tile.Dimensions))
-                    return;
+                    return false;
             }
 
             foreach (Obstacle obs in lvl.Obstacles)
             {
                 if (Intersects(firingPosition, lvl.Player.Position + SPRITE_BODY_TARGET, obs.CollisionSurface))
-                    return;
+                    return false;
             }
 
-            Angle = MathHelper.WrapAngle((float)Math.Atan(dir.Y / dir.X)) + MathHelper.PiOver2 + (dir.X < 0 ? MathHelper.Pi : 0);
-
             if (mTimeSinceFired < mReloadingTime)
-                return;
+                return true;
 
             foreach (EnemyBullet bullet in mBullets)
             {
@@ -175,9 +173,11 @@ namespace Half_Caked
                     bullet.Fire(firingPosition, dir, Vector2.Zero, lvl);
                     bullet.Angle = MathHelper.WrapAngle(Angle - MathHelper.PiOver2);
                     mTimeSinceFired -= mReloadingTime;
-                    return;
+                    return true;
                 }
             }
+
+            return false;
         }
 
         private bool Intersects(Vector2 p1, Vector2 p2, Rectangle rect)

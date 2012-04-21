@@ -62,9 +62,20 @@ namespace LevelCreator
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, NewCmdExecuted));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.IncreaseZoom, ZoomIn, CanZoomIn));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.DecreaseZoom, ZoomOut, CanZoomOut));
+            this.CommandBindings.Add(new CommandBinding(NavigationCommands.Favorites, OptionsCmdExecuted));
         }
 
         #region Commands
+
+        #region Options Command
+
+        void OptionsCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        {
+            OptionsWindow ow = new OptionsWindow();
+            ow.ShowDialog();
+        }
+
+        #endregion
 
         #region Delete Command
 

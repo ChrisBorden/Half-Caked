@@ -27,6 +27,8 @@
                 <MenuItem Command="ApplicationCommands.Save"   Header="Save" />
                 <MenuItem Command="ApplicationCommands.SaveAs" Header="Save As.." />
                 <Separator />
+                <MenuItem Command="NavigationCommands.Favorites" Header="Options" />                
+                <Separator />
                 <MenuItem Header="Exit" />
             </MenuItem>
             <MenuItem Header="Edit" IsEnabled="{Binding ElementName=MyDesignerCanvas, Path=IsEnabled}">
