@@ -10,7 +10,7 @@
       <Dimensions>
         <X>0</X>
         <Y>850</Y>
-        <Width>602</Width>
+        <Width>605</Width>
         <Height>50</Height>
         <Location>
           <X>0</X>
@@ -35,12 +35,12 @@
     <Tile>
       <Dimensions>
         <X>858</X>
-        <Y>249</Y>
-        <Width>135</Width>
-        <Height>420</Height>
+        <Y>210</Y>
+        <Width>107</Width>
+        <Height>459</Height>
         <Location>
           <X>858</X>
-          <Y>249</Y>
+          <Y>210</Y>
         </Location>
       </Dimensions>
       <Type>Absorbs</Type>
@@ -50,7 +50,7 @@
         <X>828</X>
         <Y>50</Y>
         <Width>165</Width>
-        <Height>199</Height>
+        <Height>160</Height>
         <Location>
           <X>828</X>
           <Y>50</Y>
@@ -60,25 +60,25 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>1559</X>
-        <Y>334</Y>
+        <X>1584</X>
+        <Y>392</Y>
         <Width>50</Width>
-        <Height>566</Height>
+        <Height>508</Height>
         <Location>
-          <X>1559</X>
-          <Y>334</Y>
+          <X>1584</X>
+          <Y>392</Y>
         </Location>
       </Dimensions>
       <Type>Absorbs</Type>
     </Tile>
     <Tile>
       <Dimensions>
-        <X>958</X>
+        <X>965</X>
         <Y>619</Y>
-        <Width>203</Width>
+        <Width>196</Width>
         <Height>50</Height>
         <Location>
-          <X>958</X>
+          <X>965</X>
           <Y>619</Y>
         </Location>
       </Dimensions>
@@ -88,7 +88,7 @@
       <Dimensions>
         <X>1345</X>
         <Y>619</Y>
-        <Width>214</Width>
+        <Width>240</Width>
         <Height>50</Height>
         <Location>
           <X>1345</X>
@@ -99,29 +99,29 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>1170</X>
+        <X>1174</X>
         <Y>824</Y>
-        <Width>167</Width>
+        <Width>160</Width>
         <Height>76</Height>
         <Location>
-          <X>1170</X>
+          <X>1174</X>
           <Y>824</Y>
         </Location>
       </Dimensions>
-      <Type>Amplifies</Type>
+      <Type>Normal</Type>
     </Tile>
     <Tile>
       <Dimensions>
-        <X>602</X>
+        <X>605</X>
         <Y>824</Y>
-        <Width>167</Width>
+        <Width>160</Width>
         <Height>76</Height>
         <Location>
-          <X>602</X>
+          <X>605</X>
           <Y>824</Y>
         </Location>
       </Dimensions>
-      <Type>Amplifies</Type>
+      <Type>Normal</Type>
     </Tile>
     <Tile>
       <Dimensions>
@@ -151,13 +151,13 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>1609</X>
-        <Y>334</Y>
-        <Width>234</Width>
+        <X>1607</X>
+        <Y>392</Y>
+        <Width>232</Width>
         <Height>50</Height>
         <Location>
-          <X>1609</X>
-          <Y>334</Y>
+          <X>1607</X>
+          <Y>392</Y>
         </Location>
       </Dimensions>
       <Type>Absorbs</Type>
@@ -190,12 +190,12 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>1609</X>
+        <X>1634</X>
         <Y>850</Y>
-        <Width>158</Width>
+        <Width>133</Width>
         <Height>50</Height>
         <Location>
-          <X>1609</X>
+          <X>1634</X>
           <Y>850</Y>
         </Location>
       </Dimensions>
@@ -229,25 +229,25 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>994</X>
-        <Y>249</Y>
-        <Width>112</Width>
-        <Height>40</Height>
+        <X>967</X>
+        <Y>265</Y>
+        <Width>170</Width>
+        <Height>45</Height>
         <Location>
-          <X>994</X>
-          <Y>249</Y>
+          <X>967</X>
+          <Y>265</Y>
         </Location>
       </Dimensions>
       <Type>Reflects</Type>
     </Tile>
     <Tile>
       <Dimensions>
-        <X>-2</X>
+        <X>0</X>
         <Y>0</Y>
         <Width>2</Width>
         <Height>900</Height>
         <Location>
-          <X>-2</X>
+          <X>0</X>
           <Y>0</Y>
         </Location>
       </Dimensions>
@@ -256,37 +256,11 @@
     <Tile>
       <Dimensions>
         <X>0</X>
-        <Y>-2</Y>
-        <Width>2048</Width>
-        <Height>2</Height>
-        <Location>
-          <X>0</X>
-          <Y>-2</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>0</X>
-        <Y>901</Y>
-        <Width>2048</Width>
-        <Height>2</Height>
-        <Location>
-          <X>0</X>
-          <Y>901</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>2049</X>
         <Y>0</Y>
-        <Width>2</Width>
-        <Height>900</Height>
+        <Width>2048</Width>
+        <Height>2</Height>
         <Location>
-          <X>2049</X>
+          <X>0</X>
           <Y>0</Y>
         </Location>
       </Dimensions>
@@ -294,12 +268,12 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>-2</X>
+        <X>2046</X>
         <Y>0</Y>
         <Width>2</Width>
         <Height>900</Height>
         <Location>
-          <X>-2</X>
+          <X>2046</X>
           <Y>0</Y>
         </Location>
       </Dimensions>
@@ -307,51 +281,12 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>0</X>
-        <Y>-2</Y>
-        <Width>2048</Width>
-        <Height>2</Height>
-        <Location>
-          <X>0</X>
-          <Y>-2</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>0</X>
-        <Y>901</Y>
-        <Width>2048</Width>
-        <Height>2</Height>
-        <Location>
-          <X>0</X>
-          <Y>901</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>2049</X>
-        <Y>0</Y>
-        <Width>2</Width>
-        <Height>900</Height>
-        <Location>
-          <X>2049</X>
-          <Y>0</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>769</X>
+        <X>765</X>
         <Y>850</Y>
-        <Width>401</Width>
+        <Width>409</Width>
         <Height>50</Height>
         <Location>
-          <X>769</X>
+          <X>765</X>
           <Y>850</Y>
         </Location>
       </Dimensions>
@@ -359,12 +294,12 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>1337</X>
+        <X>1334</X>
         <Y>850</Y>
-        <Width>222</Width>
+        <Width>250</Width>
         <Height>50</Height>
         <Location>
-          <X>1337</X>
+          <X>1334</X>
           <Y>850</Y>
         </Location>
       </Dimensions>
@@ -372,52 +307,13 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>-2</X>
-        <Y>0</Y>
-        <Width>2</Width>
-        <Height>900</Height>
-        <Location>
-          <X>-2</X>
-          <Y>0</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
         <X>0</X>
-        <Y>-2</Y>
+        <Y>898</Y>
         <Width>2048</Width>
         <Height>2</Height>
         <Location>
           <X>0</X>
-          <Y>-2</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>0</X>
-        <Y>901</Y>
-        <Width>2048</Width>
-        <Height>2</Height>
-        <Location>
-          <X>0</X>
-          <Y>901</Y>
-        </Location>
-      </Dimensions>
-      <Type>Absorbs</Type>
-    </Tile>
-    <Tile>
-      <Dimensions>
-        <X>2049</X>
-        <Y>0</Y>
-        <Width>2</Width>
-        <Height>900</Height>
-        <Location>
-          <X>2049</X>
-          <Y>0</Y>
+          <Y>898</Y>
         </Location>
       </Dimensions>
       <Type>Absorbs</Type>
@@ -427,8 +323,8 @@
     <Obstacle xsi:type="Door">
       <AssetName>Sprites\Door</AssetName>
       <InitialPosition>
-        <X>858</X>
-        <Y>669</Y>
+        <X>876</X>
+        <Y>666</Y>
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
@@ -442,8 +338,8 @@
     <Obstacle xsi:type="Platform">
       <AssetName>Sprites\Platform</AssetName>
       <InitialPosition>
-        <X>417</X>
-        <Y>653</Y>
+        <X>418</X>
+        <Y>689</Y>
       </InitialPosition>
       <Actions>
         <KeyValuePairOfGuidInt32>
@@ -455,12 +351,12 @@
       <InitialState>0</InitialState>
       <Path>
         <Vector2>
-          <X>475</X>
-          <Y>666</Y>
+          <X>420</X>
+          <Y>693</Y>
         </Vector2>
         <Vector2>
-          <X>475</X>
-          <Y>400</Y>
+          <X>420</X>
+          <Y>460</Y>
         </Vector2>
       </Path>
       <Speed>100</Speed>
@@ -505,6 +401,26 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
           <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
@@ -539,6 +455,66 @@
         <KeyValuePairOfGuidInt32>
           <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
           <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>3</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>3</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>3</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>3</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>3</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
           <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
@@ -576,19 +552,19 @@
       <AssetName>Sprites\Platform</AssetName>
       <InitialPosition>
         <X>1876</X>
-        <Y>334</Y>
+        <Y>400</Y>
       </InitialPosition>
       <Actions />
       <Guid>132ef6d7-e036-491f-95a0-82ff083f392e</Guid>
       <InitialState>3</InitialState>
       <Path>
         <Vector2>
-          <X>1935</X>
-          <Y>348</Y>
+          <X>1876</X>
+          <Y>404</Y>
         </Vector2>
         <Vector2>
-          <X>1935</X>
-          <Y>560</Y>
+          <X>1876</X>
+          <Y>594</Y>
         </Vector2>
       </Path>
       <Speed>100</Speed>
@@ -601,7 +577,7 @@
         <X>1072</X>
         <Y>609</Y>
       </InitialPosition>
-      <Range>300</Range>
+      <Range>250</Range>
     </Actor>
     <Actor xsi:type="Enemy">
       <AssetName>Sprites\Enemy</AssetName>
@@ -609,15 +585,7 @@
         <X>1447</X>
         <Y>609</Y>
       </InitialPosition>
-      <Range>300</Range>
-    </Actor>
-    <Actor xsi:type="Enemy">
-      <AssetName>Sprites\Enemy</AssetName>
-      <InitialPosition>
-        <X>1806</X>
-        <Y>700</Y>
-      </InitialPosition>
-      <Range>200</Range>
+      <Range>250</Range>
     </Actor>
   </Actors>
   <Checkpoints>
@@ -638,16 +606,16 @@
     </Checkpoint>
     <Checkpoint>
       <Location>
-        <X>1690</X>
-        <Y>834</Y>
+        <X>1683</X>
+        <Y>842</Y>
       </Location>
       <Quadrant>
         <X>-1</X>
         <Y>-1</Y>
       </Quadrant>
       <Bound>
-        <X>1607</X>
-        <Y>801</Y>
+        <X>1626</X>
+        <Y>763</Y>
       </Bound>
     </Checkpoint>
   </Checkpoints>
