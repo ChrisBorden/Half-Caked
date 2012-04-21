@@ -184,11 +184,17 @@
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Compile Include="Sounds\Level5.mp3">
       <Name>Level5</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
+    </Compile>
+    <Compile Include="Sounds\antiportal.wav">
+      <Name>antiportal</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
     </Compile>
     <Content Include="UI\cursor.cur">
       <Name>cursor</Name>

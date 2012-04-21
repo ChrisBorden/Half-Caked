@@ -24,6 +24,8 @@ namespace LevelCreator
         {
             Tile mTile;
 
+            SolidColorBrush antiportalColor = new SolidColorBrush(Color.FromArgb(100, 25, 100, 255));
+
             public override int X
             {
                 get { return base.X; }
@@ -85,7 +87,10 @@ namespace LevelCreator
                             (mItem.Content as Rectangle).Fill = Brushes.Gray;
                             break;
                         case Surface.Reflects:
-                            (mItem.Content as Rectangle).Fill = Brushes.WhiteSmoke;
+                            (mItem.Content as Rectangle).Fill = Brushes.GhostWhite;
+                            break;
+                        case Surface.Antiportal:
+                            (mItem.Content as Rectangle).Fill = antiportalColor;
                             break;
                         default:
                             break;

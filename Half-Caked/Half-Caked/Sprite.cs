@@ -159,9 +159,16 @@ namespace Half_Caked
             if (!Visible)
                 return;
 
-            Velocity += Acceleration * (float)theGameTime.ElapsedGameTime.TotalSeconds;
+            //Terminal Velocity
+            if (Velocity.Y > 1000)
+            {
+                Velocity.Y = 1000;
+            }
 
+            Velocity += Acceleration * (float)theGameTime.ElapsedGameTime.TotalSeconds;
             Position += (Velocity + FrameVelocity) * (float)theGameTime.ElapsedGameTime.TotalSeconds;
+
+            
         }
         
         //Draw the sprite to the screen

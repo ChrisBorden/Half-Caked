@@ -8,6 +8,7 @@ namespace Half_Caked
 {
     public enum Surface
     {
+        Antiportal = 5,
         Absorbs = 4,
         Amplifies = 3,
         Normal = 2,

@@ -318,6 +318,19 @@
       </Dimensions>
       <Type>Absorbs</Type>
     </Tile>
+    <Tile>
+      <Dimensions>
+        <X>1809</X>
+        <Y>50</Y>
+        <Width>30</Width>
+        <Height>342</Height>
+        <Location>
+          <X>1809</X>
+          <Y>50</Y>
+        </Location>
+      </Dimensions>
+      <Type>Antiportal</Type>
+    </Tile>
   </Tiles>
   <Obstacles>
     <Obstacle xsi:type="Door">
@@ -421,6 +434,14 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
           <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
@@ -455,6 +476,30 @@
         <KeyValuePairOfGuidInt32>
           <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
           <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>3</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>3</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
           <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>

@@ -72,6 +72,7 @@ namespace Half_Caked
         Rectangle[] mCollisions = new Rectangle[5];
 
         SoundEffect mJumpEffect, mDeathEffect, mLandingEffect;
+        SoundEffect antiportalEffect;
         #endregion
 
         #region Initialization
@@ -107,6 +108,7 @@ namespace Half_Caked
             mJumpEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerJump");
             mDeathEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerKilled");
             mLandingEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerLanding");
+            antiportalEffect = theContentManager.Load<SoundEffect>("Sounds\\antiportal");
 
             Center = new Vector2(Size.Width / 2, Size.Height / 2);
         }
@@ -133,7 +135,6 @@ namespace Half_Caked
 
             UpdateDuck(inputState);
 
-            //falling
             Acceleration.Y = (mCurrentState == State.Air || mCurrentState == State.GravityPortal || mCurrentState == State.Portal ? 1 : 0) * level.Gravity * Level.METERS_TO_UNITS;
 
             if (Angle != 0)
@@ -169,7 +170,7 @@ namespace Half_Caked
                 Rectangle result = Rectangle.Intersect(obs.CollisionSurface, CollisionSurface);
                 if (!result.IsEmpty)
                 {
-                    if (HandleStandardCollision(result, obs.CollisionSurface, obs.Contact(result), obs.Friction * level.Gravity))
+                    if (HandleStandardCollision(result, obs.CollisionSurface, obs.Contact(result), obs.Friction * level.Gravity, level))
                     {
                         Die(level);
                         return;
@@ -192,7 +193,7 @@ namespace Half_Caked
                 Rectangle result = Rectangle.Intersect(tile.Dimensions, CollisionSurface);
                 if (!result.IsEmpty)
                 {
-                    if (HandleStandardCollision(result, tile.Dimensions, tile.Type, tile.Friction * level.Gravity))
+                    if (HandleStandardCollision(result, tile.Dimensions, tile.Type, tile.Friction * level.Gravity, level))
                     {
                         Die(level);
                         return;
@@ -306,14 +307,17 @@ namespace Half_Caked
                         if ((first = (CollisionSurface.Y >= Portal.CollisionSurface.Bottom - CollisionSurface.Height)) || Portal.CollisionSurface.Y >= CollisionSurface.Y)
                         {
                             if (first)
-                                Velocity.Y = Math.Min(Velocity.Y, 0);
+                            {
+                                //Velocity.Y = Math.Min(Velocity.Y, 0);
+                            }
                             else
                             {
-                                Velocity.Y = Math.Max(Velocity.Y, 0);
+                                //Velocity.Y = Math.Max(Velocity.Y, 0);
                                 mCurrentState = State.GravityPortal;
                                 stillJumping = false;
                             }
 
+                            Velocity.Y = 0;
                             Position = new Vector2(Position.X, MathHelper.Clamp(Position.Y, Portal.CollisionSurface.Y + Center.Y, Portal.CollisionSurface.Bottom - Center.Y));
                         }
                         return true;
@@ -331,8 +335,10 @@ namespace Half_Caked
                         if (CollisionSurface.X > Portal.CollisionSurface.Right - CollisionSurface.Width || Portal.CollisionSurface.X > CollisionSurface.X)
                         {
                             Position = new Vector2(MathHelper.Clamp(Position.X, Portal.CollisionSurface.X + Center.X, Portal.CollisionSurface.Right - Center.X), Position.Y);
-                            Velocity.X = 0;
+                            //Velocity.X = 0;
                         }
+                        Velocity.X = 0;
+
                         return true;
                     }
                 }
@@ -340,9 +346,18 @@ namespace Half_Caked
             return false;
         }
 
-        private bool HandleStandardCollision(Rectangle result, Rectangle obj, Surface type, float friction)
+        private bool HandleStandardCollision(Rectangle result, Rectangle obj, Surface type, float friction, Level level)
         {
-            if (3 >= result.Height || result.Width >= this.CollisionSurface.Width - 1
+            if(type == Surface.Antiportal) //no physical interaction with antiportal surfaces
+            {
+                //reset portals
+                if(level.Portals.Portal1.Visible || level.Portals.Portal2.Visible)
+                {
+                    level.Portals.Reset();
+                    level.PlaySoundEffect(antiportalEffect);
+                }
+            }
+            else if (3 >= result.Height || result.Width >= this.CollisionSurface.Width - 1
                 || result.Height / (float)CollisionSurface.Height < result.Width / (float)CollisionSurface.Width)
             {
                 if (CollisionSurface.Center.Y < obj.Center.Y)
