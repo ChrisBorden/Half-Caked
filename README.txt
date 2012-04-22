@@ -1,3 +1,9 @@
+Update 4/22/12:
+
+-New Level 7!
+-Level editor now exports a background image.
+
+
 Update 4/21/12:
 
 -New Surface!
