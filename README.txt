@@ -1,6 +1,7 @@
 Update 4/21/12:
 
 -New Surface!
+-New Level 6!
 -Level editor is now (mostly) bug free.
 
 
@@ -10,7 +11,7 @@ Update 4/20/12:
 -Level menu now has level previews
 -Pause menu now displays a map of the level
 -Added portal gun reticle
--New Level!
+-New Level 5!
 
 
 Update 4/1/12 (Chris Borden):
