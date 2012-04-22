@@ -62,6 +62,11 @@ namespace LevelCreator
 
         #region Zoom Commands
 
+        public void ZoomTo(double value)
+        {
+            this.zoomSlider.Value = value;
+        }
+
         public void ZoomIn()
         {
             this.zoomSlider.Value = this.zoomSlider.Ticks[this.zoomSlider.Ticks.IndexOf(this.zoomSlider.Value) + 1];

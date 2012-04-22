@@ -26,41 +26,45 @@ namespace LevelCreator
 
             SolidColorBrush antiportalColor = new SolidColorBrush(Color.FromArgb(100, 25, 100, 255));
 
-            public override int X
+            public new double X
             {
-                get { return base.X; }
+                get { return (Canvas.GetLeft(mItem) + (IsCentered ? (mItem.Width / 2) : 0)); }
                 set
                 {
-                    mTile.Dimensions.X = value; base.X = value;
+                    mTile.Dimensions.X = (int)value; 
+                    Canvas.SetLeft(mItem, value - (IsCentered ? (mItem.Width / 2) : 0));
+                    OnPropertyChanged("X");
                 }
             }
 
-            public override int Y
+            public new double Y
             {
-                get { return base.Y; }
+                get { return (Canvas.GetTop(mItem) + (IsCentered ? (mItem.Height / 2) : 0)); }
                 set
                 {
-                    mTile.Dimensions.Y = value; base.Y = value;
+                    mTile.Dimensions.Y = (int)value; 
+                    Canvas.SetTop(mItem, value - (IsCentered ? (mItem.Height / 2) : 0));
+                    OnPropertyChanged("Y");
                 }
             }
 
-            public int Width
+            public double Width
             {
-                get { return (int)mItem.Width; }
+                get { return Item.Width; }
                 set
                 {
-                    mTile.Dimensions.Width = value;
+                    mTile.Dimensions.Width = (int)value;
                     mItem.Width = value;
                     OnPropertyChanged("Width");
                 }
             }
 
-            public int Height
+            public double Height
             {
-                get { return (int)mItem.Height; }
+                get { return mItem.Height; }
                 set
                 {
-                    mTile.Dimensions.Height = value;
+                    mTile.Dimensions.Height = (int)value;
                     mItem.Height = value;
                     OnPropertyChanged("Height");
                 }
@@ -114,6 +118,11 @@ namespace LevelCreator
                 Y = tile.Dimensions.Y;
             }
 
+            public override void Moved()
+            {
+                X = X; Y = Y;
+            }
+
             public override List<UIElement> RemoveFromLevel()
             {
                 mLevel.Tiles.Remove(mTile);
@@ -132,8 +141,10 @@ namespace LevelCreator
 
         void item_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            (this.DataContext as TileModel).Width = (this.DataContext as TileModel).Width;
-            (this.DataContext as TileModel).Height = (this.DataContext as TileModel).Height;
+            var mdl = (this.DataContext as TileModel);
+
+            mdl.Width = mdl.Width;
+            mdl.Height = mdl.Height;
             Moved();
         }
     }
