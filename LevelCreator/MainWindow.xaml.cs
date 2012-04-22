@@ -290,7 +290,20 @@ namespace LevelCreator
         private void SaveImage(string path)
         {
             MyDesignerCanvas.DeselectAll();
+            Zoombox.ZoomTo(100);
+
             var temp = MyDesignerCanvas.Background;
+
+            FileStream fs = new FileStream(path + "b.png", FileMode.Create);
+            PngBitmapEncoder encoder = new PngBitmapEncoder();
+
+            var originalBitmap = (temp as ImageBrush).ImageSource as BitmapSource; 
+            var resizedBitmap = new TransformedBitmap(originalBitmap, new ScaleTransform(MyDesignerCanvas.ActualWidth/originalBitmap.Width, MyDesignerCanvas.ActualHeight/originalBitmap.Height));
+
+            encoder.Frames.Add(BitmapFrame.Create(resizedBitmap));
+            encoder.Save(fs);
+            fs.Close();
+
             MyDesignerCanvas.Background = Brushes.Transparent;
 
             foreach (DesignerItem item in MyDesignerCanvas.Children.OfType<DesignerItem>())
@@ -298,12 +311,12 @@ namespace LevelCreator
 
             MyDesignerCanvas.UpdateLayout();
 
-            FileStream fs = new FileStream(path + ".png", FileMode.Create);
+            fs = new FileStream(path + ".png", FileMode.Create);
             RenderTargetBitmap png = new RenderTargetBitmap((int)MyDesignerCanvas.ActualWidth,
                 (int)MyDesignerCanvas.ActualHeight, 1 / 96, 1 / 96, PixelFormats.Pbgra32);
-            
+
             png.Render(MyDesignerCanvas);
-            PngBitmapEncoder encoder = new PngBitmapEncoder();
+            encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(png));
             encoder.Save(fs);
 
@@ -323,10 +336,10 @@ namespace LevelCreator
             Tile[] boundaries = null;
             if (mFirstSave)
             {
-                boundaries = new Tile[]{ new Tile(new Microsoft.Xna.Framework.Rectangle(-2, 0, 2,(int) MyDesignerCanvas.Height), Surface.Absorbs), 
-                                            new Tile(new Microsoft.Xna.Framework.Rectangle(0, -2, (int) MyDesignerCanvas.Height, 2), Surface.Absorbs),    
-                                            new Tile(new Microsoft.Xna.Framework.Rectangle(0, (int) MyDesignerCanvas.Width + 1, (int) MyDesignerCanvas.Width, 2), Surface.Absorbs), 
-                                            new Tile(new Microsoft.Xna.Framework.Rectangle((int) MyDesignerCanvas.Width + 1, 0, 2, (int) MyDesignerCanvas.Width), Surface.Absorbs) };
+                boundaries = new Tile[]{ new Tile(new Microsoft.Xna.Framework.Rectangle(-2, 0, 2,(int) MyDesignerCanvas.ActualHeight), Surface.Absorbs), 
+                                            new Tile(new Microsoft.Xna.Framework.Rectangle(0, -2, (int) MyDesignerCanvas.ActualWidth, 2), Surface.Absorbs),    
+                                            new Tile(new Microsoft.Xna.Framework.Rectangle(0, (int) MyDesignerCanvas.ActualHeight + 1, (int) MyDesignerCanvas.ActualWidth, 2), Surface.Absorbs), 
+                                            new Tile(new Microsoft.Xna.Framework.Rectangle((int) MyDesignerCanvas.ActualWidth + 1, 0, 2, (int) MyDesignerCanvas.ActualHeight), Surface.Absorbs) };
 
                 Level.Tiles.AddRange(boundaries);
             }

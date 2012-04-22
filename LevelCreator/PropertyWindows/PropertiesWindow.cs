@@ -82,9 +82,9 @@ namespace LevelCreator
             else if (canvas.Width / 2 > (DataContext as MovingModel).X)
                 Canvas.SetLeft(this, item.Width + left);
             else if (ActualWidth != 0)
-                Canvas.SetLeft(this, -this.ActualWidth / (canvas.LayoutTransform as ScaleTransform).ScaleX + left);
+                Canvas.SetLeft(this, -this.ActualWidth / (canvas.LayoutTransform as ScaleTransform).ScaleX + left - 10);
             else
-                Canvas.SetLeft(this, -200  / (canvas.LayoutTransform as ScaleTransform).ScaleX + left);
+                Canvas.SetLeft(this, -200  / (canvas.LayoutTransform as ScaleTransform).ScaleX + left - 10);
 
             if (canvas.Height / 2 > (DataContext as MovingModel).Y)
                 Canvas.SetTop(this, top);
