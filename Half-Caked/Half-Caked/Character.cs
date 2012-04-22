@@ -98,7 +98,7 @@ namespace Half_Caked
             deathAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Death"), 0.1f, 12, false);
 
             int width = (int)(idleAnimation.FrameWidth);// * 0.9f);
-            int left = 0; //(idleAnimation.FrameWidth - width) / 2;
+            int left = 0;// (idleAnimation.FrameWidth - width) / 2;
 			int height = (int)(idleAnimation.FrameHeight);//* 0.8f);
             int top = idleAnimation.FrameHeight - height;
             Source = new Rectangle(left, top, width, height);
@@ -135,7 +135,7 @@ namespace Half_Caked
 
             UpdateDuck(inputState);
 
-            Acceleration.Y = (mCurrentState == State.Air || mCurrentState == State.GravityPortal || mCurrentState == State.Portal ? 1 : 0) * level.Gravity * Level.METERS_TO_UNITS;
+            Acceleration.Y = (mCurrentState == State.Air || mCurrentState == State.GravityPortal ? 1 : 0) * level.Gravity * Level.METERS_TO_UNITS;
 
             if (Angle != 0)
             {

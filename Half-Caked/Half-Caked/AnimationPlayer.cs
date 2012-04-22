@@ -108,7 +108,7 @@ namespace Half_Caked
             }
 
             // Calculate the source rectangle of the current frame.
-            Rectangle source = new Rectangle(FrameIndex * Animation.FrameWidth, 
+            Rectangle source = new Rectangle(FrameIndex * Animation.FrameWidth - 1, 
 				0, Animation.FrameWidth, Animation.FrameHeight);
 
             // Draw the current frame.
