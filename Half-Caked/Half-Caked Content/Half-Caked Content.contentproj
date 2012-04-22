@@ -212,6 +212,11 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="Sounds\Level6.mp3">
+      <Name>Level6</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
     <Content Include="UI\cursor.cur">
       <Name>cursor</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

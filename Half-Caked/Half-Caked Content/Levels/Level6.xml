@@ -9,25 +9,25 @@
     <Tile>
       <Dimensions>
         <X>0</X>
-        <Y>462</Y>
+        <Y>652</Y>
         <Width>484</Width>
-        <Height>1038</Height>
+        <Height>848</Height>
         <Location>
           <X>0</X>
-          <Y>462</Y>
+          <Y>652</Y>
         </Location>
       </Dimensions>
       <Type>Absorbs</Type>
     </Tile>
     <Tile>
       <Dimensions>
-        <X>1516</X>
-        <Y>462</Y>
+        <X>1085</X>
+        <Y>652</Y>
         <Width>484</Width>
-        <Height>1038</Height>
+        <Height>848</Height>
         <Location>
-          <X>1516</X>
-          <Y>462</Y>
+          <X>1085</X>
+          <Y>652</Y>
         </Location>
       </Dimensions>
       <Type>Absorbs</Type>
@@ -37,7 +37,7 @@
         <X>0</X>
         <Y>0</Y>
         <Width>658</Width>
-        <Height>50</Height>
+        <Height>212</Height>
         <Location>
           <X>0</X>
           <Y>0</Y>
@@ -50,7 +50,7 @@
         <X>658</X>
         <Y>0</Y>
         <Width>1342</Width>
-        <Height>50</Height>
+        <Height>212</Height>
         <Location>
           <X>658</X>
           <Y>0</Y>
@@ -63,7 +63,7 @@
         <X>1950</X>
         <Y>50</Y>
         <Width>50</Width>
-        <Height>412</Height>
+        <Height>1450</Height>
         <Location>
           <X>1950</X>
           <Y>50</Y>
@@ -76,7 +76,7 @@
         <X>0</X>
         <Y>50</Y>
         <Width>50</Width>
-        <Height>412</Height>
+        <Height>602</Height>
         <Location>
           <X>0</X>
           <Y>50</Y>
@@ -87,73 +87,142 @@
     <Tile>
       <Dimensions>
         <X>484</X>
-        <Y>1425</Y>
-        <Width>316</Width>
-        <Height>75</Height>
+        <Y>1200</Y>
+        <Width>200</Width>
+        <Height>300</Height>
         <Location>
           <X>484</X>
-          <Y>1425</Y>
+          <Y>1200</Y>
         </Location>
       </Dimensions>
       <Type>Normal</Type>
     </Tile>
     <Tile>
       <Dimensions>
-        <X>800</X>
-        <Y>1475</Y>
-        <Width>400</Width>
-        <Height>25</Height>
+        <X>685</X>
+        <Y>1450</Y>
+        <Width>200</Width>
+        <Height>50</Height>
         <Location>
-          <X>800</X>
-          <Y>1475</Y>
+          <X>685</X>
+          <Y>1450</Y>
         </Location>
       </Dimensions>
       <Type>Death</Type>
     </Tile>
     <Tile>
       <Dimensions>
-        <X>1200</X>
-        <Y>1425</Y>
-        <Width>316</Width>
-        <Height>75</Height>
+        <X>885</X>
+        <Y>1200</Y>
+        <Width>200</Width>
+        <Height>300</Height>
         <Location>
-          <X>1200</X>
-          <Y>1425</Y>
+          <X>885</X>
+          <Y>1200</Y>
         </Location>
       </Dimensions>
       <Type>Normal</Type>
     </Tile>
+    <Tile>
+      <Dimensions>
+        <X>1569</X>
+        <Y>1450</Y>
+        <Width>281</Width>
+        <Height>50</Height>
+        <Location>
+          <X>1569</X>
+          <Y>1450</Y>
+        </Location>
+      </Dimensions>
+      <Type>Death</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>1850</X>
+        <Y>1401</Y>
+        <Width>100</Width>
+        <Height>99</Height>
+        <Location>
+          <X>1850</X>
+          <Y>1401</Y>
+        </Location>
+      </Dimensions>
+      <Type>Absorbs</Type>
+    </Tile>
   </Tiles>
-  <Obstacles />
+  <Obstacles>
+    <Obstacle xsi:type="Platform">
+      <AssetName>Sprites\Platform</AssetName>
+      <InitialPosition>
+        <X>1629</X>
+        <Y>651</Y>
+      </InitialPosition>
+      <Actions />
+      <Guid>01882da9-a9d9-429a-84a7-ed078742fbc4</Guid>
+      <InitialState>3</InitialState>
+      <Path>
+        <Vector2>
+          <X>1632</X>
+          <Y>650</Y>
+        </Vector2>
+        <Vector2>
+          <X>1632</X>
+          <Y>952</Y>
+        </Vector2>
+      </Path>
+      <Speed>150</Speed>
+    </Obstacle>
+    <Obstacle xsi:type="Platform">
+      <AssetName>Sprites\Platform</AssetName>
+      <InitialPosition>
+        <X>1746</X>
+        <Y>1037</Y>
+      </InitialPosition>
+      <Actions />
+      <Guid>867e6630-3321-4721-bcdb-ac1e21b10e1b</Guid>
+      <InitialState>3</InitialState>
+      <Path>
+        <Vector2>
+          <X>1747</X>
+          <Y>1036</Y>
+        </Vector2>
+        <Vector2>
+          <X>1747</X>
+          <Y>1260</Y>
+        </Vector2>
+      </Path>
+      <Speed>150</Speed>
+    </Obstacle>
+  </Obstacles>
   <Actors />
   <Checkpoints>
     <Checkpoint>
       <Location>
-        <X>125</X>
-        <Y>367</Y>
+        <X>122</X>
+        <Y>328</Y>
       </Location>
       <Quadrant>
         <X>1</X>
         <Y>1</Y>
       </Quadrant>
       <Bound>
-        <X>204</X>
-        <Y>503</Y>
+        <X>213</X>
+        <Y>709</Y>
       </Bound>
       <NarrationText>I am 98 percent sure you can make this jump. I believe in you.</NarrationText>
     </Checkpoint>
     <Checkpoint>
       <Location>
-        <X>1875</X>
-        <Y>446</Y>
+        <X>1889</X>
+        <Y>1384</Y>
       </Location>
       <Quadrant>
         <X>-1</X>
-        <Y>1</Y>
+        <Y>-1</Y>
       </Quadrant>
       <Bound>
-        <X>1809</X>
-        <Y>500</Y>
+        <X>1854</X>
+        <Y>1339</Y>
       </Bound>
     </Checkpoint>
   </Checkpoints>
