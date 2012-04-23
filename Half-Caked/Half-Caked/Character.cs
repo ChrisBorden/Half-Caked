@@ -450,38 +450,72 @@ namespace Half_Caked
                 {
                     Acceleration.X = DYNAMIC_ACCEL_AIR * (Math.Abs(Velocity.X) <= STATIC_ACCEL_AIR ? 0 : 1) * (-Math.Sign(Velocity.X));
                 }
-
-                if (inputState.IsMovingBackwards(null) ^ (invert == -1))
+                
+                if (inputState.IsMovingBackwards(null))// ^ (invert == -1))
                 {
                     //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_LEFT / 4;
                     //Velocity.X = Math.Min(Velocity.X, DEFAULT_SPEED / 2f * MOVE_LEFT * (mIsDucking ? .5f : 1));
-                    if (Velocity.X >= -DEFAULT_SPEED)
+                    if (invert == 1)
                     {
-                        if (Velocity.X > 0)
+                        if (Velocity.X >= -DEFAULT_SPEED)
                         {
-                            Velocity.X -= 50;
+                            if (Velocity.X > 0)
+                            {
+                                Velocity.X -= 50;
+                            }
+                            else
+                            {
+                                Velocity.X -= 25;
+                            }
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (Velocity.X <= DEFAULT_SPEED)
                         {
-                            Velocity.X -= 25;
+                            if (Velocity.X < 0)
+                            {
+                                Velocity.X += 50;
+                            }
+                            else
+                            {
+                                Velocity.X += 25;
+                            }
                         }
                     }
 
                     animator.PlayAnimation(jumpAnimation);
                 }
-                else if (inputState.IsMovingForward(null) ^ (invert == -1))
+                else if (inputState.IsMovingForward(null))// ^ (invert == -1))
                 {
                     //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_RIGHT / 4;
                     //Velocity.X = Math.Max(Velocity.X, DEFAULT_SPEED / 2f * MOVE_RIGHT * (mIsDucking ? .5f : 1));
-                    if (Velocity.X <= DEFAULT_SPEED)
+                    if (invert == 1)
                     {
-                        if (Velocity.X < 0)
+                        if (Velocity.X <= DEFAULT_SPEED)
                         {
-                            Velocity.X += 50;
+                            if (Velocity.X < 0)
+                            {
+                                Velocity.X += 50;
+                            }
+                            else
+                            {
+                                Velocity.X += 25;
+                            }
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (Velocity.X >= -DEFAULT_SPEED)
                         {
-                            Velocity.X += 25;
+                            if (Velocity.X > 0)
+                            {
+                                Velocity.X -= 50;
+                            }
+                            else
+                            {
+                                Velocity.X -= 25;
+                            }
                         }
                     }
 
