@@ -154,11 +154,17 @@ namespace Half_Caked
         public void CheckCollisions(Level level, bool ePressed)
         {
             FrameVelocity = Vector2.Zero;
+            object ignoreObject = null;
 
             if (level.Portals.IsOpen())
             {
-                if (HandlePortalCollision(0, level) || HandlePortalCollision(1, level))
-                    return;
+                if (HandlePortalCollision(0, level))
+                    ignoreObject = level.Portals.Portal1Holder;
+                else if (HandlePortalCollision(1, level))
+                    ignoreObject = level.Portals.Portal2Holder;
+
+                //if (HandlePortalCollision(0, level) || HandlePortalCollision(1, level))
+                //    return;
             }
 
             if (mForcedDucking)
@@ -167,6 +173,9 @@ namespace Half_Caked
 
             foreach (Obstacle obs in level.Obstacles)
             {
+                if (obs == ignoreObject)
+                    continue;
+
                 Rectangle result = Rectangle.Intersect(obs.CollisionSurface, CollisionSurface);
                 if (!result.IsEmpty)
                 {
@@ -190,6 +199,9 @@ namespace Half_Caked
 
             foreach (Tile tile in level.Tiles)
             {
+                if (tile == ignoreObject)
+                    continue;
+
                 Rectangle result = Rectangle.Intersect(tile.Dimensions, CollisionSurface);
                 if (!result.IsEmpty)
                 {
@@ -338,7 +350,7 @@ namespace Half_Caked
                             //Velocity.X = 0;
                         }
                         Velocity.X = 0;
-
+                        
                         return true;
                     }
                 }

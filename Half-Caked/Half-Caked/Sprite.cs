@@ -61,8 +61,8 @@ namespace Half_Caked
 
                 float absAngle = Math.Abs(Angle);
 
-                rectReturn.Height = Math.Abs((int)(Math.Sin(absAngle) * Size.Width + Math.Cos(absAngle) * Size.Height));
-                rectReturn.Width = Math.Abs((int)(Math.Sin(absAngle) * Size.Height + Math.Cos(absAngle) * Size.Width));
+                rectReturn.Height = (int)(Math.Abs(Math.Sin(absAngle) * Size.Width) + Math.Abs(Math.Cos(absAngle) * Size.Height));
+                rectReturn.Width = (int)(Math.Abs(Math.Sin(absAngle) * Size.Height) + Math.Abs(Math.Cos(absAngle) * Size.Width));
 
                 var rot = Matrix.CreateRotationZ(Angle);
                 var toCenter = Vector2.Transform(new Vector2(Size.Width / 2f, Size.Height / 2f) - Center, rot);

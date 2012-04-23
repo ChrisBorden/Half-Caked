@@ -117,25 +117,25 @@ namespace Half_Caked
 
         protected override void HandleTileCollision(Tile tile, Rectangle result, Level level)
         {
-            HandleCollision(tile.Dimensions, result, level, tile.Type, Vector2.Zero);
+            HandleCollision(tile.Dimensions, result, level, tile.Type, Vector2.Zero, tile);
         }
 
         protected override void HandleObstacleCollision(Obstacle obs, Rectangle result, Level level)
         {
-            HandleCollision(obs.CollisionSurface, result, level, obs.Contact(result), obs.Velocity);
+            HandleCollision(obs.CollisionSurface, result, level, obs.Contact(result), obs.Velocity, obs);
         }
 
-        private void HandleCollision(Rectangle collisionSurface, Rectangle result, Level level, Surface type, Vector2 frameVelocity)
+        private void HandleCollision(Rectangle collisionSurface, Rectangle result, Level level, Surface type, Vector2 frameVelocity, object targetObj)
         {
             switch (type)
             {
                 case Surface.Amplifies:
                     level.Portals.Amplify(mPortalNumber, true);
-                    Act(collisionSurface, result, level, frameVelocity);
+                    Act(collisionSurface, result, level, frameVelocity, targetObj);
                     break;
                 case Surface.Normal:
                     level.Portals.Amplify(mPortalNumber, false);
-                    Act(collisionSurface, result, level, frameVelocity);
+                    Act(collisionSurface, result, level, frameVelocity, targetObj);
                     break;
                 case Surface.Reflects:
                     Reflect(result);
@@ -152,7 +152,7 @@ namespace Half_Caked
             Visible = false;
         }
 
-        protected void Act(Rectangle target, Rectangle result, Level level, Vector2 targetVelocity)
+        protected void Act(Rectangle target, Rectangle result, Level level, Vector2 targetVelocity, object targetObj)
         {
             Visible = false;
             Orientation orientation;
@@ -207,7 +207,7 @@ namespace Half_Caked
                 return;
             }
             Velocity = Vector2.Zero;
-            level.Portals.Open(openingPoint, orientation, mPortalNumber, FrameVelocity, level);
+            level.Portals.Open(openingPoint, orientation, mPortalNumber, FrameVelocity, level, targetObj);
         }
 
         protected void Reflect(Rectangle result)

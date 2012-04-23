@@ -294,15 +294,20 @@ namespace LevelCreator
 
             var temp = MyDesignerCanvas.Background;
 
-            FileStream fs = new FileStream(path + "b.png", FileMode.Create);
-            PngBitmapEncoder encoder = new PngBitmapEncoder();
+            FileStream fs; PngBitmapEncoder encoder;
 
-            var originalBitmap = (temp as ImageBrush).ImageSource as BitmapSource; 
-            var resizedBitmap = new TransformedBitmap(originalBitmap, new ScaleTransform(MyDesignerCanvas.ActualWidth/originalBitmap.Width, MyDesignerCanvas.ActualHeight/originalBitmap.Height));
+            if (temp is ImageBrush)
+            {
+                fs = new FileStream(path + "b.png", FileMode.Create);
+                encoder = new PngBitmapEncoder();
 
-            encoder.Frames.Add(BitmapFrame.Create(resizedBitmap));
-            encoder.Save(fs);
-            fs.Close();
+                var originalBitmap = (temp as ImageBrush).ImageSource as BitmapSource;
+                var resizedBitmap = new TransformedBitmap(originalBitmap, new ScaleTransform(MyDesignerCanvas.ActualWidth / originalBitmap.Width, MyDesignerCanvas.ActualHeight / originalBitmap.Height));
+
+                encoder.Frames.Add(BitmapFrame.Create(resizedBitmap));
+                encoder.Save(fs);
+                fs.Close();
+            }
 
             MyDesignerCanvas.Background = Brushes.Transparent;
 
