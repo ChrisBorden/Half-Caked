@@ -64,7 +64,7 @@ namespace Half_Caked
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-            mLevel.LoadContent(this.content, (ScreenManager.Game as HalfCakedGame).CurrentProfile);
+            mLevel.LoadContent(this.ScreenManager, (ScreenManager.Game as HalfCakedGame).CurrentProfile);
 
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that

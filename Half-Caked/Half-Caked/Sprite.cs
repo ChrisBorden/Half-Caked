@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
+using System.IO;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -59,10 +60,8 @@ namespace Half_Caked
             {
                 Rectangle rectReturn = Rectangle.Empty;
 
-                float absAngle = Math.Abs(Angle);
-
-                rectReturn.Height = (int)(Math.Abs(Math.Sin(absAngle) * Size.Width) + Math.Abs(Math.Cos(absAngle) * Size.Height));
-                rectReturn.Width = (int)(Math.Abs(Math.Sin(absAngle) * Size.Height) + Math.Abs(Math.Cos(absAngle) * Size.Width));
+                rectReturn.Height = (int)(Math.Abs(Math.Sin(mAngle) * Size.Width) + Math.Abs(Math.Cos(mAngle) * Size.Height));
+                rectReturn.Width = (int)(Math.Abs(Math.Sin(mAngle) * Size.Height) + Math.Abs(Math.Cos(mAngle) * Size.Width));
 
                 var rot = Matrix.CreateRotationZ(Angle);
                 var toCenter = Vector2.Transform(new Vector2(Size.Width / 2f, Size.Height / 2f) - Center, rot);
@@ -150,6 +149,16 @@ namespace Half_Caked
             Source = new Rectangle(0, 0, mSpriteTexture.Width, mSpriteTexture.Height);
             Size = new Rectangle(0, 0, (int)(mSpriteTexture.Width * Scale), (int)(mSpriteTexture.Height * Scale));
         }
+
+        public virtual void LoadContent(GraphicsDevice device, string filename)
+        {
+            using (Stream contentStream = new FileStream(filename, FileMode.Open))
+                mSpriteTexture = Texture2D.FromStream(device, contentStream);
+            
+            Source = new Rectangle(0, 0, mSpriteTexture.Width, mSpriteTexture.Height);
+            Size = new Rectangle(0, 0, (int)(mSpriteTexture.Width * Scale), (int)(mSpriteTexture.Height * Scale));
+        }
+
         #endregion
 
         #region Draw and Update

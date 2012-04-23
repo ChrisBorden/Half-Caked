@@ -50,7 +50,7 @@ namespace Half_Caked
             ThreadStart ts = delegate()
             {
                 foreach (Level lvl in mLevels)
-                    lvl.LoadContent(ScreenManager.Game.Content, (ScreenManager.Game as HalfCakedGame).CurrentProfile);
+                    lvl.LoadContent(ScreenManager, (ScreenManager.Game as HalfCakedGame).CurrentProfile);
             };
             new Thread(ts).Start();
         }

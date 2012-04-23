@@ -93,27 +93,45 @@ namespace Half_Caked
             Portals = new PortalGroup();
         }
 
-        public virtual void LoadContent(ContentManager theContentManager, Profile activeProfile)
+        public void LoadContent(ScreenManager screenManager, Profile activeProfile)
         {
             if (mLoaded)
                 return;
 
+            var theContentManager = screenManager.Game.Content;
+
             if (LevelIdentifier == -1)
-                AssetName = "Custom\\" + AssetName;
-
-			String backgroundMusicName = "Sounds\\" + AssetName;
-            AssetName = "Levels\\" + AssetName;
-            base.LoadContent(theContentManager, AssetName);
-
-            try
             {
-                mBackground.LoadContent(theContentManager, AssetName + "b");
-                mBackground.Position = Position;
+                string filepath = "Content\\Levels\\Custom\\" + AssetName;
+                base.LoadContent(screenManager.GraphicsDevice, filepath + ".png");
+
+                try
+                {
+                    mBackground.LoadContent(screenManager.GraphicsDevice, filepath + "b.png");
+                    mBackground.Position = Position;
+                }
+                catch
+                {
+                    mBackground = null;
+                }
             }
-            catch
+            else
             {
-                mBackground = null;
+                AssetName = "Levels\\" + AssetName;
+                base.LoadContent(theContentManager, AssetName);
+
+                try
+                {
+                    mBackground.LoadContent(theContentManager, AssetName + "b");
+                    mBackground.Position = Position;
+                }
+                catch
+                {
+                    mBackground = null;
+                }
             }
+
+            string backgroundMusicName = "Sounds\\" + AssetName;
 
             mCakeSprite.LoadContent(theContentManager, "Sprites\\Cake");
             mCakeSprite.Scale = .25f;

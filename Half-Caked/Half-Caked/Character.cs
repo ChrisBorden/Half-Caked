@@ -140,9 +140,9 @@ namespace Half_Caked
             if (Angle != 0)
             {
                 if (Angle > 0)
-                    Angle = (float)Math.Max(0, Angle - Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
+                    Angle = (float)Math.Max(0, Angle - 3 * Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
                 else
-                    Angle = (float)Math.Min(0, Angle + Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
+                    Angle = (float)Math.Min(0, Angle + 3 * Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
             }
 
             base.Update(theGameTime);
@@ -162,14 +162,21 @@ namespace Half_Caked
                     ignoreObject = level.Portals.Portal1Holder;
                 else if (HandlePortalCollision(1, level))
                     ignoreObject = level.Portals.Portal2Holder;
+                else
+                    mCurrentState = State.Air;
 
+                if (ignoreObject is Tile)
+                    mCurrentFriction = (ignoreObject as Tile).Friction * MASS;
+                else if (ignoreObject is Obstacle)
+                    mCurrentFriction = (ignoreObject as Obstacle).Friction * MASS;
                 //if (HandlePortalCollision(0, level) || HandlePortalCollision(1, level))
                 //    return;
             }
+            else
+                mCurrentState = State.Air;
 
             if (mForcedDucking)
                 StopDucking();
-            mCurrentState = State.Air;
 
             foreach (Obstacle obs in level.Obstacles)
             {
@@ -308,7 +315,7 @@ namespace Half_Caked
                 // Horizontal
                 if ((int)Portal.Oriented % 2 == 1)
                 {
-                    if (result.Height >= this.CollisionSurface.Height - 3 ||
+                    if (result.Height >= this.Size.Height - 3  ||
                         mCurrentState == State.Portal || mCurrentState == State.GravityPortal)
                     {
                         mCurrentState = State.Portal;
@@ -338,7 +345,7 @@ namespace Half_Caked
                 //Vertical
                 else
                 {
-                    if (result.Width >= this.CollisionSurface.Width - 1 ||
+                    if (result.Width >= this.Size.Width - 1 ||
                         mCurrentState == State.Portal || mCurrentState == State.GravityPortal)
                     {
                         mCurrentState = State.GravityPortal;
@@ -375,7 +382,7 @@ namespace Half_Caked
                 if (CollisionSurface.Center.Y < obj.Center.Y)
                 {
                     mCurrentFriction = friction * MASS;
-                    mCurrentState = State.Ground;
+                    mCurrentState = (mCurrentState == State.Portal || mCurrentState == State.GravityPortal) ? mCurrentState : State.Ground;
                     Velocity.Y = 0;
                     Position = new Vector2(Position.X, obj.Top - Center.Y + 1);
                     mCollisions[(int)Orientation.Down] = obj;
@@ -464,73 +471,40 @@ namespace Half_Caked
                 {
                     Acceleration.X = DYNAMIC_ACCEL_AIR * (Math.Abs(Velocity.X) <= STATIC_ACCEL_AIR ? 0 : 1) * (-Math.Sign(Velocity.X));
                 }
-    
-                if (inputState.IsMovingBackwards(null))// ^ (invert == -1))
+
+                if ((inputState.IsMovingBackwards(null) && !invert) ||
+                    (inputState.IsMovingForward(null) && invert))
                 {
                     //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_LEFT / 4;
                     //Velocity.X = Math.Min(Velocity.X, DEFAULT_SPEED / 2f * MOVE_LEFT * (mIsDucking ? .5f : 1));
-                    if (!invert)
+                    if (Velocity.X >= -DEFAULT_SPEED)
                     {
-                        if (Velocity.X >= -DEFAULT_SPEED)
+                        if (Velocity.X > 0)
                         {
-                            if (Velocity.X > 0)
-                            {
-                                Velocity.X -= 50;
-                            }
-                            else
-                            {
-                                Velocity.X -= 25;
-                            }
+                            Velocity.X -= 50;
                         }
-                    }
-                    else
-                    {
-                        if (Velocity.X <= DEFAULT_SPEED)
+                        else
                         {
-                            if (Velocity.X < 0)
-                            {
-                                Velocity.X += 50;
-                            }
-                            else
-                            {
-                                Velocity.X += 25;
-                            }
+                            Velocity.X -= 25;
                         }
                     }
 
                     animator.PlayAnimation(jumpAnimation);
                 }
-
-                else if (inputState.IsMovingForward(null))// ^ (invert == -1))
+                else if ((inputState.IsMovingBackwards(null) && invert) ||
+                         (inputState.IsMovingForward(null) && !invert))
                 {
                     //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_RIGHT / 4;
                     //Velocity.X = Math.Max(Velocity.X, DEFAULT_SPEED / 2f * MOVE_RIGHT * (mIsDucking ? .5f : 1));
-                    if (!invert)
+                    if (Velocity.X <= DEFAULT_SPEED)
                     {
-                        if (Velocity.X <= DEFAULT_SPEED)
+                        if (Velocity.X < 0)
                         {
-                            if (Velocity.X < 0)
-                            {
-                                Velocity.X += 50;
-                            }
-                            else
-                            {
-                                Velocity.X += 25;
-                            }
+                            Velocity.X += 50;
                         }
-                    }
-                    else
-                    {
-                        if (Velocity.X >= -DEFAULT_SPEED)
+                        else
                         {
-                            if (Velocity.X > 0)
-                            {
-                                Velocity.X -= 50;
-                            }
-                            else
-                            {
-                                Velocity.X -= 25;
-                            }
+                            Velocity.X += 25;
                         }
                     }
 

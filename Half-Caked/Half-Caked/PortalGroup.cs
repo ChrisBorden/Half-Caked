@@ -174,6 +174,7 @@ namespace Half_Caked
             mInPortal1.Clear();
             mInPortal2.Clear();
         }
+
         #endregion
 
         #region Draw and Update
@@ -276,7 +277,7 @@ namespace Half_Caked
                 spr.Acceleration = Vector2.Transform(spr.Acceleration, rotation);
 
                 if (portalOut.Oriented == Orientation.Up)
-                    spr.Velocity += 25 * new Vector2(0, -1);
+                    spr.Velocity += 150 * new Vector2(0, -1);
             }
 
             spr.PortalUpdateDependents();
