@@ -140,9 +140,9 @@ namespace Half_Caked
             if (Angle != 0)
             {
                 if (Angle > 0)
-                    Angle = (float)Math.Max(0, Angle - Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
+                    Angle = (float)Math.Max(0, Angle - 3 * Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
                 else
-                    Angle = (float)Math.Min(0, Angle + Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
+                    Angle = (float)Math.Min(0, Angle + 3 * Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
             }
 
             base.Update(theGameTime);
@@ -154,17 +154,19 @@ namespace Half_Caked
         public void CheckCollisions(Level level, bool ePressed)
         {
             FrameVelocity = Vector2.Zero;
-            object ignoreObject = null;
+            //object ignoreObject = null;
 
             if (level.Portals.IsOpen())
             {
-                if (HandlePortalCollision(0, level))
-                    ignoreObject = level.Portals.Portal1Holder;
-                else if (HandlePortalCollision(1, level))
-                    ignoreObject = level.Portals.Portal2Holder;
+                if (HandlePortalCollision(0, level) || HandlePortalCollision(1, level))
+                    return;
 
-                //if (HandlePortalCollision(0, level) || HandlePortalCollision(1, level))
-                //    return;
+                 //if (HandlePortalCollision(0, level)) 
+                 //    ignoreObject = level.Portals.Portal1Holder; 
+                 //
+                 //else if (HandlePortalCollision(1, level)) 
+                 //    ignoreObject = level.Portals.Portal2Holder; 
+
             }
 
             if (mForcedDucking)
@@ -173,8 +175,8 @@ namespace Half_Caked
 
             foreach (Obstacle obs in level.Obstacles)
             {
-                if (obs == ignoreObject)
-                    continue;
+                //if (obs == ignoreObject)
+                //    continue;
 
                 Rectangle result = Rectangle.Intersect(obs.CollisionSurface, CollisionSurface);
                 if (!result.IsEmpty)
@@ -199,8 +201,8 @@ namespace Half_Caked
 
             foreach (Tile tile in level.Tiles)
             {
-                if (tile == ignoreObject)
-                    continue;
+                //if (tile == ignoreObject)
+                 //  continue;
 
                 Rectangle result = Rectangle.Intersect(tile.Dimensions, CollisionSurface);
                 if (!result.IsEmpty)
