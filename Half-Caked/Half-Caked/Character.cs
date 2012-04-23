@@ -169,8 +169,6 @@ namespace Half_Caked
                     mCurrentFriction = (ignoreObject as Tile).Friction * MASS;
                 else if (ignoreObject is Obstacle)
                     mCurrentFriction = (ignoreObject as Obstacle).Friction * MASS;
-                //if (HandlePortalCollision(0, level) || HandlePortalCollision(1, level))
-                //    return;
             }
             else
                 mCurrentState = State.Air;
@@ -207,7 +205,7 @@ namespace Half_Caked
             foreach (Tile tile in level.Tiles)
             {
                 if (tile == ignoreObject)
-                    continue;
+                   continue;
 
                 Rectangle result = Rectangle.Intersect(tile.Dimensions, CollisionSurface);
                 if (!result.IsEmpty)

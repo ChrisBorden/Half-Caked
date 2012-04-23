@@ -10,7 +10,7 @@
       <Dimensions>
         <X>0</X>
         <Y>652</Y>
-        <Width>484</Width>
+        <Width>485</Width>
         <Height>848</Height>
         <Location>
           <X>0</X>
@@ -23,7 +23,7 @@
       <Dimensions>
         <X>1085</X>
         <Y>652</Y>
-        <Width>484</Width>
+        <Width>485</Width>
         <Height>848</Height>
         <Location>
           <X>1085</X>
@@ -86,12 +86,12 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>484</X>
+        <X>485</X>
         <Y>1200</Y>
         <Width>200</Width>
         <Height>300</Height>
         <Location>
-          <X>484</X>
+          <X>485</X>
           <Y>1200</Y>
         </Location>
       </Dimensions>
@@ -127,7 +127,7 @@
       <Dimensions>
         <X>1569</X>
         <Y>1450</Y>
-        <Width>281</Width>
+        <Width>280</Width>
         <Height>50</Height>
         <Location>
           <X>1569</X>
@@ -154,7 +154,7 @@
     <Obstacle xsi:type="Platform">
       <AssetName>Sprites\Platform</AssetName>
       <InitialPosition>
-        <X>1629</X>
+        <X>1621</X>
         <Y>651</Y>
       </InitialPosition>
       <Actions />
@@ -162,12 +162,12 @@
       <InitialState>3</InitialState>
       <Path>
         <Vector2>
-          <X>1632</X>
-          <Y>650</Y>
+          <X>1618</X>
+          <Y>651</Y>
         </Vector2>
         <Vector2>
-          <X>1632</X>
-          <Y>952</Y>
+          <X>1618</X>
+          <Y>915</Y>
         </Vector2>
       </Path>
       <Speed>150</Speed>
@@ -175,20 +175,20 @@
     <Obstacle xsi:type="Platform">
       <AssetName>Sprites\Platform</AssetName>
       <InitialPosition>
-        <X>1746</X>
-        <Y>1037</Y>
+        <X>1729</X>
+        <Y>1038</Y>
       </InitialPosition>
       <Actions />
       <Guid>867e6630-3321-4721-bcdb-ac1e21b10e1b</Guid>
       <InitialState>3</InitialState>
       <Path>
         <Vector2>
-          <X>1747</X>
-          <Y>1036</Y>
+          <X>1729</X>
+          <Y>1037</Y>
         </Vector2>
         <Vector2>
-          <X>1747</X>
-          <Y>1260</Y>
+          <X>1729</X>
+          <Y>1288</Y>
         </Vector2>
       </Path>
       <Speed>150</Speed>
@@ -206,23 +206,23 @@
         <Y>1</Y>
       </Quadrant>
       <Bound>
-        <X>213</X>
-        <Y>709</Y>
+        <X>363</X>
+        <Y>715</Y>
       </Bound>
       <NarrationText>I am 98 percent sure you can make this jump. I believe in you.</NarrationText>
     </Checkpoint>
     <Checkpoint>
       <Location>
-        <X>1889</X>
-        <Y>1384</Y>
+        <X>1856</X>
+        <Y>1388</Y>
       </Location>
       <Quadrant>
         <X>-1</X>
         <Y>-1</Y>
       </Quadrant>
       <Bound>
-        <X>1854</X>
-        <Y>1339</Y>
+        <X>1838</X>
+        <Y>1274</Y>
       </Bound>
     </Checkpoint>
   </Checkpoints>
