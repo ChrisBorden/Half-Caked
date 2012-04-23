@@ -206,8 +206,8 @@
         <Y>1</Y>
       </Quadrant>
       <Bound>
-        <X>213</X>
-        <Y>709</Y>
+        <X>363</X>
+        <Y>715</Y>
       </Bound>
       <NarrationText>I am 98 percent sure you can make this jump. I believe in you.</NarrationText>
     </Checkpoint>
@@ -221,8 +221,8 @@
         <Y>-1</Y>
       </Quadrant>
       <Bound>
-        <X>1854</X>
-        <Y>1339</Y>
+        <X>1838</X>
+        <Y>1274</Y>
       </Bound>
     </Checkpoint>
   </Checkpoints>
