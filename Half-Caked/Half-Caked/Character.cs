@@ -404,6 +404,8 @@ namespace Half_Caked
         //UNDER CONSTRUCTION                                   
         private void UpdateMovement(InputState inputState)
         {
+            int invert = Math.Abs(Angle) > MathHelper.PiOver2 ? -1 : 1;
+
             //Movement while on the ground is UNDER CONSTRUCTION (values are hardcoded) 
             if (mCurrentState == State.Ground || mCurrentState == State.Platform || mCurrentState == State.Portal)
             {
@@ -417,7 +419,7 @@ namespace Half_Caked
 
                 if (inputState.IsMovingBackwards(null))
                 {
-                    Velocity.X = DEFAULT_SPEED * MOVE_LEFT * (mIsDucking ? .5f : 1);
+                    Velocity.X = DEFAULT_SPEED * MOVE_LEFT * (mIsDucking ? .5f : 1) * invert;
                     if (mIsDucking)
                     { }
                     else
@@ -425,7 +427,7 @@ namespace Half_Caked
                 }
                 else if (inputState.IsMovingForward(null))
                 {
-                    Velocity.X = DEFAULT_SPEED * MOVE_RIGHT * (mIsDucking ? .5f : 1);
+                    Velocity.X = DEFAULT_SPEED * MOVE_RIGHT * (mIsDucking ? .5f : 1) * invert;
                     if (mIsDucking)
                     { }
                     else
@@ -436,8 +438,6 @@ namespace Half_Caked
                     animator.PlayAnimation(idleAnimation);
                 }
             }
-
-
             //Movement while in the AIR is UNDER CONSTRUCTION (values are hardcoded)
             else if (mCurrentState == State.Air || mCurrentState == State.GravityPortal)
             {
@@ -451,7 +451,7 @@ namespace Half_Caked
                     Acceleration.X = DYNAMIC_ACCEL_AIR * (Math.Abs(Velocity.X) <= STATIC_ACCEL_AIR ? 0 : 1) * (-Math.Sign(Velocity.X));
                 }
 
-                if (inputState.IsMovingBackwards(null))
+                if (inputState.IsMovingBackwards(null) ^ (invert == -1))
                 {
                     //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_LEFT / 4;
                     //Velocity.X = Math.Min(Velocity.X, DEFAULT_SPEED / 2f * MOVE_LEFT * (mIsDucking ? .5f : 1));
@@ -469,7 +469,7 @@ namespace Half_Caked
 
                     animator.PlayAnimation(jumpAnimation);
                 }
-                else if (inputState.IsMovingForward(null))
+                else if (inputState.IsMovingForward(null) ^ (invert == -1))
                 {
                     //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_RIGHT / 4;
                     //Velocity.X = Math.Max(Velocity.X, DEFAULT_SPEED / 2f * MOVE_RIGHT * (mIsDucking ? .5f : 1));
