@@ -48,21 +48,21 @@
     <Tile>
       <Dimensions>
         <X>1950</X>
-        <Y>0</Y>
+        <Y>50</Y>
         <Width>50</Width>
-        <Height>750</Height>
+        <Height>700</Height>
         <Location>
           <X>1950</X>
-          <Y>0</Y>
+          <Y>50</Y>
         </Location>
       </Dimensions>
-      <Type>Absorbs</Type>
+      <Type>Normal</Type>
     </Tile>
     <Tile>
       <Dimensions>
         <X>0</X>
         <Y>0</Y>
-        <Width>1951</Width>
+        <Width>2000</Width>
         <Height>50</Height>
         <Location>
           <X>0</X>
@@ -121,7 +121,7 @@
           <Y>285</Y>
         </Location>
       </Dimensions>
-      <Type>Absorbs</Type>
+      <Type>Normal</Type>
     </Tile>
     <Tile>
       <Dimensions>
@@ -390,10 +390,6 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
-          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
-          <Value>1</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
           <Key>e68d8f88-2ec4-43e3-8a67-eec2be365b84</Key>
           <Value>2</Value>
         </KeyValuePairOfGuidInt32>
@@ -460,30 +456,6 @@
         <KeyValuePairOfGuidInt32>
           <Key>31346678-ce38-406b-bcd4-d50efbf63a67</Key>
           <Value>0</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>31346678-ce38-406b-bcd4-d50efbf63a67</Key>
-          <Value>2</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>31346678-ce38-406b-bcd4-d50efbf63a67</Key>
-          <Value>2</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>31346678-ce38-406b-bcd4-d50efbf63a67</Key>
-          <Value>1</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>31346678-ce38-406b-bcd4-d50efbf63a67</Key>
-          <Value>2</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>31346678-ce38-406b-bcd4-d50efbf63a67</Key>
-          <Value>0</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>31346678-ce38-406b-bcd4-d50efbf63a67</Key>
-          <Value>2</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
           <Key>31346678-ce38-406b-bcd4-d50efbf63a67</Key>
@@ -769,10 +741,6 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
-          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
-          <Value>1</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
           <Key>e68d8f88-2ec4-43e3-8a67-eec2be365b84</Key>
           <Value>2</Value>
         </KeyValuePairOfGuidInt32>
@@ -835,30 +803,6 @@
         <KeyValuePairOfGuidInt32>
           <Key>ca7a9b08-ee84-4c2b-b5dc-b6acb980688b</Key>
           <Value>1</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>ca7a9b08-ee84-4c2b-b5dc-b6acb980688b</Key>
-          <Value>2</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>ca7a9b08-ee84-4c2b-b5dc-b6acb980688b</Key>
-          <Value>0</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>ca7a9b08-ee84-4c2b-b5dc-b6acb980688b</Key>
-          <Value>0</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>ca7a9b08-ee84-4c2b-b5dc-b6acb980688b</Key>
-          <Value>2</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>ca7a9b08-ee84-4c2b-b5dc-b6acb980688b</Key>
-          <Value>1</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>ca7a9b08-ee84-4c2b-b5dc-b6acb980688b</Key>
-          <Value>2</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
           <Key>ca7a9b08-ee84-4c2b-b5dc-b6acb980688b</Key>
@@ -1167,10 +1111,6 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
-          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
-          <Value>1</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
           <Key>e68d8f88-2ec4-43e3-8a67-eec2be365b84</Key>
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
@@ -1225,22 +1165,6 @@
         <KeyValuePairOfGuidInt32>
           <Key>31346678-ce38-406b-bcd4-d50efbf63a67</Key>
           <Value>2</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>e68d8f88-2ec4-43e3-8a67-eec2be365b84</Key>
-          <Value>2</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>e68d8f88-2ec4-43e3-8a67-eec2be365b84</Key>
-          <Value>2</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>e68d8f88-2ec4-43e3-8a67-eec2be365b84</Key>
-          <Value>2</Value>
-        </KeyValuePairOfGuidInt32>
-        <KeyValuePairOfGuidInt32>
-          <Key>e68d8f88-2ec4-43e3-8a67-eec2be365b84</Key>
-          <Value>1</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
           <Key>e68d8f88-2ec4-43e3-8a67-eec2be365b84</Key>
@@ -1464,6 +1388,7 @@
     </Checkpoint>
   </Checkpoints>
   <Gravity>40</Gravity>
+  <CustomLevelIdentifier>5a0d421c-15bb-4110-8537-223f4f62b874</CustomLevelIdentifier>
   <Name>Memory Leak</Name>
   <LevelIdentifier>7</LevelIdentifier>
 </Level>
