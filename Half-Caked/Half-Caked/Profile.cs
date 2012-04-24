@@ -24,7 +24,7 @@ namespace Half_Caked
         public string Name = "";
         public int CurrentLevel = 0;
 
-        public Statistics[] LevelStatistics = new Statistics[Level.INIT_LID_FOR_WORLD.Aggregate((x, y) => x + y)];
+        public Statistics[] LevelStatistics = new Statistics[Level.INIT_LID_FOR_WORLD.Last()];
         public List<KeyValuePair<Guid, Statistics>> CustomLevelStatistics = new List<KeyValuePair<Guid, Statistics>>();
         public AudioSettings Audio = new AudioSettings();
         public GraphicsSettings Graphics = new GraphicsSettings();
@@ -184,7 +184,7 @@ namespace Half_Caked
         {
             bool madeChanges = false;
 
-            int maxLevels = Level.INIT_LID_FOR_WORLD.Aggregate((x, y) => x + y);
+            int maxLevels = Level.INIT_LID_FOR_WORLD.Last();
             this.CurrentLevel = (int)MathHelper.Clamp(this.CurrentLevel, 0, maxLevels);
             
             if (LevelStatistics == null)

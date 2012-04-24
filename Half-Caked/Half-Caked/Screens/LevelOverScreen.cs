@@ -26,7 +26,7 @@ namespace Half_Caked
 
             if (level.LevelIdentifier != -1) //One of the default levels
             {
-                if (prof.CurrentLevel < Level.INIT_LID_FOR_WORLD.Aggregate((x, y) => x + y) && prof.CurrentLevel == level.LevelIdentifier)
+                if (prof.CurrentLevel < Level.INIT_LID_FOR_WORLD.Last() && prof.CurrentLevel == level.LevelIdentifier)
                     prof.CurrentLevel++;
 
                 if (prof.LevelStatistics[mLevel.LevelIdentifier] == null ||
@@ -55,8 +55,12 @@ namespace Half_Caked
                 if (entry == null || entry.Value.Score < level.LevelStatistics.Score)
                 {
                     mContentLabel.Text = "Congratulations! You set a new High Score: " + level.LevelStatistics.Score;
-                    entry.Value = level.LevelStatistics;
                     level.LevelStatistics.Date = DateTime.Now;
+
+                    if(entry != null)
+                        entry.Value = level.LevelStatistics;
+                    else
+                        prof.CustomLevelStatistics.Add(new KeyValuePair<Guid,Statistics>(level.CustomLevelIdentifier, level.LevelStatistics);                    
                     
                     Profile.SaveProfile(prof, "default.sav", game.Device);
                 }
@@ -70,7 +74,7 @@ namespace Half_Caked
         public override void LoadContent()
         {
             base.LoadContent();
-            if (mLevel.LevelIdentifier + 1 >= Level.INIT_LID_FOR_WORLD.Aggregate((x, y) => x + y) || mLevel.LevelIdentifier == -1)
+            if (mLevel.LevelIdentifier + 1 >= Level.INIT_LID_FOR_WORLD.Last() || mLevel.LevelIdentifier == -1)
             {
                 Buttons[0].State = UIState.Inactive;
                 Buttons[1].State = UIState.Selected;
