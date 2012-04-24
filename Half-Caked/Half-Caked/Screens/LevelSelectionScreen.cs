@@ -28,12 +28,14 @@ namespace Half_Caked
         public LevelSelectionScreen(Profile p, int world)
             : base(Level.WORLD_NAMES[world] +  ": Level Selection")
         {
-            int min = (int)MathHelper.Min(Level.INIT_LID_FOR_WORLD[world + 1], p.CurrentLevel + 1);
-            mLevels = new Level[min];
+            int last = (int)MathHelper.Min(Level.INIT_LID_FOR_WORLD[world + 1], p.CurrentLevel + 1);
+            int first = Level.INIT_LID_FOR_WORLD[world];
 
-            for (int i = 0; i < min; i++)
+            mLevels = new Level[last-first];
+
+            for (int i = 0; i < last - first; i++)
             {
-                mLevels[i] = Level.LoadLevel(Level.INIT_LID_FOR_WORLD[world] + i);
+                mLevels[i] = Level.LoadLevel(i + first);
                 MenuEntry entry = new MenuEntry(mLevels[i].Name);
                 entry.Pressed += EntrySelected;
                 MenuEntries.Add(entry);
