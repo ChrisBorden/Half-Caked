@@ -277,7 +277,7 @@ namespace Half_Caked
                 spr.Acceleration = Vector2.Transform(spr.Acceleration, rotation);
 
                 if (portalOut.Oriented == Orientation.Up)
-                    if((spr.Velocity.Y >= -300) && (spr.Velocity.Y <= 300))
+                    if(spr.Velocity.Y >= -300)
                         spr.Velocity += 100 * new Vector2(0, -1);
             }
 

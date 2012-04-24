@@ -99,12 +99,12 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>685</X>
+        <X>710</X>
         <Y>1450</Y>
-        <Width>200</Width>
+        <Width>150</Width>
         <Height>50</Height>
         <Location>
-          <X>685</X>
+          <X>710</X>
           <Y>1450</Y>
         </Location>
       </Dimensions>
@@ -145,6 +145,32 @@
         <Location>
           <X>1850</X>
           <Y>1401</Y>
+        </Location>
+      </Dimensions>
+      <Type>Absorbs</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>860</X>
+        <Y>1200</Y>
+        <Width>25</Width>
+        <Height>300</Height>
+        <Location>
+          <X>860</X>
+          <Y>1200</Y>
+        </Location>
+      </Dimensions>
+      <Type>Absorbs</Type>
+    </Tile>
+    <Tile>
+      <Dimensions>
+        <X>685</X>
+        <Y>1199</Y>
+        <Width>25</Width>
+        <Height>300</Height>
+        <Location>
+          <X>685</X>
+          <Y>1199</Y>
         </Location>
       </Dimensions>
       <Type>Absorbs</Type>
@@ -227,6 +253,7 @@
     </Checkpoint>
   </Checkpoints>
   <Gravity>40</Gravity>
+  <CustomLevelIdentifier>b3ceabae-447e-40f0-bf0f-f9c56c828dd6</CustomLevelIdentifier>
   <Name>Dropbox</Name>
   <LevelIdentifier>6</LevelIdentifier>
 </Level>
