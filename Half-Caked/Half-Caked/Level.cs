@@ -100,6 +100,8 @@ namespace Half_Caked
 
             var theContentManager = screenManager.Game.Content;
 
+            string backgroundMusicName = "Sounds\\" + AssetName;
+
             if (LevelIdentifier == -1)
             {
                 string filepath = "Content\\Levels\\Custom\\" + AssetName;
@@ -117,12 +119,12 @@ namespace Half_Caked
             }
             else
             {
-                AssetName = "Levels\\" + AssetName;
-                base.LoadContent(theContentManager, AssetName);
+                string filepath = "Levels\\" + AssetName;
+                base.LoadContent(theContentManager, filepath);
 
                 try
                 {
-                    mBackground.LoadContent(theContentManager, AssetName + "b");
+                    mBackground.LoadContent(theContentManager, filepath + "b");
                     mBackground.Position = Position;
                 }
                 catch
@@ -130,8 +132,6 @@ namespace Half_Caked
                     mBackground = null;
                 }
             }
-
-            string backgroundMusicName = "Sounds\\" + AssetName;
 
             mCakeSprite.LoadContent(theContentManager, "Sprites\\Cake");
             mCakeSprite.Scale = .25f;
