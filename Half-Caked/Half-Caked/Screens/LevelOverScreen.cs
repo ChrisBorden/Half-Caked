@@ -55,8 +55,12 @@ namespace Half_Caked
                 if (entry == null || entry.Value.Score < level.LevelStatistics.Score)
                 {
                     mContentLabel.Text = "Congratulations! You set a new High Score: " + level.LevelStatistics.Score;
-                    entry.Value = level.LevelStatistics;
                     level.LevelStatistics.Date = DateTime.Now;
+
+                    if(entry != null)
+                        entry.Value = level.LevelStatistics;
+                    else
+                        prof.CustomLevelStatistics.Add(new KeyValuePair<Guid,Statistics>(level.CustomLevelIdentifier, level.LevelStatistics);                    
                     
                     Profile.SaveProfile(prof, "default.sav", game.Device);
                 }
