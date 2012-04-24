@@ -21,8 +21,8 @@ namespace Half_Caked
         #region Constants
         public static float METERS_TO_UNITS = 20;
 
-        public static int[] INIT_LID_FOR_WORLD = { 0, 8 };
-        public static string[] WORLD_NAMES = { "Training Grounds" };
+        public static int[] INIT_LID_FOR_WORLD = { 0, 5, 8 };
+        public static string[] WORLD_NAMES = { "Training Grounds", "Experiments" };
 
         private const float LONG_DIST = .4f;
         private const float SHORT_DIST = .01f;
@@ -228,7 +228,7 @@ namespace Half_Caked
         public override void Draw(SpriteBatch theSpriteBatch, GameTime theGameTime)
         {
             Vector2 offset = new Vector2(MathHelper.Clamp((mCenterVector - Player.Position).X, mDimensions.X - Size.Width, 0), MathHelper.Clamp((mCenterVector - Player.Position).Y, mDimensions.Y - Size.Height, 0)) - Position;
-            float dist = offset.Length();// Vector2.Multiply(offset, new Vector2(1, this.Size.Height / (float)Size.Width)).Length();
+            float dist = Vector2.Multiply(offset, new Vector2(1, this.Size.Height / (float)Size.Width)).Length();
 
             if (dist > LONG_DIST * mDimensions.X || dist < SHORT_DIST * mDimensions.X)
             {
