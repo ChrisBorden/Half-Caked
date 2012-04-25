@@ -67,6 +67,9 @@ namespace Half_Caked
         private Sprite mBackground;        
         private SpriteFont mGameFont;
         private Sprite mCakeSprite;
+		private Animation poofAnimation;
+		private Animation idleCake;
+		private AnimationPlayer animator;
 
         private bool mLoaded = false;
         public bool IsLoaded
@@ -133,9 +136,13 @@ namespace Half_Caked
                 }
             }
 
-            mCakeSprite.LoadContent(theContentManager, "Sprites\\Cake");
-            mCakeSprite.Scale = .25f;
-            mCakeSprite.Position = Checkpoints[Checkpoints.Count - 1].Location - Vector2.UnitY * mCakeSprite.Size.Height;
+            mCakeSprite.LoadContent(theContentManager, "Sprites\\Cake\\Cake");
+            mCakeSprite.Scale = 1f;
+			mCakeSprite.Position = Checkpoints[Checkpoints.Count - 1].Location - Vector2.UnitY * mCakeSprite.Size.Height;
+
+			poofAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Cake\\Poof"), 0.1f, 7, false);
+			idleCake = new Animation(theContentManager.Load<Texture2D>("Sprites\\Cake\\Cake"), 0.1f, 1, true);
+			animator.PlayAnimation(idleCake);
 
             mDimensions = activeProfile.Graphics.Resolution;
             mCenterVector = new Vector2(mDimensions.X / 2 - 100, mDimensions.Y * 3 / 4 - 100);
@@ -212,6 +219,8 @@ namespace Half_Caked
                 {
                     if (++mCheckpointIndex >= Checkpoints.Count)
                     {
+						// make the cake poof
+						animator.PlayAnimation(poofAnimation);
                         GameOver();
                     }
                     else
@@ -263,7 +272,11 @@ namespace Half_Caked
 
             Portals.Draw(theSpriteBatch, Position);
 
-            mCakeSprite.Draw(theSpriteBatch, Position);
+			animator.Draw(theGameTime, theSpriteBatch, 
+				mCakeSprite.Position + Position, 0, mCakeSprite.Center, 
+				mCakeSprite.Scale,SpriteEffects.None);
+
+            //mCakeSprite.Draw(theSpriteBatch, Position);
             base.Draw(theSpriteBatch, theGameTime);
             Portals.DrawPortals(theSpriteBatch, Position);
 
