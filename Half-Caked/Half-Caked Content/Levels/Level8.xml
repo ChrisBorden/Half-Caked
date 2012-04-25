@@ -794,7 +794,7 @@
         <X>800</X>
         <Y>220</Y>
       </Bound>
-      <NarrationText>Our data shows that many of our test subjects actually manage to get a sense of satisfaction from completing these menial experiments. I suppose simple minds require but simple puzzles. </NarrationText>
+      <NarrationText>Our data shows that the majority of test subjects gain a sense of satisfaction from completing these menial experiments. Due to an extremely small sample size, this data may be unreliable. </NarrationText>
     </Checkpoint>
     <Checkpoint>
       <Location>
@@ -840,7 +840,6 @@
     </Checkpoint>
   </Checkpoints>
   <Gravity>40</Gravity>
-  <CustomLevelIdentifier>f6120cb5-8d22-44b5-bdd6-4e3a1385328b</CustomLevelIdentifier>
-  <Name>The Mythical Man Month</Name>
+  <Name>Mythical Man Month</Name>
   <LevelIdentifier>8</LevelIdentifier>
 </Level>

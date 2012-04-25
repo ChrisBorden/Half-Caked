@@ -1388,7 +1388,6 @@
     </Checkpoint>
   </Checkpoints>
   <Gravity>40</Gravity>
-  <CustomLevelIdentifier>5a0d421c-15bb-4110-8537-223f4f62b874</CustomLevelIdentifier>
   <Name>Memory Leak</Name>
   <LevelIdentifier>7</LevelIdentifier>
 </Level>
