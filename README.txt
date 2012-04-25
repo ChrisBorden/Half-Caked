@@ -1,3 +1,10 @@
+Update 4/25/12
+
+-New Level 8! (Not finished)
+-New Graphics!
+-Victory and Death animations
+
+
 Update 4/22/12:
 
 -New Level 7!
