@@ -21,7 +21,7 @@ namespace Half_Caked
         #region Constants
         public static float METERS_TO_UNITS = 20;
 
-        public static int[] INIT_LID_FOR_WORLD = { 0, 5, 8 };
+        public static int[] INIT_LID_FOR_WORLD = { 0, 5, 9 };
         public static string[] WORLD_NAMES = { "Training Grounds", "Experiments" };
 
         private const float LONG_DIST = .4f;
