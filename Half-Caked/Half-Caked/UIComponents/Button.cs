@@ -35,7 +35,7 @@ namespace Half_Caked
         private Rectangle mSource;
         private Color mTextColor, mDimColor;
 
-        public static Color SELECTED_COLOR = Color.FromNonPremultiplied(79, 129, 184, 255);
+        public static Color SELECTED_COLOR = Color.Yellow;
 
         public override UIState State
         {

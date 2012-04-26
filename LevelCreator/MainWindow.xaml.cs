@@ -156,12 +156,32 @@ namespace LevelCreator
             if (result != System.Windows.Forms.DialogResult.OK)
                 return;
 
+
+            string baseFilePath = ofd.FileName.Remove(ofd.FileName.Length - 4);
+            try
+            {
+                BitmapImage src = new BitmapImage(new Uri(baseFilePath + "b.png", UriKind.RelativeOrAbsolute));
+                MyDesignerCanvas.Background = new ImageBrush(src);
+                MyDesignerCanvas.Width = src.PixelWidth;
+                MyDesignerCanvas.Height = src.PixelHeight;
+            }
+            catch
+            {
+                try
+                {
+                    BitmapImage src = new BitmapImage(new Uri(baseFilePath + ".png", UriKind.RelativeOrAbsolute));
+                    MyDesignerCanvas.Width = src.PixelWidth;
+                    MyDesignerCanvas.Height = src.PixelHeight;
+                }
+                catch
+                {
+                    MessageBox.Show("Unable to open level. No Foreground/Background images associated with the selection file");
+                    return;
+                }
+            }
+
             Level = LoadLevel(ofd.FileName);
 
-            BitmapImage src = new BitmapImage(new Uri(ofd.FileName.Remove(ofd.FileName.Length - 3) + "png", UriKind.RelativeOrAbsolute));
-            MyDesignerCanvas.Width = src.PixelWidth;
-            MyDesignerCanvas.Height = src.PixelHeight;
-            
             MyDesignerCanvas.Children.Clear();
 
             foreach (Tile t in Level.Tiles)

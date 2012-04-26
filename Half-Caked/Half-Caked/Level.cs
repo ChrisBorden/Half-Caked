@@ -69,7 +69,7 @@ namespace Half_Caked
         private Sprite mCakeSprite;
 		private Animation poofAnimation;
 		private Animation idleCake;
-		private AnimationPlayer animator;
+		private AnimationPlayer mCakeAnimator;
 
         private bool mLoaded = false;
         public bool IsLoaded
@@ -142,7 +142,7 @@ namespace Half_Caked
 
 			poofAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Cake\\Poof"), 0.1f, 7, false);
 			idleCake = new Animation(theContentManager.Load<Texture2D>("Sprites\\Cake\\Cake"), 0.1f, 1, true);
-			animator.PlayAnimation(idleCake);
+			mCakeAnimator.PlayAnimation(idleCake);
 
             mDimensions = activeProfile.Graphics.Resolution;
             mCenterVector = new Vector2(mDimensions.X / 2 - 100, mDimensions.Y * 3 / 4 - 100);
@@ -219,8 +219,6 @@ namespace Half_Caked
                 {
                     if (++mCheckpointIndex >= Checkpoints.Count)
                     {
-						// make the cake poof
-						animator.PlayAnimation(poofAnimation);
                         GameOver();
                     }
                     else
@@ -248,7 +246,7 @@ namespace Half_Caked
             else
             {
                 offset.Normalize();
-                Velocity = (Velocity.Length() + 10) * offset;
+                Velocity = (Velocity.Length() + 15) * offset;
                 base.Update(theGameTime);
             }
 
@@ -272,7 +270,7 @@ namespace Half_Caked
 
             Portals.Draw(theSpriteBatch, Position);
 
-			animator.Draw(theGameTime, theSpriteBatch, 
+			mCakeAnimator.Draw(theGameTime, theSpriteBatch, 
 				mCakeSprite.Position + Position, 0, mCakeSprite.Center, 
 				mCakeSprite.Scale,SpriteEffects.None);
 
@@ -343,6 +341,7 @@ namespace Half_Caked
         #region Private Methods
         private void GameOver()
         {
+            mCakeAnimator.PlayAnimation(poofAnimation);
             PlaySoundEffect(mExitReached);
             Player.GameOver();
             throw new Exception("LevelComplete");

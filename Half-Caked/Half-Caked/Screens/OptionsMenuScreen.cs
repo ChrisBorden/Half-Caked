@@ -271,8 +271,8 @@ namespace Half_Caked
                 new KeybindingKV("Jump",                curProfile.KeyBindings.Jump){},
                 new KeybindingKV("Interact",            curProfile.KeyBindings.Interact){},
                 new KeybindingKV("Pause",               curProfile.KeyBindings.Pause){},
-                new KeybindingKV("Portal (Entry) Fire", curProfile.KeyBindings.Portal1){},
-                new KeybindingKV("Portal (Exit) Fire",  curProfile.KeyBindings.Portal2){},
+                new KeybindingKV("Portal 1 (Pink) Fire", curProfile.KeyBindings.Portal1){},
+                new KeybindingKV("Portal 2 (Red) Fire",  curProfile.KeyBindings.Portal2){},
             };
             
             foreach (KeybindingKV keyItem in menuList)
