@@ -5,6 +5,7 @@
     <Application.Resources>                
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Generic.xaml"/>
                 <ResourceDictionary Source="Resources/GameStencil.xaml"/>
                 <ResourceDictionary Source="Resources/DesignerItem.xaml"/>
                 <ResourceDictionary Source="Resources/Brushes.xaml"/>
@@ -17,7 +18,6 @@
                 <ResourceDictionary Source="Resources/ZoomBox.xaml"/>
                 <ResourceDictionary Source="Resources/ToolBar.xaml"/>
                 <ResourceDictionary Source="Resources/StatusBar.xaml"/>
-                <ResourceDictionary Source="Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

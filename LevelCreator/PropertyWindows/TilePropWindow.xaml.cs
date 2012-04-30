@@ -24,8 +24,6 @@ namespace LevelCreator
         {
             Tile mTile;
 
-            SolidColorBrush antiportalColor = new SolidColorBrush(Color.FromArgb(100, 25, 100, 255));
-
             public new double X
             {
                 get { return (Canvas.GetLeft(mItem) + (IsCentered ? (mItem.Width / 2) : 0)); }
@@ -76,25 +74,27 @@ namespace LevelCreator
                 set
                 {
                     mTile.Type = value;
+
+                    var settings =(Window.GetWindow(mItem) as MainWindow).Settings;
                     switch (value)
                     {
                         case Surface.Absorbs:
-                            (mItem.Content as Rectangle).Fill = Brushes.Red;
+                            (mItem.Content as Rectangle).Fill = settings.AbsorbBrush;
                             break;
                         case Surface.Amplifies:
-                            (mItem.Content as Rectangle).Fill = Brushes.Blue;
+                            (mItem.Content as Rectangle).Fill = settings.AmplifyBrush;
                             break;
                         case Surface.Death:
-                            (mItem.Content as Rectangle).Fill = Brushes.Yellow;
+                            (mItem.Content as Rectangle).Fill = settings.DeathBrush;
                             break;
                         case Surface.Normal:
-                            (mItem.Content as Rectangle).Fill = Brushes.Gray;
+                            (mItem.Content as Rectangle).Fill = settings.NormalBrush;
                             break;
                         case Surface.Reflects:
-                            (mItem.Content as Rectangle).Fill = Brushes.GhostWhite;
+                            (mItem.Content as Rectangle).Fill = settings.ReflectBrush;
                             break;
                         case Surface.Antiportal:
-                            (mItem.Content as Rectangle).Fill = antiportalColor;
+                            (mItem.Content as Rectangle).Fill = settings.AntiPortalBrush;
                             break;
                         default:
                             break;

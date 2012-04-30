@@ -27,7 +27,7 @@
                 <MenuItem Command="ApplicationCommands.Save"   Header="Save" />
                 <MenuItem Command="ApplicationCommands.SaveAs" Header="Save As.." />
                 <Separator />
-                <MenuItem Command="NavigationCommands.Favorites" Header="Options" />                
+                <MenuItem Command="NavigationCommands.Favorites" Header="Settings" />                
                 <Separator />
                 <MenuItem Header="Exit" />
             </MenuItem>
@@ -49,9 +49,9 @@
                 <MenuItem Header="Check Collisions"  IsEnabled="False"/>
             </MenuItem>
             <MenuItem Header="Help" >
-                <MenuItem Header="Tips" IsEnabled="False" />
-                <MenuItem Header="Website" IsEnabled="False" />
-                <MenuItem Header="About Us" IsEnabled="False" />
+                <MenuItem Header="Tips" Command="ApplicationCommands.Help" />
+                <MenuItem Header="Website" Click="OpenWebsite_Click" />
+                <MenuItem Header="About Us" Click="AboutUs_Click" />
             </MenuItem>
         </Menu>
 

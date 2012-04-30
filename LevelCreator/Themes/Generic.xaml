@@ -12,7 +12,7 @@
                         MethodName="GetValues" 
                         ObjectType="{x:Type sys:Enum}">
         <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName= "hc:Switch+SwitchState" />
+            <x:Type TypeName="hc:Switch+SwitchState" />
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
 

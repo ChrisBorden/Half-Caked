@@ -34,7 +34,13 @@ namespace LevelCreator
             get { return mLevel; }
             set { mLevel = value; MyDesignerCanvas.Level = mLevel; }
         }
-        
+
+        private Settings mSettings;
+        public Settings Settings
+        {
+            get { return mSettings; }
+        }
+
         private string mFileLocation;
         private bool mUnsavedWork = false, mFirstSave = true;
         private List<object> mClipboard; // using custom clipboard because kept running into OOM exceptions
@@ -43,6 +49,10 @@ namespace LevelCreator
         {
             InitializeComponent();
             EventManager.RegisterClassHandler(typeof(MainWindow), UIElement.PreviewKeyDownEvent, new KeyEventHandler(KeyDownHandler));
+
+            mSettings = Settings.Load();
+            if (mSettings == null)
+                mSettings = new Settings();
 
             List<Image> gameImages = (ToolboxContainer.Content as Toolbox).Items.OfType<Image>().ToList();
 
@@ -60,6 +70,7 @@ namespace LevelCreator
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, SaveCmdExecuted));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.SaveAs, SaveAsCmdExecuted));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.New, NewCmdExecuted));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Help, HelpCmdExecuted));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.IncreaseZoom, ZoomIn, CanZoomIn));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.DecreaseZoom, ZoomOut, CanZoomOut));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.Favorites, OptionsCmdExecuted));
@@ -71,7 +82,8 @@ namespace LevelCreator
 
         void OptionsCmdExecuted(object target, ExecutedRoutedEventArgs e)
         {
-            OptionsWindow ow = new OptionsWindow();
+            SettingsWindow ow = new SettingsWindow();
+            ow.DataContext = Settings;
             ow.ShowDialog();
         }
 
@@ -155,8 +167,7 @@ namespace LevelCreator
 
             if (result != System.Windows.Forms.DialogResult.OK)
                 return;
-
-
+            
             string baseFilePath = ofd.FileName.Remove(ofd.FileName.Length - 4);
             try
             {
@@ -316,7 +327,7 @@ namespace LevelCreator
 
             FileStream fs; PngBitmapEncoder encoder;
 
-            if (temp is ImageBrush)
+            if (temp is ImageBrush && Settings.OverwriteBackground)
             {
                 fs = new FileStream(path + "b.png", FileMode.Create);
                 encoder = new PngBitmapEncoder();
@@ -488,6 +499,38 @@ namespace LevelCreator
         }
 
         #endregion
+        
+        #region Help MenuItem Commands
+
+        void HelpCmdExecuted(object target, ExecutedRoutedEventArgs e)
+        {
+            string s = "Helpful people would put helpful help in Help. We are not those kind of people.";
+
+            MessageBox.Show(s, "Tips", MessageBoxButton.OK);
+        }
+
+        private void OpenWebsite_Click(object sender, RoutedEventArgs e)
+        {
+            string url = "http://mattgerstman.com/halfcaked";
+
+            try
+            {
+                System.Diagnostics.Process.Start(url);
+            }
+            catch
+            {
+                MessageBox.Show("Unable to open " + url + ". Please navigate to it manually or try again later.");
+            }
+        }
+
+        private void AboutUs_Click(object sender, RoutedEventArgs e)
+        {
+            string s = "Half-Cake'd was created by:\nDavid Weinberg\nMatt Gerstman\nChris Borden\nKevin Kyyro\nMatt McConnell\nKim Sirichoke\nDanny Kimsey\nAdam Morrow\nMaxwell Brickel";
+
+            MessageBox.Show(s, "About Us",MessageBoxButton.OK);
+        }
+
+        #endregion
 
         #endregion
 
@@ -573,7 +616,7 @@ namespace LevelCreator
         {
             Rectangle rect = new Rectangle();
             rect.IsHitTestVisible = false;
-            rect.Fill = Brushes.Gray;
+            rect.Fill = Settings.NormalBrush;
 
             DesignerItem item = new DesignerItem();
             item.Content = rect;
@@ -586,6 +629,7 @@ namespace LevelCreator
             item.OnSelected += pw.SelectionHandler;
             item.IsSelected = true;
         }
+
         #endregion
         
         private void Window_Closed(object sender, EventArgs e)
