@@ -43,6 +43,7 @@
             <MenuItem Header="Level" IsEnabled="{Binding ElementName=MyDesignerCanvas, Path=IsEnabled}">
                 <MenuItem Header="Select Background" Click="SelectBackground_Click" />
                 <MenuItem Header="Edit Details"  Click="EditDetails_Click"/>
+                <MenuItem Header="Select Texture Pack"  Click="SelectTexturePack_Click"/>
             </MenuItem>
             <MenuItem Header="Test" IsEnabled="{Binding ElementName=MyDesignerCanvas, Path=IsEnabled}">
                 <MenuItem Header="Run"  IsEnabled="False"/>

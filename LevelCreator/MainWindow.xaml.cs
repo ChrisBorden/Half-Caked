@@ -29,6 +29,16 @@ namespace LevelCreator
         private GridLength mPrevCol = GridLength.Auto;
         private Level mLevel;
 
+        //Image absorbsTexture;
+        //absorbsTexture.LoadContent(theContentManager, "Sprites\\Cake\\Cake");("Checkpoint");
+        public ImageBrush absorbsBrush = new ImageBrush();
+        //absorbsBrush.ImageSource = new BitmapImage(new Uri(@"sampleImages\berries.jpg", UriKind.Relative));
+
+
+        //Image myImage = Image.FromFile("MyTexture.bmp");
+        //TextureBrush myTextureBrush = new TextureBrush(myImage);
+        //myGraphics.FillEllipse(myTextureBrush, 0, 0, 100, 50);
+
         public Level Level
         {
             get { return mLevel; }
@@ -63,6 +73,8 @@ namespace LevelCreator
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.IncreaseZoom, ZoomIn, CanZoomIn));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.DecreaseZoom, ZoomOut, CanZoomOut));
             this.CommandBindings.Add(new CommandBinding(NavigationCommands.Favorites, OptionsCmdExecuted));
+
+            absorbsBrush.ImageSource = new BitmapImage(new Uri(@"Content\Sprites\Cake.png", UriKind.Relative));
         }
 
         #region Commands
@@ -485,6 +497,13 @@ namespace LevelCreator
         {
             DetailsWindow rw = new DetailsWindow(MyDesignerCanvas, Level);
             rw.ShowDialog();
+        }
+
+        private void SelectTexturePack_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
+            ofd.Title = "Select a Texture Pack...";
+            var result = ofd.ShowDialog();
         }
 
         #endregion

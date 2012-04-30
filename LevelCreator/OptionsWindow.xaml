@@ -1,7 +1,7 @@
 ﻿<Window x:Class="LevelCreator.OptionsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="OptionsWindow" Height="300" Width="300">
+        Title="OptionsWindow" Height="300" Width="300" DataContext="{Binding}">
     <Grid>
         
     </Grid>

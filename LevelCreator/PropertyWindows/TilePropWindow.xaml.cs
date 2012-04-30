@@ -26,6 +26,9 @@ namespace LevelCreator
 
             SolidColorBrush antiportalColor = new SolidColorBrush(Color.FromArgb(100, 25, 100, 255));
 
+            ImageBrush xbrush;
+            
+
             public new double X
             {
                 get { return (Canvas.GetLeft(mItem) + (IsCentered ? (mItem.Width / 2) : 0)); }
@@ -75,6 +78,14 @@ namespace LevelCreator
                 get { return mTile.Type; }
                 set
                 {
+                    MainWindow window = (Window.GetWindow(mItem) as MainWindow);
+
+                    //Saw these 2 lines on some website, not sure how they relate
+                    //string strUri2 = String.Format(@"pack://application:,,,/MyAseemby;component/resources/main titles/{0}", CurrenSelection.TitleImage);
+                    //imgTitle.Source = new BitmapImage(new Uri(strUri2)); 
+
+                    //xbrush.ImageSource = new BitmapImage(new Uri(@"Content\Sprites\Door.png", UriKind.Relative));
+
                     mTile.Type = value;
                     switch (value)
                     {
