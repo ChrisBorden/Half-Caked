@@ -78,13 +78,28 @@ namespace LevelCreator
                 get { return mTile.Type; }
                 set
                 {
-                    MainWindow window = (Window.GetWindow(mItem) as MainWindow);
+                    //MainWindow window = (Window.GetWindow(mItem) as MainWindow);
 
                     //Saw these 2 lines on some website, not sure how they relate
-                    //string strUri2 = String.Format(@"pack://application:,,,/MyAseemby;component/resources/main titles/{0}", CurrenSelection.TitleImage);
+                    //string strUri2 = String.Format(@"pack://application:,,,/MyAssemby;component/resources/main titles/{0}", CurrentSelection.TitleImage);
                     //imgTitle.Source = new BitmapImage(new Uri(strUri2)); 
 
-                    //xbrush.ImageSource = new BitmapImage(new Uri(@"Content\Sprites\Door.png", UriKind.Relative));
+                    //BitmapImage bi = new BitmapImage();
+                    // BitmapImage.UriSource must be in a BeginInit/EndInit block.
+                    //bi.BeginInit();
+                    //bi.UriSource = new Uri(@"/Content/Sprites/Door.png", UriKind.RelativeOrAbsolute);
+                    //bi.EndInit();
+
+                   // xbrush.ImageSource = bi;
+
+
+                    ImageBrush imageBrush = new ImageBrush();
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.UriSource = new Uri("pack://application:,,,/Images/Tile.png", UriKind.Relative);
+                    bitmap.EndInit();
+                    imageBrush.ImageSource = bitmap;
 
                     mTile.Type = value;
                     switch (value)
