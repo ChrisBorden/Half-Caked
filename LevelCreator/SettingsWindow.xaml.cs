@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
 using System.Windows.Markup;
+using System.Reflection;
 
 namespace LevelCreator
 {
@@ -99,26 +100,41 @@ namespace LevelCreator
 
         public Settings()
         {
-            AbsorbBrush = Brushes.Red;
-            NormalBrush = Brushes.Gray;
-            AmplifyBrush = Brushes.Blue;
-            ReflectBrush = Brushes.WhiteSmoke;
-            DeathBrush = Brushes.Yellow;
+            Reset();
+        }
+
+        public void Reset()
+        {
+            AbsorbBrush = MakeTilingBrush("LED.png", true);
+            NormalBrush = MakeTilingBrush("tetris_square.png", true);
+            AmplifyBrush = MakeTilingBrush("amp_dpad.png", true);
+            ReflectBrush = MakeTilingBrush("bike_reflector.png", true);
+            DeathBrush = MakeTilingBrush("spikes.png", false);
+
             AntiPortalBrush = new SolidColorBrush(Color.FromArgb(100, 25, 100, 255));
 
             OverwriteBackground = true;
         }
 
-        public void Reset()
+        private ImageBrush MakeTilingBrush(string name, bool makeAbsolute)
         {
-            AbsorbBrush = Brushes.Red;
-            NormalBrush = Brushes.Gray;
-            AmplifyBrush = Brushes.Blue;
-            ReflectBrush = Brushes.WhiteSmoke;
-            DeathBrush = Brushes.Yellow;
-            AntiPortalBrush = new SolidColorBrush(Color.FromArgb(100, 25, 100, 255));
+            Uri uri = new Uri(@"pack://application:,,,/" +  Assembly.GetExecutingAssembly().GetName().Name + ";component/Textures/" + name, UriKind.Absolute);
+            BitmapImage img = new BitmapImage(uri);
 
-            OverwriteBackground = true;
+            ImageBrush brush = new ImageBrush(img);
+            brush.TileMode = TileMode.Tile;
+
+            if (makeAbsolute)
+            {
+                brush.ViewportUnits = BrushMappingMode.Absolute;
+                brush.Viewport = new Rect(0, 0, img.Width, img.Height);
+            }
+            else
+            {
+                brush.Viewport = new Rect(0, 0, .25, 1);
+            }
+
+            return brush;
         }
 
         public static Settings Load()

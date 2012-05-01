@@ -303,6 +303,15 @@
   <ItemGroup>
     <Resource Include="Textures\MT_Moon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Textures\red_bar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Textures\amp_dpad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Textures\spikes.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
