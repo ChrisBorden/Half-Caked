@@ -61,8 +61,8 @@
     <Compile Include="Adorners\ResizeChrome.cs" />
     <Compile Include="Adorners\RubberbandAdorner.cs" />
     <Compile Include="Converters.cs" />
-    <Compile Include="OptionsWindow.xaml.cs">
-      <DependentUpon>OptionsWindow.xaml</DependentUpon>
+    <Compile Include="SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PropertyWindows\PropertiesWindow.cs" />
     <Compile Include="PropertyWindows\CheckpointPropWindow.xaml.cs">
@@ -100,7 +100,7 @@
     <Compile Include="DetailsWindow.xaml.cs">
       <DependentUpon>DetailsWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="OptionsWindow.xaml">
+    <Page Include="SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

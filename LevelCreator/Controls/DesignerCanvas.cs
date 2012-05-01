@@ -193,7 +193,7 @@ namespace LevelCreator
         {
             Rectangle rect=  new Rectangle();
             rect.IsHitTestVisible = false;
-            rect.Fill = Brushes.Gray;
+            rect.Fill = (Window.GetWindow(this) as MainWindow).Settings.NormalBrush;
             rect.MinHeight = 2;
             rect.MinWidth = 2;
 
