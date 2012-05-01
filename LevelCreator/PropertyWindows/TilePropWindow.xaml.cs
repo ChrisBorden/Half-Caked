@@ -24,8 +24,6 @@ namespace LevelCreator
         {
             Tile mTile;
 
-            SolidColorBrush antiportalColor = new SolidColorBrush(Color.FromArgb(100, 25, 100, 255));
-
             public new double X
             {
                 get { return (Canvas.GetLeft(mItem) + (IsCentered ? (mItem.Width / 2) : 0)); }
