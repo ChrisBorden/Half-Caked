@@ -147,5 +147,10 @@ namespace LevelCreator
             mdl.Height = mdl.Height;
             Moved();
         }
+
+        public void UpdateTexture()
+        {
+            (DataContext as TileModel).Type = (DataContext as TileModel).Type;
+        }
     }
 }

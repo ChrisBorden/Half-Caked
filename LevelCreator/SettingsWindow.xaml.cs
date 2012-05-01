@@ -75,6 +75,7 @@ namespace LevelCreator
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             (DataContext as Settings).Save();
+            DialogResult = true;
             Close();
         }
 

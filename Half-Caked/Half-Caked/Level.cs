@@ -319,6 +319,7 @@ namespace Half_Caked
             foreach (Actor spr in Actors)
                 spr.Reset();
 
+            mCakeAnimator.PlayAnimation(idleCake);
             mTextEffects.Clear();
             mCheckpointIndex = 1;
         }

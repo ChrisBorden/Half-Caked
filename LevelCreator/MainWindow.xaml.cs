@@ -84,7 +84,12 @@ namespace LevelCreator
         {
             SettingsWindow ow = new SettingsWindow();
             ow.DataContext = Settings;
-            ow.ShowDialog();
+
+            if (ow.ShowDialog() == true)
+            {
+                foreach (TilePropertiesWindow tpw in MyDesignerCanvas.Children.OfType<TilePropertiesWindow>())
+                    tpw.UpdateTexture();
+            }
         }
 
         #endregion
