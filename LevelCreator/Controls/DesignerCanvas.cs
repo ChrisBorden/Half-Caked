@@ -147,6 +147,8 @@ namespace LevelCreator
                         newItem.MinWidth = 2;
                     }
                     
+                    this.Children.Add(newItem);
+
                     switch (image.ToolTip.ToString())
                     {
                         case "Tile":
@@ -173,14 +175,12 @@ namespace LevelCreator
 
                     DesignerCanvas.SetLeft(newItem, Math.Max(0, position.X - newItem.Width / 2));
                     DesignerCanvas.SetTop(newItem, Math.Max(0, position.Y - newItem.Height / 2));
-                    this.Children.Add(newItem);
 
                     if (newItem.PropertyWindow != null)
                         newItem.PropertyWindow.Moved();
                     else if (newItem.Model != null)
                         newItem.Model.Moved();
-
-
+                    
                     this.DeselectAll();
                     newItem.IsSelected = true;
                 }
@@ -206,6 +206,7 @@ namespace LevelCreator
 
             TilePropertiesWindow tpw = new TilePropertiesWindow(t, item, Level);
             this.Children.Add(tpw);
+
             return tpw.SelectionHandler;
         }
 
