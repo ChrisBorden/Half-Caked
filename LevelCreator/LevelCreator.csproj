@@ -260,6 +260,49 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Textures\bike_reflector.png" />
+    <Resource Include="Textures\brain.png" />
+    <Resource Include="Textures\bsod_mid.png" />
+    <Resource Include="Textures\cd_mid.png" />
+    <Resource Include="Textures\cherries.png" />
+    <Resource Include="Textures\circuit_low.png" />
+    <Resource Include="Textures\circuit_mid.png" />
+    <Resource Include="Textures\cpu_low.png" />
+    <Resource Include="Textures\cpu_mid.png" />
+    <Resource Include="Textures\dpad_1_mid.png" />
+    <Resource Include="Textures\dpad_2_mid.png" />
+    <Resource Include="Textures\dpad_2_red1.png" />
+    <Resource Include="Textures\dpad_2_red2.png" />
+    <Resource Include="Textures\floppy_gray.png" />
+    <Resource Include="Textures\floppy_low.png" />
+    <Resource Include="Textures\floppy_mid.png" />
+    <Resource Include="Textures\keys_mid.png" />
+    <Resource Include="Textures\keytile_mid.png" />
+    <Resource Include="Textures\large_record2.png" />
+    <Resource Include="Textures\LED.png" />
+    <Resource Include="Textures\memory_mid.png" />
+    <Resource Include="Textures\mouseptr_mid.png" />
+    <Resource Include="Textures\nes_buttons_mid.png" />
+    <Resource Include="Textures\pizza.png" />
+    <Resource Include="Textures\red dice.png" />
+    <Resource Include="Textures\red_bars.png" />
+    <Resource Include="Textures\tetris_square.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Textures\ConcreteTextureSmall.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Textures\Candy_Cane.png" />
+    <Resource Include="Textures\candy_cane_2.jpg" />
+    <Resource Include="Textures\GumdropBump.png" />
+    <Resource Include="Textures\GumdropTextureRed.png" />
+    <Resource Include="Textures\icetex01.jpg" />
+    <Resource Include="Textures\pepermint candy mapping texture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Textures\MT_Moon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
