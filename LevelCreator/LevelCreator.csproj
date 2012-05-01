@@ -304,9 +304,6 @@
     <Resource Include="Textures\MT_Moon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Textures\red_bar.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Textures\amp_dpad.png" />
   </ItemGroup>
   <ItemGroup>
