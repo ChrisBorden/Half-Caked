@@ -79,9 +79,9 @@ namespace Half_Caked
         /// <summary>
         /// Gets the width of a frame in the animation.
         /// </summary>
-        public int FrameWidth
+        public float FrameWidth
         {
-            get { return Texture.Width / frameCount; }
+            get { return Texture.Width / (float) frameCount; }
         }
 
         /// <summary>

@@ -250,6 +250,7 @@ namespace Half_Caked
         public override void Reset()
         {
             base.Reset();
+            Position += new Vector2(0, Source.Y);
             UpdateSource((SwitchState)InitialState, true);
         }
         
