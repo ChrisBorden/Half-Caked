@@ -446,6 +446,10 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
           <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
@@ -480,6 +484,18 @@
         <KeyValuePairOfGuidInt32>
           <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
           <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>
+          <Value>3</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
           <Key>b369233a-9216-4460-9065-3208534b9bb5</Key>

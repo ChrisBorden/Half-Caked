@@ -87,24 +87,24 @@
     <Tile>
       <Dimensions>
         <X>485</X>
-        <Y>1200</Y>
+        <Y>1140</Y>
         <Width>200</Width>
-        <Height>300</Height>
+        <Height>360</Height>
         <Location>
           <X>485</X>
-          <Y>1200</Y>
+          <Y>1140</Y>
         </Location>
       </Dimensions>
       <Type>Normal</Type>
     </Tile>
     <Tile>
       <Dimensions>
-        <X>710</X>
+        <X>687</X>
         <Y>1450</Y>
-        <Width>150</Width>
+        <Width>299</Width>
         <Height>50</Height>
         <Location>
-          <X>710</X>
+          <X>687</X>
           <Y>1450</Y>
         </Location>
       </Dimensions>
@@ -113,12 +113,12 @@
     <Tile>
       <Dimensions>
         <X>885</X>
-        <Y>1200</Y>
+        <Y>1140</Y>
         <Width>200</Width>
-        <Height>300</Height>
+        <Height>360</Height>
         <Location>
           <X>885</X>
-          <Y>1200</Y>
+          <Y>1140</Y>
         </Location>
       </Dimensions>
       <Type>Normal</Type>
@@ -152,12 +152,12 @@
     <Tile>
       <Dimensions>
         <X>860</X>
-        <Y>1200</Y>
+        <Y>1140</Y>
         <Width>25</Width>
-        <Height>300</Height>
+        <Height>360</Height>
         <Location>
           <X>860</X>
-          <Y>1200</Y>
+          <Y>1140</Y>
         </Location>
       </Dimensions>
       <Type>Absorbs</Type>
@@ -165,12 +165,12 @@
     <Tile>
       <Dimensions>
         <X>685</X>
-        <Y>1199</Y>
+        <Y>1140</Y>
         <Width>25</Width>
-        <Height>300</Height>
+        <Height>359</Height>
         <Location>
           <X>685</X>
-          <Y>1199</Y>
+          <Y>1140</Y>
         </Location>
       </Dimensions>
       <Type>Absorbs</Type>
