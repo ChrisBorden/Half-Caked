@@ -252,7 +252,8 @@ namespace Half_Caked
 
             if (mBackground != null)
             {
-                mBackground.Position = Position;
+				// parallax hack, doesn't show whole background, but works 
+				mBackground.Position = Position * 0.5f;
                 mBackground.Draw(theSpriteBatch, theGameTime);
             }
 
@@ -284,8 +285,11 @@ namespace Half_Caked
 
         public void DrawMap(SpriteBatch theSpriteBatch, GameTime theGameTime, Vector2 offset, float scale)
         {
-            if(mBackground != null)
-                mBackground.Draw(theSpriteBatch, offset - Position*scale, scale);
+			if (mBackground != null)
+			{
+				//mBackground.Position = Position;
+				mBackground.Draw(theSpriteBatch, offset - Position * scale, scale);
+			}
             foreach (Obstacle spr in Obstacles)
                 spr.Draw(theSpriteBatch, offset, scale);
 
