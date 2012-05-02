@@ -287,7 +287,7 @@ namespace Half_Caked
         {
 			if (mBackground != null)
 			{
-				//mBackground.Position = Position;
+				mBackground.Position = Position;
 				mBackground.Draw(theSpriteBatch, offset - Position * scale, scale);
 			}
             foreach (Obstacle spr in Obstacles)
