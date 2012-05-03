@@ -126,7 +126,9 @@ namespace Half_Caked
             }
             catch
             {
-                    return;
+                mPortalHolders[portalNumber] = null;
+                chosenOne.Visible = false;
+                return;
             }
 
             if (Portal1.Visible == Portal2.Visible)

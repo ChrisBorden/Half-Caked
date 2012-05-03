@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Level xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <AssetName>Level8</AssetName>
+  <AssetName>level8</AssetName>
   <InitialPosition>
     <X>0</X>
     <Y>0</Y>
@@ -9,12 +9,12 @@
     <Tile>
       <Dimensions>
         <X>150</X>
-        <Y>203</Y>
+        <Y>202</Y>
         <Width>1388</Width>
-        <Height>86</Height>
+        <Height>107</Height>
         <Location>
           <X>150</X>
-          <Y>203</Y>
+          <Y>202</Y>
         </Location>
       </Dimensions>
       <Type>Normal</Type>
@@ -101,7 +101,7 @@
       <Dimensions>
         <X>1200</X>
         <Y>430</Y>
-        <Width>50</Width>
+        <Width>100</Width>
         <Height>231</Height>
         <Location>
           <X>1200</X>
@@ -113,12 +113,12 @@
     <Tile>
       <Dimensions>
         <X>402</X>
-        <Y>287</Y>
+        <Y>310</Y>
         <Width>50</Width>
-        <Height>1761</Height>
+        <Height>1190</Height>
         <Location>
           <X>402</X>
-          <Y>287</Y>
+          <Y>310</Y>
         </Location>
       </Dimensions>
       <Type>Antiportal</Type>
@@ -126,12 +126,12 @@
     <Tile>
       <Dimensions>
         <X>1022</X>
-        <Y>289</Y>
+        <Y>309</Y>
         <Width>50</Width>
-        <Height>1759</Height>
+        <Height>1191</Height>
         <Location>
           <X>1022</X>
-          <Y>289</Y>
+          <Y>309</Y>
         </Location>
       </Dimensions>
       <Type>Antiportal</Type>
@@ -140,7 +140,7 @@
       <Dimensions>
         <X>1515</X>
         <Y>689</Y>
-        <Width>75</Width>
+        <Width>101</Width>
         <Height>120</Height>
         <Location>
           <X>1515</X>
@@ -153,7 +153,7 @@
       <Dimensions>
         <X>691</X>
         <Y>430</Y>
-        <Width>50</Width>
+        <Width>100</Width>
         <Height>232</Height>
         <Location>
           <X>691</X>
@@ -177,12 +177,12 @@
     </Tile>
     <Tile>
       <Dimensions>
-        <X>1537</X>
+        <X>1538</X>
         <Y>203</Y>
-        <Width>53</Width>
+        <Width>79</Width>
         <Height>486</Height>
         <Location>
-          <X>1537</X>
+          <X>1538</X>
           <Y>203</Y>
         </Location>
       </Dimensions>
@@ -232,7 +232,7 @@
         <X>0</X>
         <Y>953</Y>
         <Width>1381</Width>
-        <Height>50</Height>
+        <Height>100</Height>
         <Location>
           <X>0</X>
           <Y>953</Y>
@@ -258,7 +258,7 @@
         <X>1517</X>
         <Y>1016</Y>
         <Width>49</Width>
-        <Height>484</Height>
+        <Height>453</Height>
         <Location>
           <X>1517</X>
           <Y>1016</Y>
@@ -284,7 +284,7 @@
         <X>522</X>
         <Y>1212</Y>
         <Width>405</Width>
-        <Height>27</Height>
+        <Height>100</Height>
         <Location>
           <X>522</X>
           <Y>1212</Y>
@@ -295,12 +295,12 @@
     <Tile>
       <Dimensions>
         <X>0</X>
-        <Y>1000</Y>
+        <Y>1053</Y>
         <Width>31</Width>
-        <Height>499</Height>
+        <Height>446</Height>
         <Location>
           <X>0</X>
-          <Y>1000</Y>
+          <Y>1053</Y>
         </Location>
       </Dimensions>
       <Type>Normal</Type>
@@ -344,6 +344,19 @@
       </Dimensions>
       <Type>Normal</Type>
     </Tile>
+    <Tile>
+      <Dimensions>
+        <X>1518</X>
+        <Y>1468</Y>
+        <Width>50</Width>
+        <Height>32</Height>
+        <Location>
+          <X>1518</X>
+          <Y>1468</Y>
+        </Location>
+      </Dimensions>
+      <Type>Normal</Type>
+    </Tile>
   </Tiles>
   <Obstacles>
     <Obstacle xsi:type="Platform">
@@ -376,9 +389,17 @@
       <AssetName>Sprites\Switch</AssetName>
       <InitialPosition>
         <X>1518</X>
-        <Y>594</Y>
+        <Y>589</Y>
       </InitialPosition>
       <Actions>
+        <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
           <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
           <Value>1</Value>
@@ -477,6 +498,38 @@
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
           <Key>e8e6b991-393e-4b80-b716-45c190c77263</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>8322858b-3816-4544-9760-f54eace5fc91</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>8322858b-3816-4544-9760-f54eace5fc91</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>8322858b-3816-4544-9760-f54eace5fc91</Key>
+          <Value>0</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>8322858b-3816-4544-9760-f54eace5fc91</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>8322858b-3816-4544-9760-f54eace5fc91</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>8322858b-3816-4544-9760-f54eace5fc91</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>8322858b-3816-4544-9760-f54eace5fc91</Key>
+          <Value>0</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>8322858b-3816-4544-9760-f54eace5fc91</Key>
           <Value>2</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
@@ -666,7 +719,39 @@
           <Value>1</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>05159d8a-b739-4aa4-9f6d-3ff5cb29572d</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
           <Key>8322858b-3816-4544-9760-f54eace5fc91</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>e8e6b991-393e-4b80-b716-45c190c77263</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>e8e6b991-393e-4b80-b716-45c190c77263</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>e8e6b991-393e-4b80-b716-45c190c77263</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>e8e6b991-393e-4b80-b716-45c190c77263</Key>
+          <Value>2</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>e8e6b991-393e-4b80-b716-45c190c77263</Key>
+          <Value>1</Value>
+        </KeyValuePairOfGuidInt32>
+        <KeyValuePairOfGuidInt32>
+          <Key>e8e6b991-393e-4b80-b716-45c190c77263</Key>
           <Value>2</Value>
         </KeyValuePairOfGuidInt32>
         <KeyValuePairOfGuidInt32>
@@ -750,32 +835,32 @@
     <Actor xsi:type="Enemy">
       <AssetName>Sprites\Enemy</AssetName>
       <InitialPosition>
-        <X>1023</X>
-        <Y>932</Y>
+        <X>942</X>
+        <Y>945</Y>
       </InitialPosition>
       <Range>200</Range>
     </Actor>
     <Actor xsi:type="Enemy">
       <AssetName>Sprites\Enemy</AssetName>
       <InitialPosition>
-        <X>282</X>
-        <Y>929</Y>
+        <X>275</X>
+        <Y>946</Y>
       </InitialPosition>
       <Range>200</Range>
     </Actor>
     <Actor xsi:type="Enemy">
       <AssetName>Sprites\Enemy</AssetName>
       <InitialPosition>
-        <X>723</X>
-        <Y>932</Y>
+        <X>602</X>
+        <Y>948</Y>
       </InitialPosition>
       <Range>200</Range>
     </Actor>
     <Actor xsi:type="Enemy">
       <AssetName>Sprites\Enemy</AssetName>
       <InitialPosition>
-        <X>729</X>
-        <Y>1189</Y>
+        <X>732</X>
+        <Y>1062</Y>
       </InitialPosition>
       <Range>200</Range>
     </Actor>
@@ -826,20 +911,21 @@
     </Checkpoint>
     <Checkpoint>
       <Location>
-        <X>273</X>
-        <Y>184</Y>
+        <X>577</X>
+        <Y>193</Y>
       </Location>
       <Quadrant>
         <X>1</X>
         <Y>1</Y>
       </Quadrant>
       <Bound>
-        <X>771</X>
-        <Y>261</Y>
+        <X>782</X>
+        <Y>253</Y>
       </Bound>
     </Checkpoint>
   </Checkpoints>
   <Gravity>40</Gravity>
+  <CustomLevelIdentifier>83fa6f33-107f-447e-aac8-0b1a030cb486</CustomLevelIdentifier>
   <Name>Mythical Man Month</Name>
   <LevelIdentifier>8</LevelIdentifier>
 </Level>
