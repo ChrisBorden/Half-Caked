@@ -1,3 +1,10 @@
+Update 5/3/12
+
+-We're done!
+-Level editor can now load textures for surfaces.
+-Parallax level scrolling.
+
+
 Update 4/25/12
 
 -New Level 8! (Not finished)
