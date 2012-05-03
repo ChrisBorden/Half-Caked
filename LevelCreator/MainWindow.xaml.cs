@@ -173,7 +173,7 @@ namespace LevelCreator
             if (result != System.Windows.Forms.DialogResult.OK)
                 return;
             
-            string baseFilePath = ofd.FileName.Remove(ofd.FileName.Length - 4);
+            string baseFilePath = mFileLocation = ofd.FileName.Remove(ofd.FileName.Length - 4);
             try
             {
                 BitmapImage src = new BitmapImage(new Uri(baseFilePath + "b.png", UriKind.RelativeOrAbsolute));
