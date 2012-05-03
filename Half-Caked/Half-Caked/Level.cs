@@ -252,8 +252,13 @@ namespace Half_Caked
 
             if (mBackground != null)
             {
+				float parallax = 0.4f;
+				Vector2 center = new Vector2(mDimensions.X - mBackground.Source.Width,
+					mDimensions.Y - mBackground.Source.Height) * 0.5f;
+				Vector2 parallaxOffset = (center - Position) * (1.0f-parallax);
+
 				// parallax hack, doesn't show whole background, but works 
-				mBackground.Position = Position * 0.5f;
+				mBackground.Position = Position + parallaxOffset;
                 mBackground.Draw(theSpriteBatch, theGameTime);
             }
 
