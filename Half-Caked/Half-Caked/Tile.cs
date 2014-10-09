@@ -8,12 +8,12 @@ namespace Half_Caked
 {
     public enum Surface
     {
+        Antiportal = 5,
         Absorbs = 4,
         Amplifies = 3,
         Normal = 2,
         Reflects = 1,
-        Portal = 0,
-        Death = -1
+        Death = 0
     }
 
     public class Tile

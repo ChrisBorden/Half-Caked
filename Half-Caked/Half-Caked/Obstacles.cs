@@ -55,7 +55,7 @@ namespace Half_Caked
 
         #region Initialization
         public Obstacle()
-            : this (new Guid())
+            : this (Guid.NewGuid())
         {
         }
 
@@ -81,8 +81,12 @@ namespace Half_Caked
         public virtual void React(Guid caller, Level level)
         {
             KeyValuePair<Guid, int> temp;
-            if((temp = Actions.First(x => x.Key == caller)) != null)
-                mState = temp.Value;
+            try
+            {
+                if ((temp = Actions.First(x => x.Key == caller)) != null)
+                    mState = temp.Value;
+            }
+            catch { }
         }
         #endregion
     }
@@ -91,7 +95,7 @@ namespace Half_Caked
     {        
         public enum PlatformState
         {
-            Startionary = 0,
+            Stationary = 0,
             Forward,
             Reverse,
             Circuit,
@@ -100,16 +104,26 @@ namespace Half_Caked
 
         #region Fields
         public List<Vector2> Path;
-        public float Speed;
+        public float Speed = 150;
         private int mCurrentPath;
+
+        public bool IsMoving
+        {
+            get
+            {
+                return (PlatformState)mState != PlatformState.Stationary;
+            }
+        }
         #endregion
 
         #region Initialization
         public Platform()
+            : base()
         {
             Scale = .1f;
             AssetName = "Sprites\\Platform";
 
+            Path = new List<Vector2>();
             Type = Surface.Normal;
             Friction = .60f;
         }
@@ -141,7 +155,7 @@ namespace Half_Caked
 
         public override void Update(GameTime theGameTime)
         {
-            if ((PlatformState)mState == PlatformState.Startionary)
+            if ((PlatformState)mState == PlatformState.Stationary)
                 return;
 
             base.Update(theGameTime);
@@ -191,9 +205,9 @@ namespace Half_Caked
     {
         public enum SwitchState
         {
-            InActive,
+            Disabled,
             Pressed,
-            Active
+            Enabled
         }
 
         #region Fields
@@ -202,10 +216,13 @@ namespace Half_Caked
 
         #region Initialization
         public Switch()
+            : base()
         {
             AssetName = "Sprites\\Switch";
             Type = Surface.Absorbs;
             Friction = .60f;
+
+            Actions.Add(new KeyValuePair<Guid, int>(Character.CharacterGuid, (int)SwitchState.Pressed));
         }
 
         public Switch(Guid toGuid, Vector2 pos, SwitchState state)
@@ -224,7 +241,7 @@ namespace Half_Caked
         public override void LoadContent(ContentManager theContentManager, string theAssetName)
         {
             base.LoadContent(theContentManager, theAssetName);
-            UpdateSource((SwitchState)mState);
+            UpdateSource((SwitchState)mState, true);
             mTriggerSound = theContentManager.Load<SoundEffect>("Sounds\\Switch");
         }
         #endregion
@@ -233,7 +250,8 @@ namespace Half_Caked
         public override void Reset()
         {
             base.Reset();
-            UpdateSource((SwitchState)InitialState);
+            Position += new Vector2(0, Source.Y);
+            UpdateSource((SwitchState)InitialState, true);
         }
         
         public override void React(Guid caller, Level level)
@@ -245,29 +263,39 @@ namespace Half_Caked
             {
                 level.PlaySoundEffect(mTriggerSound);
                 foreach (Obstacle obs in level.Obstacles)
-                    if (obs.Guid != Guid)
+                    if (obs.Guid != Guid && obs.Guid != caller)
                         obs.React(this.Guid, level);
             }
         }
         #endregion
 
         #region Private Methods
+
         private void UpdateSource(SwitchState state)
         {
+            UpdateSource(state, false);
+        }
+
+        private void UpdateSource(SwitchState state, bool first)
+        {
+            Position -= new Vector2(0, Source.Y);
+
             mState = (int)state;
 
             switch (state)
             {
-                case SwitchState.InActive:
-                    Source = new Rectangle(40, 0, 20, 100);
+                case SwitchState.Disabled:         
+                    Source = new Rectangle(40, 3, 20, 97);
                     break;
                 case SwitchState.Pressed:
-                    Source = new Rectangle(20, 0, 20, 100);
+                    Source = new Rectangle(20, 16, 20, 84);
                     break;
                 default:
-                    Source = new Rectangle(0, 0, 20, 100);
+                    Source = new Rectangle(0, 13, 20, 87);
                     break;
             }
+
+            Position += new Vector2(0, Source.Y);
         }
         #endregion
     }
@@ -276,9 +304,9 @@ namespace Half_Caked
     {
         public enum DoorState
         {
-            Closing = -1,
-            Stationary = 0,
-            Opening = 1
+            Closing = 0,
+            Stationary = 1,
+            Opening = 2
         }
 
         #region Constants
@@ -287,7 +315,8 @@ namespace Half_Caked
         #endregion
 
         #region Initialization
-        public Door() 
+        public Door()
+            : base()
         { 
             AssetName = "Sprites\\Door";
 
@@ -322,7 +351,7 @@ namespace Half_Caked
                 mState = (int)DoorState.Stationary;
             }
 
-            Velocity = ((int)(DoorState)mState) * Vector2.UnitY * SPEED_Y;
+            Velocity = (mState - 1) * Vector2.UnitY * SPEED_Y;
             base.Update(theGameTime);
 
             Source = new Rectangle(Source.X, Source.Y, Source.Width, (int)MathHelper.Clamp(DOOR_HEIGHT - (Position.Y - InitialPosition.Y), 0, DOOR_HEIGHT));

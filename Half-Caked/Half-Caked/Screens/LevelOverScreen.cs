@@ -6,12 +6,12 @@ using Microsoft.Xna.Framework;
 
 namespace Half_Caked
 {
-    class LevelOverScreen : MessageBoxScreen
+    class LevelOverScreen : ContentBoxScreen
     {
         Level mLevel;
 
         public LevelOverScreen(Level level, HalfCakedGame game)
-            : base("Level Complete!", new string[] {"Next Level", "Play Again", "Exit"}, 0)
+            : base("Level Complete!", "", new string[] {"Next Level", "Play Again", "Exit"}, 0)
         {
             IsPopup = true;
             mLevel = level;
@@ -20,38 +20,64 @@ namespace Half_Caked
             Buttons[0].Pressed += NextLevelMenuEntrySelected;
             Buttons[1].Pressed += ResetMenuEntrySelected;
             Buttons[2].Pressed += QuitGameMenuEntrySelected;
+            Cancelled += QuitGameMenuEntrySelected;
 
             Profile prof = game.CurrentProfile;
-            String scoreString = "\n";
 
-            if (prof.CurrentLevel < Level.MAX_LEVELS - 1 && prof.CurrentLevel == level.LevelIdentifier)
-                prof.CurrentLevel++;
-
-            if (prof.LevelStatistics[mLevel.LevelIdentifier] == null ||
-                prof.LevelStatistics[mLevel.LevelIdentifier].Score > level.LevelStatistics.Score)
+            if (level.LevelIdentifier != -1) //One of the default levels
             {
-                scoreString += "Congratulations! You set a new high score.\n";
-                level.LevelStatistics.Date = DateTime.Now;
-                prof.LevelStatistics[mLevel.LevelIdentifier] = level.LevelStatistics;
-                Profile.SaveProfile(prof, "default.sav", game.Device);
+                if (prof.CurrentLevel < Level.INIT_LID_FOR_WORLD.Last() && prof.CurrentLevel == level.LevelIdentifier)
+                    prof.CurrentLevel++;
+
+                if (prof.LevelStatistics[mLevel.LevelIdentifier] == null ||
+                    prof.LevelStatistics[mLevel.LevelIdentifier].Score < level.LevelStatistics.Score)
+                {
+                    mContentLabel.Text = "Congratulations! You set a new High Score: " + level.LevelStatistics.Score;
+                    level.LevelStatistics.Date = DateTime.Now;
+                    prof.LevelStatistics[mLevel.LevelIdentifier] = level.LevelStatistics;
+
+                    if (prof.GlobalIdentifer != -1)
+                        level.LevelStatistics.UploadScore(prof.GlobalIdentifer);
+                    else
+                        prof.Register();
+
+                    Profile.SaveProfile(prof, "default.sav", game.Device);
+                }
+                else
+                {
+                    mContentLabel.Text = "High Score: " + prof.LevelStatistics[mLevel.LevelIdentifier].Score
+                                          + "   |   Your Score: " + level.LevelStatistics.Score;
+                }
             }
-            else
+            else //Custom level code
             {
-                scoreString += "High Score: " + prof.LevelStatistics[mLevel.LevelIdentifier].Score + "\n";
+                var entry = prof.CustomLevelStatistics.Find(x => x.Key == level.CustomLevelIdentifier); 
+                if (entry == null || entry.Value.Score < level.LevelStatistics.Score)
+                {
+                    mContentLabel.Text = "Congratulations! You set a new High Score: " + level.LevelStatistics.Score;
+                    level.LevelStatistics.Date = DateTime.Now;
+
+                    if(entry != null)
+                        entry.Value = level.LevelStatistics;
+                    else
+                        prof.CustomLevelStatistics.Add(new KeyValuePair<Guid,Statistics>(level.CustomLevelIdentifier, level.LevelStatistics));                    
+                    
+                    Profile.SaveProfile(prof, "default.sav", game.Device);
+                }
+                else
+                {
+                    mContentLabel.Text = "High Score: " + entry.Value.Score + "   |   Your Score: " + level.LevelStatistics.Score;
+                }
             }
-            scoreString += "Your Score: " + level.LevelStatistics.Score + "\n";
-
-            mMessage += scoreString;
-
         }
 
         public override void LoadContent()
         {
             base.LoadContent();
-            if (mLevel.LevelIdentifier + 1 >= Level.MAX_LEVELS)
+            if (mLevel.LevelIdentifier + 1 >= Level.INIT_LID_FOR_WORLD.Last() || mLevel.LevelIdentifier == -1)
             {
-                Buttons[0].State = Button.ButtonState.Inactive;
-                Buttons[1].State = Button.ButtonState.Selected;
+                Buttons[0].State = UIState.Inactive;
+                Buttons[1].State = UIState.Selected;
                 mSelectedButton = 1;
             }
         }
@@ -64,7 +90,7 @@ namespace Half_Caked
 
         void NextLevelMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex, new GameplayScreen(mLevel.LevelIdentifier+1));
+            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex, new GameplayScreen(Level.LoadLevel(mLevel.LevelIdentifier + 1)));
         }
 
         void ResetMenuEntrySelected(object sender, PlayerIndexEventArgs e)

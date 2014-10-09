@@ -117,32 +117,25 @@ namespace Half_Caked
 
         protected override void HandleTileCollision(Tile tile, Rectangle result, Level level)
         {
-            switch (tile.Type)
-            {
-                case Surface.Amplifies:
-                    Amplify(tile.Dimensions, result, level, Vector2.Zero);
-                    break;
-                case Surface.Normal:
-                    Act(tile.Dimensions, result, level, Vector2.Zero);
-                    break;
-                case Surface.Reflects:
-                    Reflect(result);
-                    break;
-                default:
-                    Absorb();
-                    break;
-            }
+            HandleCollision(tile.Dimensions, result, level, tile.Type, Vector2.Zero, tile);
         }
 
         protected override void HandleObstacleCollision(Obstacle obs, Rectangle result, Level level)
         {
-            switch (obs.Contact(result))
+            HandleCollision(obs.CollisionSurface, result, level, obs.Contact(result), obs.Velocity, obs);
+        }
+
+        private void HandleCollision(Rectangle collisionSurface, Rectangle result, Level level, Surface type, Vector2 frameVelocity, object targetObj)
+        {
+            switch (type)
             {
                 case Surface.Amplifies:
-                    Amplify(obs.CollisionSurface, result, level, obs.Velocity);
+                    level.Portals.Amplify(mPortalNumber, true);
+                    Act(collisionSurface, result, level, frameVelocity, targetObj);
                     break;
                 case Surface.Normal:
-                    Act(obs.CollisionSurface, result, level, obs.Velocity);
+                    level.Portals.Amplify(mPortalNumber, false);
+                    Act(collisionSurface, result, level, frameVelocity, targetObj);
                     break;
                 case Surface.Reflects:
                     Reflect(result);
@@ -151,17 +144,6 @@ namespace Half_Caked
                     Absorb();
                     break;
             }
-        }
-
-        protected void Amplify(Rectangle target, Rectangle result, Level level, Vector2 targetVelocity)
-        {
-            //Scale = 2; Special effect
-            (mPortalNumber == 0 ? level.Portals.Portal1 : level.Portals.Portal2).Scale=1.5f;
-            PortalGroup.PORTAL_WIDTH *= 1.5f;
-            PortalGroup.PORTAL_HEIGHT *= 1.5f;
-            Act(target, result, level, targetVelocity);
-            PortalGroup.PORTAL_WIDTH  = 5;
-            PortalGroup.PORTAL_HEIGHT = 150;
         }
 
         protected void Absorb()
@@ -170,7 +152,7 @@ namespace Half_Caked
             Visible = false;
         }
 
-        protected void Act(Rectangle target, Rectangle result, Level level, Vector2 targetVelocity)
+        protected void Act(Rectangle target, Rectangle result, Level level, Vector2 targetVelocity, object targetObj)
         {
             Visible = false;
             Orientation orientation;
@@ -225,19 +207,19 @@ namespace Half_Caked
                 return;
             }
             Velocity = Vector2.Zero;
-            level.Portals.Open(openingPoint, orientation, mPortalNumber, FrameVelocity, level);
+            level.Portals.Open(openingPoint, orientation, mPortalNumber, FrameVelocity, level, targetObj);
         }
 
         protected void Reflect(Rectangle result)
         {
             if (result.Width < result.Height)
             {
-                Position = new Vector2(result.X - (Position.X < result.X ? Size.Width : -result.Width), Position.Y);
+                Position = new Vector2(result.X - (Position.X < result.X ? Size.Width : -result.Width-2), Position.Y);
                 Velocity *= new Vector2(-1, 1);
             }
             else
             {
-                Position = new Vector2(Position.X, result.Y - (Position.Y < result.Y ? Size.Height : -result.Height));
+                Position = new Vector2(Position.X, result.Y - (Position.Y < result.Y ? Size.Height : -result.Height-2));
                 Velocity *= new Vector2(1, -1);
             }
         }

@@ -9,6 +9,8 @@
 
 #region Using Statements
 using Microsoft.Xna.Framework;
+using System.Speech.Synthesis;
+using System.Linq;
 #endregion
 
 namespace Half_Caked
@@ -39,9 +41,9 @@ namespace Half_Caked
             MenuEntry quitGameMenuEntry = new MenuEntry("Quit Game");
             
             // Hook up menu event handlers.
-            resumeGameMenuEntry.Selected += OnCancel;
-            quitGameMenuEntry.Selected += QuitGameMenuEntrySelected;
-            restartLevelMenuEntry.Selected += RestartLevelMenuEntrySelected;
+            resumeGameMenuEntry.Pressed += OnCancel;
+            quitGameMenuEntry.Pressed += QuitGameMenuEntrySelected;
+            restartLevelMenuEntry.Pressed += RestartLevelMenuEntrySelected;
 
             // Add entries to the menu.
             MenuEntries.Add(resumeGameMenuEntry);
@@ -95,6 +97,7 @@ namespace Half_Caked
 
         void ConfirmResetMessageBoxAccepted(object sender, PlayerIndexEventArgs e)
         {
+            ScreenManager.GetScreens().OfType<GameplayScreen>().First().Narrator.SpeakAsyncCancelAll();
             mLevel.Reset();
             OnCancel(sender, e);
         }
@@ -111,6 +114,16 @@ namespace Half_Caked
         public override void Draw(GameTime gameTime)
         {
             ScreenManager.FadeBackBufferToBlack(TransitionAlpha * 2 / 3);
+
+            var viewport = ScreenManager.GraphicsDevice.Viewport;
+            float scale = MathHelper.Min((viewport.Width - 550f) / mLevel.Size.Width, (viewport.Height - 290f) / mLevel.Size.Height); 
+
+            if (ScreenState != Half_Caked.ScreenState.TransitionOff && ScreenState != Half_Caked.ScreenState.Hidden && scale >= .05f)
+            {
+                ScreenManager.SpriteBatch.Begin();
+                mLevel.DrawMap(ScreenManager.SpriteBatch, gameTime, new Vector2(400, 140), scale );
+                ScreenManager.SpriteBatch.End();
+            }
 
             base.Draw(gameTime);
         }

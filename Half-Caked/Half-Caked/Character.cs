@@ -28,7 +28,7 @@ namespace Half_Caked
         public static Guid CharacterGuid =
             new Guid("05159D8A-B739-4AA4-9F6D-3FF5CB29572D");
 
-        const string ASSETNAME= "Sprites\\Stickman";
+        const string ASSETNAME = "Sprites\\Player\\Idle";
         const int DEFAULT_SPEED = 250;
         const int DEFAULT_JUMP = 250;
         const int JUMP_HEIGHT_MAX = 350;
@@ -36,15 +36,23 @@ namespace Half_Caked
         const int MOVE_DOWN = 1;
         const int MOVE_LEFT = -1;
         const int MOVE_RIGHT = 1;
-        const float MASS = 80.0f;
-        const float STATIC_ACCEL_GND = MASS  * .05f;
+        const float MASS = 40.0f;
+        const float STATIC_ACCEL_GND = MASS * .20f;
         const float DYNAMIC_ACCEL_AIR = MASS * .20f;
         const float STATIC_ACCEL_AIR = MASS * .0025f;
-        const float ARM_LENGTH = 37;
+        const float ARM_LENGTH = 20;
         #endregion
 
         #region Fields
-        State mCurrentState = State.Ground;               
+        //Animations
+        private Animation idleAnimation;
+        private Animation runAnimation;
+        private Animation jumpAnimation;
+        private Animation victoryAnimation;
+        private Animation deathAnimation;
+        private AnimationPlayer animator;
+
+        State mCurrentState = State.Ground;
 
         PortalGunBullet[] mOrbs = new PortalGunBullet[2];
         Gunarm mGunhand;
@@ -57,7 +65,6 @@ namespace Half_Caked
         bool wallJumpRight = false; //walljump from left wall to right direction is available to player
         bool stillWallJumpingLeft = false; //currently walljumping left
         bool stillWallJumpingRight = false; //currently walljumping right
-        int tempJumpHeight;
         TimeSpan jumpTimer = TimeSpan.Zero;
         TimeSpan wallJumpTimer = TimeSpan.Zero;
 
@@ -65,6 +72,7 @@ namespace Half_Caked
         Rectangle[] mCollisions = new Rectangle[5];
 
         SoundEffect mJumpEffect, mDeathEffect, mLandingEffect;
+        SoundEffect antiportalEffect;
         #endregion
 
         #region Initialization
@@ -72,7 +80,6 @@ namespace Half_Caked
         {
             mContentManager = theContentManager;
             base.LoadContent(theContentManager, ASSETNAME);
-            Source = new Rectangle(66, 65, 73, 135);
 
             mGunhand = new Gunarm();
             mGunhand.LoadContent(this.mContentManager);
@@ -82,9 +89,26 @@ namespace Half_Caked
             mOrbs[1] = new PortalGunBullet();
             mOrbs[1].LoadContent(this.mContentManager, 1);
 
+            //Load animations -- must include frame count for constant frameTime constructor
+			float[] jumpTiming = { 0.1f, 0.1f, 0.1f, 0.2f, 0.1f };
+            idleAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Idle"), 0.1f, 1, true);
+            runAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Run"), 0.05f, 5, true);
+            jumpAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Jump"), jumpTiming, false);
+            victoryAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Victory"), 0.15f, 5, false);
+            deathAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Player\\Death"), 0.15f, 5, false);
+
+            int width = (int)(idleAnimation.FrameWidth);// * 0.9f);
+            int left = 0;// (idleAnimation.FrameWidth - width) / 2;
+			int height = (int)(idleAnimation.FrameHeight);//* 0.8f);
+            int top = idleAnimation.FrameHeight - height;
+            Source = new Rectangle(left, top, width, height);
+
+            animator.PlayAnimation(idleAnimation);
+
             mJumpEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerJump");
             mDeathEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerKilled");
             mLandingEffect = theContentManager.Load<SoundEffect>("Sounds\\PlayerLanding");
+            antiportalEffect = theContentManager.Load<SoundEffect>("Sounds\\antiportal");
 
             Center = new Vector2(Size.Width / 2, Size.Height / 2);
         }
@@ -100,7 +124,7 @@ namespace Half_Caked
             CheckCollisions(level, inputState.IsInteracting(null));
 
             //play sound effect for landing
-            if (curstate == State.Air && (mCurrentState == State.Ground || mCurrentState == State.Platform))
+            if (curstate == State.Air && (mCurrentState == State.Ground))
                 level.PlaySoundEffect(mLandingEffect);
 
             UpdateMovement(inputState);
@@ -111,18 +135,16 @@ namespace Half_Caked
 
             UpdateDuck(inputState);
 
-            //falling
-            Acceleration.Y = (mCurrentState == State.Air || mCurrentState == State.GravityPortal  || mCurrentState == State.Portal ? 1 : 0) * level.Gravity * Level.METERS_TO_UNITS;
+            Acceleration.Y = (mCurrentState == State.Air || mCurrentState == State.GravityPortal ? 1 : 0) * level.Gravity * Level.METERS_TO_UNITS;
 
             if (Angle != 0)
             {
-                if(Angle > 0)
-                    Angle = (float)Math.Max(0, Angle - Math.PI * theGameTime.ElapsedGameTime.TotalSeconds / 2);
+                if (Angle > 0)
+                    Angle = (float)Math.Max(0, Angle - 3 * Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
                 else
-                    Angle = (float)Math.Min(0, Angle + Math.PI * theGameTime.ElapsedGameTime.TotalSeconds / 2);
-
+                    Angle = (float)Math.Min(0, Angle + 3 * Math.PI * theGameTime.ElapsedGameTime.TotalSeconds);
             }
-            
+
             base.Update(theGameTime);
 
             mFlip = mGunhand.Update(inputState.CurrentMouseState, mIsDucking, this, level.Position);
@@ -132,39 +154,63 @@ namespace Half_Caked
         public void CheckCollisions(Level level, bool ePressed)
         {
             FrameVelocity = Vector2.Zero;
+            object ignoreObject = null;
 
             if (level.Portals.IsOpen())
             {
-                if (HandlePortalCollision(0, level) || HandlePortalCollision(1, level))
-                    return;
-            }
+                if (HandlePortalCollision(0, level))
+                    ignoreObject = level.Portals.Portal1Holder;
+                else if (HandlePortalCollision(1, level))
+                    ignoreObject = level.Portals.Portal2Holder;
+                else
+                    mCurrentState = State.Air;
 
-            if(mForcedDucking)
+                if (ignoreObject is Tile)
+                    mCurrentFriction = (ignoreObject as Tile).Friction * MASS;
+                else if (ignoreObject is Obstacle)
+                    mCurrentFriction = (ignoreObject as Obstacle).Friction * MASS;
+            }
+            else
+                mCurrentState = State.Air;
+
+            if (mForcedDucking)
                 StopDucking();
-            mCurrentState = State.Air;
 
             foreach (Obstacle obs in level.Obstacles)
             {
+                if (obs == ignoreObject)
+                    continue;
+
                 Rectangle result = Rectangle.Intersect(obs.CollisionSurface, CollisionSurface);
                 if (!result.IsEmpty)
                 {
-                    if (HandleStandardCollision(result, obs.CollisionSurface, obs.Contact(result), obs.Friction * level.Gravity))
+                    if (HandleStandardCollision(result, obs.CollisionSurface, obs.Contact(result), obs.Friction * level.Gravity, level))
                     {
                         Die(level);
                         return;
                     }
-                    FrameVelocity = obs.Velocity;
-                    if(ePressed)
+
+                    var pltfrm = obs as Platform;
+                    if (pltfrm != null && pltfrm.IsMoving)
+                    {
+                        FrameVelocity = obs.Velocity +Vector2.UnitY * 50;
+                        mCurrentState = State.Platform;
+                    }
+
+                    if (ePressed)
                         obs.React(CharacterGuid, level);
                 }
             }
 
             foreach (Tile tile in level.Tiles)
             {
+                if (tile == ignoreObject)
+                   continue;
+
                 Rectangle result = Rectangle.Intersect(tile.Dimensions, CollisionSurface);
                 if (!result.IsEmpty)
                 {
-                    if (HandleStandardCollision(result, tile.Dimensions, tile.Type, tile.Friction * level.Gravity))
+                    if (HandleStandardCollision(result, tile.Dimensions, tile.Type, tile.Friction * level.Gravity, level))
                     {
                         Die(level);
                         return;
@@ -183,7 +229,7 @@ namespace Half_Caked
             else
                 mForcedDucking = false;
 
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
                 mCollisions[i] = Rectangle.Empty;
         }
 
@@ -196,10 +242,16 @@ namespace Half_Caked
         {
             if (!Visible)
                 return;
-            base.Draw(theSpriteBatch, Relative);
+            //base.Draw(theSpriteBatch, Relative);
             mOrbs[0].Draw(theSpriteBatch, Relative);
             mOrbs[1].Draw(theSpriteBatch, Relative);
             mGunhand.Draw(theSpriteBatch, Relative);
+        }
+
+        public void AnimatedDraw(SpriteBatch theSpriteBatch, Vector2 Relative, GameTime gameTime)
+        {
+            // Draw the sprite.
+            animator.Draw(gameTime, theSpriteBatch, Position + Relative, Angle, Center, Scale, mFlip);
         }
 
         public override void PortalDraw(SpriteBatch theSpriteBatch, Vector2 Relative)
@@ -220,10 +272,13 @@ namespace Half_Caked
 
             mCurrentState = State.Ground;
             StopDucking();
+
+            animator.PlayAnimation(idleAnimation);
         }
 
         public void Die(Level level)
         {
+            //animator.PlayAnimation(deathAnimation);
             level.PlaySoundEffect(mDeathEffect);
             level.PlayerDeath();
         }
@@ -240,6 +295,11 @@ namespace Half_Caked
             return State.Platform == mCurrentState || State.Ground == mCurrentState;
         }
 
+        public void GameOver()
+        {
+            animator.PlayAnimation(victoryAnimation);
+        }
+
         #endregion
 
         #region Private Methods
@@ -253,7 +313,7 @@ namespace Half_Caked
                 // Horizontal
                 if ((int)Portal.Oriented % 2 == 1)
                 {
-                    if (result.Height >= this.CollisionSurface.Height - 3 ||
+                    if (result.Height >= this.Size.Height - 3  ||
                         mCurrentState == State.Portal || mCurrentState == State.GravityPortal)
                     {
                         mCurrentState = State.Portal;
@@ -264,14 +324,17 @@ namespace Half_Caked
                         if ((first = (CollisionSurface.Y >= Portal.CollisionSurface.Bottom - CollisionSurface.Height)) || Portal.CollisionSurface.Y >= CollisionSurface.Y)
                         {
                             if (first)
-                                Velocity.Y = Math.Min(Velocity.Y, 0);
+                            {
+                                //Velocity.Y = Math.Min(Velocity.Y, 0);
+                            }
                             else
                             {
-                                Velocity.Y = Math.Max(Velocity.Y, 0);
+                                //Velocity.Y = Math.Max(Velocity.Y, 0);
                                 mCurrentState = State.GravityPortal;
                                 stillJumping = false;
                             }
 
+                            Velocity.Y = 0;
                             Position = new Vector2(Position.X, MathHelper.Clamp(Position.Y, Portal.CollisionSurface.Y + Center.Y, Portal.CollisionSurface.Bottom - Center.Y));
                         }
                         return true;
@@ -280,7 +343,7 @@ namespace Half_Caked
                 //Vertical
                 else
                 {
-                    if (result.Width >= this.CollisionSurface.Width - 1 ||
+                    if (result.Width >= this.Size.Width - 1 ||
                         mCurrentState == State.Portal || mCurrentState == State.GravityPortal)
                     {
                         mCurrentState = State.GravityPortal;
@@ -289,8 +352,10 @@ namespace Half_Caked
                         if (CollisionSurface.X > Portal.CollisionSurface.Right - CollisionSurface.Width || Portal.CollisionSurface.X > CollisionSurface.X)
                         {
                             Position = new Vector2(MathHelper.Clamp(Position.X, Portal.CollisionSurface.X + Center.X, Portal.CollisionSurface.Right - Center.X), Position.Y);
-                            Velocity.X = 0;
+                            //Velocity.X = 0;
                         }
+                        Velocity.X = 0;
+                        
                         return true;
                     }
                 }
@@ -298,31 +363,37 @@ namespace Half_Caked
             return false;
         }
 
-        private bool HandleStandardCollision(Rectangle result, Rectangle obj, Surface type, float friction)
+        private bool HandleStandardCollision(Rectangle result, Rectangle obj, Surface type, float friction, Level level)
         {
-            if (3 >= result.Height || result.Width >= this.CollisionSurface.Width - 1
+            if(type == Surface.Antiportal) //no physical interaction with antiportal surfaces
+            {
+                //reset portals
+                if(level.Portals.Portal1.Visible || level.Portals.Portal2.Visible)
+                {
+                    level.Portals.Reset();
+                    level.PlaySoundEffect(antiportalEffect);
+                }
+            }
+            else if (3 >= result.Height || result.Width >= this.CollisionSurface.Width - 1
                 || result.Height / (float)CollisionSurface.Height < result.Width / (float)CollisionSurface.Width)
             {
                 if (CollisionSurface.Center.Y < obj.Center.Y)
                 {
                     mCurrentFriction = friction * MASS;
-                    mCurrentState = State.Ground;
+                    mCurrentState = (mCurrentState == State.Portal || mCurrentState == State.GravityPortal) ? mCurrentState : State.Ground;
                     Velocity.Y = 0;
                     Position = new Vector2(Position.X, obj.Top - Center.Y + 1);
                     mCollisions[(int)Orientation.Down] = obj;
                 }
-                else if (CollisionSurface.Center.Y > obj.Center.Y) // hit the roof
-                {
-                    if (Velocity.Y < 5)
-                    { Velocity.Y = 5; }
-                }
                 else
                 {
-                    Velocity.Y = Math.Min(Velocity.Y, 0);
-                    Position = new Vector2(Position.X, obj.Bottom + Center.Y + 1);
+                    Velocity.Y = Math.Max(Velocity.Y, 5);
+                    Position = new Vector2(Position.X, obj.Bottom + Center.Y *1.41f);
                     mCollisions[(int)Orientation.Up] = obj;
                 }
                 stillJumping = false;
+                stillWallJumpingLeft = false;
+                stillWallJumpingRight = false;
             }
             else
             {
@@ -330,23 +401,28 @@ namespace Half_Caked
                 {
                     mCollisions[(int)Orientation.Left] = obj;
                     wallJumpRight = true; //walljump from left wall to right direction is available to player
+                    if (Velocity.X < 0)
+                        Velocity.X = 0;
                 }
                 else if (Position.X < result.X)
                 {
                     mCollisions[(int)Orientation.Right] = obj;
                     wallJumpLeft = true; //walljump from right wall to left direction is available to player
+                    if (Velocity.X > 0)
+                        Velocity.X = 0;
                 }
 
-                Position = new Vector2(result.X - (Position.X - result.X < 0 ? CollisionSurface.Width - Center.X + 1 : -result.Width - 1 - Center.X), Position.Y);
+                Position = new Vector2(result.X - (Position.X - result.X < 0 ? CollisionSurface.Width - Center.X - 1 : -result.Width + 1 - Center.X), Position.Y);
             }
 
             return type == Surface.Death;
         }
 
-
-         //UNDER CONSTRUCTION                                   
+        //UNDER CONSTRUCTION                                   
         private void UpdateMovement(InputState inputState)
         {
+            bool invert = Math.Abs(Angle) > MathHelper.PiOver2;
+
             //Movement while on the ground is UNDER CONSTRUCTION (values are hardcoded) 
             if (mCurrentState == State.Ground || mCurrentState == State.Platform || mCurrentState == State.Portal)
             {
@@ -358,18 +434,31 @@ namespace Half_Caked
                 else
                     Acceleration.X = mCurrentFriction * (-Math.Sign(Velocity.X));
 
-                if (inputState.IsMovingBackwards(null))
+                if ((inputState.IsMovingBackwards(null) && !invert) ||
+                    (inputState.IsMovingForward(null)   &&  invert))
                 {
                     Velocity.X = DEFAULT_SPEED * MOVE_LEFT * (mIsDucking ? .5f : 1);
+                    if (mIsDucking)
+                    { }
+                    else
+                    { animator.PlayAnimation(runAnimation); }
                 }
-                else if (inputState.IsMovingForward(null))
+                else if ((inputState.IsMovingBackwards(null) && invert) ||
+                         (inputState.IsMovingForward(null) && !invert))
                 {
                     Velocity.X = DEFAULT_SPEED * MOVE_RIGHT * (mIsDucking ? .5f : 1);
+                    if (mIsDucking)
+                    { }
+                    else
+                    { animator.PlayAnimation(runAnimation); }
+                }
+                else
+                {
+                    animator.PlayAnimation(idleAnimation);
                 }
             }
-
-                //Movement while in the air is UNDER CONSTRUCTION (values are hardcoded)
-            else if(mCurrentState == State.Air || mCurrentState == State.GravityPortal)
+            //Movement while in the AIR is UNDER CONSTRUCTION (values are hardcoded)
+            else if (mCurrentState == State.Air || mCurrentState == State.GravityPortal)
             {
                 if (Math.Abs(Velocity.X) <= STATIC_ACCEL_AIR)
                 {
@@ -381,7 +470,8 @@ namespace Half_Caked
                     Acceleration.X = DYNAMIC_ACCEL_AIR * (Math.Abs(Velocity.X) <= STATIC_ACCEL_AIR ? 0 : 1) * (-Math.Sign(Velocity.X));
                 }
 
-                if (inputState.IsMovingBackwards(null))
+                if ((inputState.IsMovingBackwards(null) && !invert) ||
+                    (inputState.IsMovingForward(null) && invert))
                 {
                     //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_LEFT / 4;
                     //Velocity.X = Math.Min(Velocity.X, DEFAULT_SPEED / 2f * MOVE_LEFT * (mIsDucking ? .5f : 1));
@@ -396,8 +486,11 @@ namespace Half_Caked
                             Velocity.X -= 25;
                         }
                     }
+
+                    animator.PlayAnimation(jumpAnimation);
                 }
-                else if (inputState.IsMovingForward(null))
+                else if ((inputState.IsMovingBackwards(null) && invert) ||
+                         (inputState.IsMovingForward(null) && !invert))
                 {
                     //Acceleration.X += DYNAMIC_ACCEL_AIR * MOVE_RIGHT / 4;
                     //Velocity.X = Math.Max(Velocity.X, DEFAULT_SPEED / 2f * MOVE_RIGHT * (mIsDucking ? .5f : 1));
@@ -412,11 +505,13 @@ namespace Half_Caked
                             Velocity.X += 25;
                         }
                     }
+
+                    animator.PlayAnimation(jumpAnimation);
                 }
 
                 //if (mIsDucking)
                 //    Acceleration.X *= .75f;
-            //}
+                //}
             }
         }
 
@@ -432,7 +527,7 @@ namespace Half_Caked
                     Velocity.Y = -DEFAULT_JUMP;
                     stillJumping = true;
                     jumpTimer = TimeSpan.Zero;
-                    tempJumpHeight = DEFAULT_JUMP;
+                    animator.PlayAnimation(jumpAnimation);
                     return true;
                 }
             }
@@ -444,16 +539,15 @@ namespace Half_Caked
                 {
                     if (inputState.IsNewJump(null))
                     {
-                        tempJumpHeight = DEFAULT_JUMP / 2;
-
-                        Velocity.X = DEFAULT_SPEED * MOVE_LEFT;
+                        Velocity.X = DEFAULT_SPEED * MOVE_RIGHT * 2f;
                         //Velocity.Y = -DEFAULT_JUMP / 2;
-                        Velocity.Y = -tempJumpHeight;
+                        Velocity.Y = -DEFAULT_JUMP;
 
                         stillJumping = true;
                         stillWallJumpingRight = true;
                         jumpTimer = TimeSpan.Zero;
                         wallJumpTimer = TimeSpan.Zero;
+                        animator.ResetAnimation();
                         return true;
                     }
                 }
@@ -461,16 +555,15 @@ namespace Half_Caked
                 {
                     if (inputState.IsNewJump(null))
                     {
-                        tempJumpHeight = DEFAULT_JUMP / 2;
-
-                        Velocity.X = DEFAULT_SPEED * MOVE_LEFT;
+                        Velocity.X = DEFAULT_SPEED * MOVE_LEFT * 2f;
                         //Velocity.Y = -DEFAULT_JUMP / 2;
-                        Velocity.Y = -tempJumpHeight;
+                        Velocity.Y = -DEFAULT_JUMP;
 
                         stillJumping = true;
                         stillWallJumpingLeft = true;
                         jumpTimer = TimeSpan.Zero;
                         wallJumpTimer = TimeSpan.Zero;
+                        animator.ResetAnimation();
                         return true;
                     }
                 }
@@ -478,14 +571,14 @@ namespace Half_Caked
                 if (stillWallJumpingRight)
                 {
                     wallJumpTimer += theGameTime.ElapsedGameTime;
-                    if (wallJumpTimer < TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX/2))
+                    if (wallJumpTimer < TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX / 2))
                     {
-                        Velocity.X = DEFAULT_SPEED * MOVE_RIGHT + 100;
+                        Velocity.X = DEFAULT_SPEED * MOVE_RIGHT * 2f;
                         //Velocity.Y = -DEFAULT_JUMP/2;
-                        Velocity.Y = -tempJumpHeight;
+                        Velocity.Y = -DEFAULT_JUMP;
                     }
                     else
-                    { 
+                    {
                         stillWallJumpingRight = false;
                         stillJumping = false;
                     }
@@ -493,20 +586,20 @@ namespace Half_Caked
                 else if (stillWallJumpingLeft)
                 {
                     wallJumpTimer += theGameTime.ElapsedGameTime;
-                    if (wallJumpTimer < TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX/2))
+                    if (wallJumpTimer < TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX / 2))
                     {
-                        Velocity.X = DEFAULT_SPEED * MOVE_LEFT * 2;
+                        Velocity.X = DEFAULT_SPEED * MOVE_LEFT * 2f;
                         //Velocity.Y = -DEFAULT_JUMP/2;
-                        Velocity.Y = -tempJumpHeight;
+                        Velocity.Y = -DEFAULT_JUMP;
                     }
                     else
-                    { 
+                    {
                         stillWallJumpingLeft = false;
-                        stillJumping = false;                
+                        stillJumping = false;
                     }
                 }
             }
-            else 
+            else
             {
                 stillWallJumpingRight = false;
                 stillWallJumpingLeft = false;
@@ -514,21 +607,21 @@ namespace Half_Caked
             }
 
             //variable height jump
-            if(stillJumping && !stillWallJumpingRight && !stillWallJumpingLeft)
+            if (stillJumping && !stillWallJumpingRight && !stillWallJumpingLeft)
             {
                 if (inputState.IsJumping(null))
                 {
                     mCurrentState = State.Air;
 
                     //Velocity.Y = -DEFAULT_JUMP;
-                    Velocity.Y = -tempJumpHeight;
+                    Velocity.Y = -DEFAULT_JUMP;
 
                     jumpTimer += theGameTime.ElapsedGameTime;
 
                     if (jumpTimer > TimeSpan.FromMilliseconds(JUMP_HEIGHT_MAX))
                     {
                         stillJumping = false;
-                        
+
                         jumpTimer = TimeSpan.Zero;
                     }
                 }
@@ -561,10 +654,10 @@ namespace Half_Caked
         {
             if (!mIsDucking)
             {
-                Position += new Vector2(0 ,16);
-                Source = new Rectangle(272, 97, 67, 103);
-                Center = new Vector2(Size.Width / 2, Size.Height / 2);
-                mIsDucking = true;
+                //Position += new Vector2(0 ,16);
+                //Source = new Rectangle(272, 97, 67, 103);
+                //Center = new Vector2(Size.Width / 2, Size.Height / 2);
+                //mIsDucking = true;
             }
         }
 
@@ -572,10 +665,10 @@ namespace Half_Caked
         {
             if (mIsDucking)
             {
-                Position -= new Vector2(0, 16);
-                Source = new Rectangle(66, 65, 72, 135);
-                Center = new Vector2(Size.Width / 2, Size.Height / 2);
-                mIsDucking = false;
+                //Position -= new Vector2(0, 16);
+                //Source = new Rectangle(66, 65, 72, 135);
+                //Center = new Vector2(Size.Width / 2, Size.Height / 2);
+                //mIsDucking = false;
             }
         }
 
@@ -590,7 +683,6 @@ namespace Half_Caked
             {
                 ShootProjectile(0, inputState.CurrentMouseState, level);
                 mOrbs[0].CheckCollisions(level);
-                level.Portals.Close(0);
             }
 
             if (mOrbs[1].Visible)
@@ -602,7 +694,6 @@ namespace Half_Caked
             {
                 ShootProjectile(1, inputState.CurrentMouseState, level);
                 mOrbs[1].CheckCollisions(level);
-                level.Portals.Close(1);
             }
         }
 
@@ -610,7 +701,7 @@ namespace Half_Caked
         {
             Vector2 dir = new Vector2((float)Math.Cos(mGunhand.Angle), (float)Math.Sin(mGunhand.Angle));
 
-            mOrbs[type].Fire(mGunhand.Position + ARM_LENGTH * dir, 
+            mOrbs[type].Fire(mGunhand.Position + ARM_LENGTH * dir,
                             dir,
                             Vector2.Zero,
                             level);
@@ -621,11 +712,19 @@ namespace Half_Caked
     class Gunarm : Actor
     {
         #region Constants
-        Vector2 ARM_ANCHOR = new Vector2(-4, -8);
-        Vector2 ARM_ANCHOR_DUCKED = new Vector2(-6, 12);
+        Vector2 ARM_ANCHOR = new Vector2(-10, 10);
+        Vector2 ARM_ANCHOR_OFFSET = new Vector2(4, 4);
+        Vector2 ARM_ANCHOR_DUCKED = new Vector2(0,0);
 
-        Vector2 ARM_ANCHOR_LEFT = new Vector2(6, 0);
-        Vector2 ARM_ANCHOR_DUCKED_LEFT = new Vector2(13, 0);
+        Vector2 ARM_ANCHOR_LEFT = new Vector2(25, 0);
+        Vector2 ARM_ANCHOR_LEFT_OFFSET = new Vector2(4, 15);
+        Vector2 ARM_ANCHOR_DUCKED_LEFT = new Vector2(0, 0);
+        #endregion
+
+        #region Fields
+
+        bool wasFlipped = false;
+
         #endregion
 
         #region Initialization
@@ -633,9 +732,7 @@ namespace Half_Caked
         public void LoadContent(ContentManager theContentManager)
         {
             base.LoadContent(theContentManager, "Sprites\\Gunarm");
-            Source = new Rectangle(0, 0, 37, 5);
-            Scale = 1.0f;
-            Center = new Vector2(0, 3);
+            Center = new Vector2(4, 4);
         }
 
         #endregion
@@ -644,17 +741,34 @@ namespace Half_Caked
 
         public SpriteEffects Update(MouseState aCurrentMouseState, bool ducking, Character theMan, Vector2 rel)
         {
-            Position = theMan.Position + Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED : ARM_ANCHOR), Matrix.CreateRotationZ(theMan.Angle));
+            if(wasFlipped)
+                Position = theMan.Position + Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED + ARM_ANCHOR_DUCKED_LEFT : ARM_ANCHOR + ARM_ANCHOR_LEFT), Matrix.CreateRotationZ(theMan.Angle)) ;
+            else
+                Position = theMan.Position + Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED : ARM_ANCHOR), Matrix.CreateRotationZ(theMan.Angle));
 
-            Angle = (float)Math.Atan2(aCurrentMouseState.Y - (double)(Position.Y + rel.Y), aCurrentMouseState.X - (double)(Position.X + rel.X));
-
-            if (aCurrentMouseState.X < Position.X + rel.X)
-            {
+            bool flip = aCurrentMouseState.X < Position.X + rel.X;
+            if (flip && !wasFlipped)
                 Position += Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED_LEFT : ARM_ANCHOR_LEFT), Matrix.CreateRotationZ(theMan.Angle));
-                return SpriteEffects.FlipHorizontally;
+            else if (!flip && wasFlipped)
+                Position -= Vector2.Transform((ducking ? ARM_ANCHOR_DUCKED_LEFT : ARM_ANCHOR_LEFT), Matrix.CreateRotationZ(theMan.Angle));
+
+            wasFlipped = flip;
+
+            Vector2 displacement =  (Position + rel + (flip ? ARM_ANCHOR_OFFSET : ARM_ANCHOR_LEFT_OFFSET));
+            Angle = (float)Math.Atan2(aCurrentMouseState.Y - displacement.Y, aCurrentMouseState.X - displacement.X);
+
+            if (flip)
+            {
+                Center = new Vector2(4, 15);
+                mFlip = SpriteEffects.FlipVertically;
+                return SpriteEffects.None;
             }
             else
-                return SpriteEffects.None;
+            {
+                Center = new Vector2(4, 4);
+                mFlip = SpriteEffects.None;
+                return SpriteEffects.FlipHorizontally;
+            }
         }
 
         public void Update(bool ducking, Character theMan)

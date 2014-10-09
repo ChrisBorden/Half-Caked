@@ -10,11 +10,14 @@
 #region Using Statements
 using System;
 using System.Threading;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Reflection;
+using System.Speech.Synthesis; 
 #endregion
 
 namespace Half_Caked
@@ -31,8 +34,12 @@ namespace Half_Caked
         ContentManager content;
         Level mLevel;
         InputState mInputState;
+        bool mIsBound = false;
+        Rectangle mOldClip;
 
         #endregion
+
+        public SpeechSynthesizer Narrator;
 
         #region Initialization
 
@@ -40,11 +47,12 @@ namespace Half_Caked
         /// <summary>
         /// Constructor.
         /// </summary>
-        public GameplayScreen(int levelNumber)
+        public GameplayScreen(Level lvl)
         {
+            Narrator = new SpeechSynthesizer();
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
-            mLevel = Level.LoadLevel(levelNumber);
+            mLevel = lvl;
         }
 
 
@@ -56,12 +64,13 @@ namespace Half_Caked
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-            mLevel.LoadContent(this.content, (ScreenManager.Game as HalfCakedGame).CurrentProfile);
+            mLevel.LoadContent(this.ScreenManager, (ScreenManager.Game as HalfCakedGame).CurrentProfile);
 
             // once the load has finished, we use ResetElapsedTime to tell the game's
             // timing mechanism that we have just finished a very long frame, and that
             // it should not try to catch up.
             ScreenManager.Game.ResetElapsedTime();
+            Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
         }
 
 
@@ -73,10 +82,15 @@ namespace Half_Caked
             content.Unload();
         }
 
-
         #endregion
 
         #region Update and Draw
+
+        [DllImport("user32.dll")]
+        static extern void ClipCursor(ref Rectangle rect);
+
+        [DllImport("user32.dll")]
+        static extern void GetClipCursor(ref Rectangle rect);
 
         /// <summary>
         /// Updates the state of the game. This method checks the GameScreen.IsActive
@@ -90,16 +104,33 @@ namespace Half_Caked
 
             if (IsActive)
             {
+                if (Narrator.State == SynthesizerState.Paused)
+                    Narrator.Resume();
+
+                ScreenManager.Game.IsMouseVisible = true;
+                // Prevent mouse cursor from leaving window when in game.
+                if (!mIsBound)
+                {
+                    GetClipCursor(ref mOldClip);
+                    Form.FromHandle(this.ScreenManager.Game.Window.Handle).Cursor = ScreenManager.GameCursor;
+
+                    Rectangle rect = this.ScreenManager.Game.Window.ClientBounds;
+                    rect.Width += rect.X;
+                    rect.Height += rect.Y;
+                    ClipCursor(ref rect);
+                    mIsBound = true;
+                }
+
                 if(mInputState == null)
                     return;
-                this.ScreenManager.Game.IsMouseVisible = false;
+
                 try
                 {
-                    mLevel.Update(gameTime, mInputState);
+                    mLevel.Update(gameTime, this.ScreenManager, mInputState);
                 }
                 catch (Exception E)
                 {
-                    if(E.Message.Equals("LevelComplete"))
+                    if (E.Message.Equals("LevelComplete"))
                         ScreenManager.AddScreen(new LevelOverScreen(mLevel, (ScreenManager.Game as HalfCakedGame)), ControllingPlayer);
                     else
                         throw E;
@@ -109,6 +140,25 @@ namespace Half_Caked
             {
                 ScreenManager.AddScreen(new PauseMenuScreen(mLevel), ControllingPlayer);
             }
+            else
+            {
+                if (Narrator.State == SynthesizerState.Speaking)
+                    Narrator.Pause();
+
+                ClipCursor(ref mOldClip);
+
+                Form.FromHandle(this.ScreenManager.Game.Window.Handle).Cursor = ScreenManager.DefaultCursor;
+                mIsBound = false;
+            }
+
+        }
+
+        public override void ExitScreen()
+        {
+            if (Narrator.State != SynthesizerState.Ready)
+                Narrator.SpeakAsyncCancelAll();
+
+            base.ExitScreen();
         }
 
         /// <summary>
@@ -153,7 +203,7 @@ namespace Half_Caked
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
             spriteBatch.Begin();
-            mLevel.Draw(spriteBatch);
+            mLevel.Draw(spriteBatch, gameTime);
             spriteBatch.End();
 
             // If the game is transitioning on or off, fade it out to black.

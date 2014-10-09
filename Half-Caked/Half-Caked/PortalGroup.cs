@@ -26,23 +26,47 @@ namespace Half_Caked
         #endregion
 
         #region Fields
-        [XmlIgnore]
-        public Sprite Portal1, Portal2;
-        
+        public Sprite Portal1
+        {
+            get { return mPortals[0]; }
+        }
+
+        public Sprite Portal2
+        {
+            get { return mPortals[1]; }
+        }
+
+        public object Portal1Holder
+        {
+            get { return mPortalHolders[0]; }
+        }
+
+        public object Portal2Holder
+        {
+            get { return mPortalHolders[1]; }
+        }              
+
+        Sprite PortalEffect;
         PortalState mState = PortalState.Closed;
         List<Actor> mInPortal1 = new List<Actor>();
         List<Actor> mInPortal2 = new List<Actor>();
+
+        object[] mPortalHolders = new object[2];
+        Sprite[] mPortals = new Sprite[2];
+        bool[] mIsAmplified = new bool[2];
         SoundEffect mOpenPortalEffect;
         #endregion
 
         #region Initialization
         public PortalGroup()
         {
-            Portal1 = new Sprite();
-            Portal2 = new Sprite();
-            
+            mPortals[0] = new Sprite();
+            mPortals[1] = new Sprite();
+            PortalEffect = new Sprite();
+
             Portal1.Center  = new Vector2(0, PORTAL_HEIGHT / 2);
-            Portal2.Center  = new Vector2(0, PORTAL_HEIGHT / 2);
+            Portal2.Center = new Vector2(0, PORTAL_HEIGHT / 2);
+
             Portal1.Visible = Portal2.Visible = false;
         }
 
@@ -50,7 +74,10 @@ namespace Half_Caked
         {
             Portal1.LoadContent(theContentManager, "Sprites\\Portal1");
             Portal2.LoadContent(theContentManager, "Sprites\\Portal2");
+            PortalEffect.LoadContent(theContentManager, "Sprites\\PortalEffect");
             mOpenPortalEffect  = theContentManager.Load<SoundEffect>("Sounds\\PortalOpen");
+
+            PortalEffect.Center = new Vector2(0, PortalEffect.Size.Height / 2);
         }
         #endregion
 
@@ -65,21 +92,50 @@ namespace Half_Caked
             return mState != PortalState.InUse;
         }
 
-        public void Open(Vector2 position, Orientation orientation, int portalNumber, Vector2 movement, Level lvl)
+        public void Amplify(int portalNumber, bool isAmplified)
         {
-            Sprite chosenOne = portalNumber == 1 ? Portal2 : Portal1;
+            mIsAmplified[portalNumber] = isAmplified;
+        }
 
-            chosenOne.Visible = true;
-            chosenOne.Angle = (int)orientation % 2== 0 ? MathHelper.PiOver2 : 0;
-            chosenOne.Position = position;
-            chosenOne.Oriented = orientation;
-            chosenOne.FrameVelocity = movement;
+        public void Amplify(int portalNumber)
+        {
+            Amplify(portalNumber, true);
+        }
+
+        public void Open(Vector2 position, Orientation orientation, int portalNumber, Vector2 movement, Level lvl, object targetObject)
+        {
+            Sprite chosenOne = mPortals[portalNumber];
+            
+            try
+            {
+                mPortalHolders[portalNumber] = targetObject;
+                chosenOne.Visible = true;
+                chosenOne.Angle = (int)orientation % 2== 0 ? MathHelper.PiOver2 : 0;
+                chosenOne.Position = position;
+                chosenOne.Oriented = orientation;
+                chosenOne.FrameVelocity = movement;
+
+                int count = 0;
+
+                foreach (Tile t in lvl.Tiles)
+                    if (!Rectangle.Intersect(chosenOne.CollisionSurface, t.Dimensions).IsEmpty)
+                        ++count;
+
+                if (count > 1)
+                    throw new Exception("Invalid Portal Location");
+            }
+            catch
+            {
+                mPortalHolders[portalNumber] = null;
+                chosenOne.Visible = false;
+                return;
+            }
 
             if (Portal1.Visible == Portal2.Visible)
             {
                 if (!Rectangle.Intersect(Portal1.CollisionSurface, Portal2.CollisionSurface).IsEmpty)
                 {
-                    Close(portalNumber);
+                    Close(1 - portalNumber);
                     return;
                 }
                 mState = PortalState.Open;
@@ -90,7 +146,8 @@ namespace Half_Caked
 
         public void Close(int portalNumber)
         {
-            Sprite chosenOne = portalNumber == 1 ? Portal2 : Portal1;
+            mPortalHolders[portalNumber] = null;
+            Sprite chosenOne = mPortals[portalNumber];
             chosenOne.Angle = 0;
             chosenOne.Position = new Vector2(-50, -50);
             chosenOne.Visible = false;
@@ -119,6 +176,7 @@ namespace Half_Caked
             mInPortal1.Clear();
             mInPortal2.Clear();
         }
+
         #endregion
 
         #region Draw and Update
@@ -134,17 +192,28 @@ namespace Half_Caked
 
             foreach (Actor spr in mInPortal1)
             {
-                HandleSpriteInPortal(spr, Portal1, Portal2, (float)theGameTime.TotalGameTime.TotalSeconds);
+                HandleSpriteInPortal(spr, Portal1, Portal2, mIsAmplified[0], (float)theGameTime.TotalGameTime.TotalSeconds);
             }
 
             foreach (Actor spr in mInPortal2)
             {
-                HandleSpriteInPortal(spr, Portal2, Portal1, (float)theGameTime.TotalGameTime.TotalSeconds);
+                HandleSpriteInPortal(spr, Portal2, Portal1, mIsAmplified[1], (float)theGameTime.TotalGameTime.TotalSeconds);
             }
         }
 
         public void Draw(SpriteBatch theSpriteBatch, Vector2 Relative)
         {
+            if (IsOpen())
+            {
+                PortalEffect.Position = Portal1.Position;
+                PortalEffect.Angle = Portal1.Angle + ((int)Portal1.Oriented == 3 ? MathHelper.Pi : (int)Portal1.Oriented == 0 ? MathHelper.Pi : 0);
+                PortalEffect.Draw(theSpriteBatch, Relative);
+
+                PortalEffect.Position = Portal2.Position;
+                PortalEffect.Angle = Portal2.Angle + ((int)Portal2.Oriented == 3 ? MathHelper.Pi : (int)Portal2.Oriented == 0 ? MathHelper.Pi : 0);
+                PortalEffect.Draw(theSpriteBatch, Relative);
+            }
+
             foreach (Actor spr in mInPortal1)
             {
                 spr.PortalDraw(theSpriteBatch, Relative);
@@ -164,7 +233,7 @@ namespace Half_Caked
         #endregion
 
         #region Private Methods
-        private void HandleSpriteInPortal(Actor spr, Sprite portalIn,  Sprite portalOut, float currentTime)
+        private void HandleSpriteInPortal(Actor spr, Sprite portalIn,  Sprite portalOut, bool amplify, float currentTime)
         {
             spr.PortalAngle = MathHelper.WrapAngle(MathHelper.PiOver2 * (2 - (portalIn.Oriented - portalOut.Oriented)));
             Matrix rotation = Matrix.CreateRotationZ(spr.PortalAngle);
@@ -206,11 +275,12 @@ namespace Half_Caked
                 spr.PortalAngle = spr.Angle;
                 spr.Angle = temp2;
 
-                spr.Velocity = Vector2.Transform(spr.Velocity, rotation);
+                spr.Velocity = Vector2.Transform(spr.Velocity, rotation) * (amplify ? 2 : 1);
                 spr.Acceleration = Vector2.Transform(spr.Acceleration, rotation);
 
                 if (portalOut.Oriented == Orientation.Up)
-                    spr.Velocity += 25 * new Vector2(0, -1);
+                    if(spr.Velocity.Y >= -300)
+                        spr.Velocity += 100 * new Vector2(0, -1);
             }
 
             spr.PortalUpdateDependents();

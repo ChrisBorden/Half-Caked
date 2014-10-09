@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Linq;
 #endregion
 
 namespace Half_Caked
@@ -34,13 +35,14 @@ namespace Half_Caked
 
         protected string mMessage;
         Texture2D mGradientTexture;
-        Rectangle mBackgroundRectangle;
-        Vector2 mTextPosition;
+        protected Rectangle mBackgroundRectangle;
+        protected Vector2 mTextPosition;
 
         public List<Button> Buttons = new List<Button>();
 
         protected int mSelectedButton;
         protected int mContentHeightPadding = 0, mContentWidth = 0;
+        protected int mContentStartHeight = 0;
         protected ButtonDisplayMode mButtonDisplayMode = ButtonDisplayMode.VariableWidth;
 
         public event EventHandler<PlayerIndexEventArgs> Cancelled;
@@ -69,8 +71,12 @@ namespace Half_Caked
             IsPopup = true;
             mSelectedButton = defaultSelection;
 
-            foreach( string str in prompts)
-                Buttons.Add(new Button(str));
+            foreach (string str in prompts)
+            {
+                Button btn = new Button(str);
+                btn.Pressed += Exit;
+                Buttons.Add(btn);
+            }
 
             TransitionOnTime = TimeSpan.FromSeconds(0.2);
             TransitionOffTime = TimeSpan.FromSeconds(0.2);
@@ -90,9 +96,10 @@ namespace Half_Caked
             mGradientTexture = content.Load<Texture2D>("UI\\gradient");
 
             foreach(Button btn in Buttons)
-                btn.LoadContent(ScreenManager.Font, content);
+                btn.LoadContent(this);
 
-            Buttons[mSelectedButton].State = Button.ButtonState.Selected;
+            if(mSelectedButton >= 0)
+                Buttons[mSelectedButton].State = UIState.Selected;
 
             CreateDimensions();
         }
@@ -109,37 +116,41 @@ namespace Half_Caked
             ScreenManager.Game.IsMouseVisible = true;
 
             PlayerIndex playerIndex;
-            int state = -2;
+            int state = -1;
             var prevButton = mSelectedButton;
+            Vector2 mousePos = new Vector2(-1, -1);
 
-            if (input.IsNextButton(ControllingPlayer))
-            {
-                do
-                    mSelectedButton = (mSelectedButton + 1) % Buttons.Count;
-                while(Buttons[mSelectedButton].State == Button.ButtonState.Inactive);
-            }
-            if (input.IsPreviousButton(ControllingPlayer))
-            {
-                do
-                    mSelectedButton = (mSelectedButton - 1 + Buttons.Count) % Buttons.Count;
-                while(Buttons[mSelectedButton].State == Button.ButtonState.Inactive);
-            }
+            if(Buttons.Any(x => x.State != UIState.Inactive))
+                if (input.IsNextButton(ControllingPlayer))
+                {
+                    do
+                        mSelectedButton = (mSelectedButton + 1) % Buttons.Count;
+                    while (Buttons[mSelectedButton].State == UIState.Inactive);
+                }
+                else if (input.IsPreviousButton(ControllingPlayer))
+                {
+                    do
+                        mSelectedButton = (mSelectedButton - 1 + Buttons.Count) % Buttons.Count;
+                    while (Buttons[mSelectedButton].State == UIState.Inactive);
+                }
 
             for(int i = 0; i < Buttons.Count; i++)
-                if (Buttons[i].Contains(input.CurrentMouseState.X, input.CurrentMouseState.Y) && input.IsNewMouseState()
-                    && Buttons[i].State != Button.ButtonState.Inactive)
+                if (Buttons[i].HandleMouseInput(input))
                 {
                     mSelectedButton = i;
                     if (input.IsNewLeftMouseClick())
                     {
                         state = i;
+                        return;
                     }
+                    break;
                 }
 
             if (prevButton != mSelectedButton)
             {
-                Buttons[prevButton].State = Button.ButtonState.Active;
-                Buttons[mSelectedButton].State = Button.ButtonState.Selected;
+                if(prevButton >= 0)
+                    Buttons[prevButton].State = UIState.Active;
+                Buttons[mSelectedButton].State = UIState.Selected;
             }
 
             if (input.IsMenuSelect(ControllingPlayer, out playerIndex) && !input.IsNewLeftMouseClick())
@@ -148,24 +159,28 @@ namespace Half_Caked
             }
             else if (input.IsMenuCancel(ControllingPlayer, out playerIndex))
             {
-                state = -1;
+                state = -2;
             }
 
             switch (state)
             {
-                case -2:
-                    break;
                 case -1:
+                    break;
+                case -2:
                     if (Cancelled != null)
-                        Cancelled(this, new PlayerIndexEventArgs(PlayerIndex.One));
+                        Cancelled(this, new PlayerIndexEventArgs(playerIndex));
 
                     ExitScreen();
                     break;
                 default:
-                    ExitScreen();
-                    Buttons[state].RaiseEvent();
+                    Buttons[state].OnPressedElement(playerIndex, 0);
                     break;
             }
+        }
+
+        void Exit(object sender, PlayerIndexEventArgs e)
+        {
+            ExitScreen();
         }
 
         #endregion
@@ -193,7 +208,7 @@ namespace Half_Caked
             spriteBatch.Draw(mGradientTexture, mBackgroundRectangle, color);
 
             foreach (Button btn in Buttons)
-                btn.Draw(spriteBatch, TransitionAlpha);
+                btn.Draw(this, gameTime, TransitionAlpha);
 
             // Draw the message box text.
             spriteBatch.DrawString(font, mMessage, mTextPosition, color);
@@ -201,7 +216,7 @@ namespace Half_Caked
             spriteBatch.End();
         }
 
-        protected void CreateDimensions()
+        protected virtual void CreateDimensions()
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
@@ -241,6 +256,8 @@ namespace Half_Caked
             int offset_y = (int)(mBackgroundRectangle.Bottom - vPad - mButtonsHeight);
             float cur_offset_x = mBackgroundRectangle.Left + hPad;
 
+            mContentStartHeight = offset_y - mContentHeightPadding;
+
             switch (mButtonDisplayMode)
             {
                 case ButtonDisplayMode.VariableWidth:
@@ -276,48 +293,59 @@ namespace Half_Caked
         #endregion
     }
 
-    class AudioOptionsDialog : MessageBoxScreen
+    class ContentBoxScreen : MessageBoxScreen
     {
-        public AudioOptionsDialog(Profile curProfile) 
-            : base("mAudio", new string[] { "Save", "Cancel" }, 0) 
+        #region Fields
+        protected Label mContentLabel;
+
+        public string Content
         {
-            Buttons[0].Pressed += SaveButton;
-            mProfile = curProfile;
+            get { return mContentLabel.Text; }
+            set { mContentLabel.Text = value; CreateDimensions(); }
+        }
+        #endregion
+
+        #region Intialization
+        public ContentBoxScreen(string msg, string content)
+            : base(msg)
+        {
+            mContentLabel = new Label(content);
         }
 
-        private Profile mProfile;
-
-        void SaveButton(object sender, PlayerIndexEventArgs e) { }
-    }
-
-    class GraphicsDialog : MessageBoxScreen
-    {
-        public GraphicsDialog(Profile curProfile) 
-            : base("Graphics", new string[] { "Save", "Test", "Cancel" }, 0)
+        public ContentBoxScreen(string msg, string content, string[] prompts, int def)
+            : base(msg, prompts, def)
         {
-            Buttons[0].Pressed += SaveButton;
-            Buttons[1].Pressed += TestButton;
-            mProfile = curProfile;
+            mContentLabel = new Label(content);
         }
 
-        private Profile mProfile;
-
-        void SaveButton(object sender, PlayerIndexEventArgs e) { }
-        void TestButton(object sender, PlayerIndexEventArgs e) { }
-    }
-
-    class KeybindingsDialog : MessageBoxScreen
-    {
-        public KeybindingsDialog(Profile curProfile) 
-            : base("Keybindings", new string[] { "Save", "Cancel" }, 0)
+        public override void LoadContent()
         {
-            Buttons[0].Pressed += SaveButton;
-            mProfile = curProfile;
-        }
-        
-        private Profile mProfile;
+            mContentLabel.LoadContent(this);
+            base.LoadContent();
 
-        void SaveButton(object sender, PlayerIndexEventArgs e) { }
-        void KeybindingPressed(object sender, PlayerIndexEventArgs e) { }
+            CreateDimensions();
+        }
+        #endregion
+
+        #region Draw
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+
+            SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
+            spriteBatch.Begin();
+            mContentLabel.Draw(this, gameTime);
+            spriteBatch.End();
+        }
+
+        protected override void CreateDimensions()
+        {
+            mContentHeightPadding = this.ScreenManager.Font.LineSpacing + 10;
+            mContentWidth = (int)mContentLabel.Size.X + 10;
+            base.CreateDimensions();
+            mContentLabel.Position = new Vector2((mBackgroundRectangle.Width - mContentLabel.Size.X) / 2 + mBackgroundRectangle.Left, this.mContentStartHeight + 15);
+        }
+
+        #endregion
     }
 }

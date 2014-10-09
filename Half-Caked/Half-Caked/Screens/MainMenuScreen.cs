@@ -20,7 +20,6 @@ namespace Half_Caked
     {
         #region Initialization
 
-
         /// <summary>
         /// Constructor fills in the menu contents.
         /// </summary>
@@ -33,16 +32,15 @@ namespace Half_Caked
             MenuEntry exitMenuEntry = new MenuEntry("Exit");
 
             // Hook up menu event handlers.
-            playGameMenuEntry.Selected += PlayGameMenuEntrySelected;
-            optionsMenuEntry.Selected += OptionsMenuEntrySelected;
-            exitMenuEntry.Selected += OnCancel;
+            playGameMenuEntry.Pressed += PlayGameMenuEntrySelected;
+            optionsMenuEntry.Pressed += OptionsMenuEntrySelected;
+            exitMenuEntry.Pressed += OnCancel;
 
             // Add entries to the menu.
             MenuEntries.Add(playGameMenuEntry);
             MenuEntries.Add(optionsMenuEntry);
             MenuEntries.Add(exitMenuEntry);
         }
-
 
         #endregion
 
@@ -53,7 +51,7 @@ namespace Half_Caked
         /// </summary>
         void PlayGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            ScreenManager.AddScreen(new LevelSelectionScreen((ScreenManager.Game as HalfCakedGame).CurrentProfile), e.PlayerIndex);
+            ScreenManager.AddScreen(new WorldSelectionScreen((ScreenManager.Game as HalfCakedGame).CurrentProfile), e.PlayerIndex);
         }
 
 
@@ -91,7 +89,7 @@ namespace Half_Caked
                 ScreenManager.AddScreen(confirmExitMessageBox, playerIndex);
             }
         }
-
+        
 
         /// <summary>
         /// Event handler for when the user selects ok on the "are you sure
@@ -104,8 +102,8 @@ namespace Half_Caked
 
         void ConfirmSaveMessageBoxAccepted(object sender, PlayerIndexEventArgs e)
         {
-            var pss = new ProfileSelectionScreen((ScreenManager.Game as HalfCakedGame).Device);
-            pss.ProfileSaved += ConfirmExitMessageBoxAccepted;
+            var pss = new ProfileScreen((ScreenManager.Game as HalfCakedGame).Device);
+            pss.ProfileSelected += ConfirmExitMessageBoxAccepted;
             ScreenManager.AddScreen(pss, e.PlayerIndex);
         }
 

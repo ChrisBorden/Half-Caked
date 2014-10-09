@@ -20,12 +20,25 @@ namespace Half_Caked
     {
         #region Constants
         public static float METERS_TO_UNITS = 20;
-        public static int MAX_LEVELS = 2;
+
+        public static int[] INIT_LID_FOR_WORLD = { 0, 5, 9 };
+        public static string[] WORLD_NAMES = { "Training Grounds", "Experiments" };
+
+        private const float LONG_DIST = .4f;
+        private const float SHORT_DIST = .01f;
         #endregion
 
         #region Fields
-        public float Gravity;
-        public int LevelIdentifier = -1;
+        public float Gravity { get; set; }
+        public Guid CustomLevelIdentifier { get; set; }
+        public string Name { get; set; }
+
+        private int mLevelID = -1;
+        public int LevelIdentifier
+        {
+            get { return mLevelID; }
+            set { mLevelID = value; if (LevelStatistics != null) LevelStatistics.Level = value; }
+        }
 
         [XmlIgnore]
         public Statistics LevelStatistics;
@@ -42,39 +55,94 @@ namespace Half_Caked
 
         private Vector2 mDimensions;
         private Vector2 mCenterVector;
-        private int mCheckpointIndex = 1;
+        private int mCheckpointIndex = 0;
 
         private List<TextEffect> mTextEffects;
         private AudioSettings mAudio;
-        private Song mExitReached;
+        private SoundEffect mExitReached;
         private Song mBackgroundMusic;
         private SoundEffect mCheckpointSound;
         private bool mCanPlayerMusic = true;
 
         private Sprite mBackground;        
         private SpriteFont mGameFont;
+        private Sprite mCakeSprite;
+		private Animation poofAnimation;
+		private Animation idleCake;
+		private AnimationPlayer mCakeAnimator;
+
+        private bool mLoaded = false;
+        public bool IsLoaded
+        {
+            get { return mLoaded; }
+        }
 
         #endregion
 
         #region Initialization
         public Level()
         {
+            Gravity = 40f;
+            Name = "New Level";
+
             LevelStatistics = new Statistics();
             mBackground = new Sprite();
+            mCakeSprite = new Sprite();
             Obstacles = new List<Obstacle>();
             Actors = new List<Actor>();
             Checkpoints = new List<Checkpoint>();
             mTextEffects = new List<TextEffect>();
             Tiles = new List<Tile>();
             Portals = new PortalGroup();
-
         }
 
-        public virtual void LoadContent(ContentManager theContentManager, Profile activeProfile)
+        public void LoadContent(ScreenManager screenManager, Profile activeProfile)
         {
-            AssetName = "Levels\\" + AssetName;
-            base.LoadContent(theContentManager, AssetName);
-            mBackground.LoadContent(theContentManager, AssetName + "b");
+            if (mLoaded)
+                return;
+
+            var theContentManager = screenManager.Game.Content;
+
+            string backgroundMusicName = "Sounds\\" + AssetName;
+
+            if (LevelIdentifier == -1)
+            {
+                string filepath = "Content\\Levels\\Custom\\" + AssetName;
+                base.LoadContent(screenManager.GraphicsDevice, filepath + ".png");
+
+                try
+                {
+                    mBackground.LoadContent(screenManager.GraphicsDevice, filepath + "b.png");
+                    mBackground.Position = Position;
+                }
+                catch
+                {
+                    mBackground = null;
+                }
+            }
+            else
+            {
+                string filepath = "Levels\\" + AssetName;
+                base.LoadContent(theContentManager, filepath);
+
+                try
+                {
+                    mBackground.LoadContent(theContentManager, filepath + "b");
+                    mBackground.Position = Position;
+                }
+                catch
+                {
+                    mBackground = null;
+                }
+            }
+
+            mCakeSprite.LoadContent(theContentManager, "Sprites\\Cake\\Cake");
+            mCakeSprite.Scale = 1f;
+			mCakeSprite.Position = Checkpoints[Checkpoints.Count - 1].Location - Vector2.UnitY * mCakeSprite.Size.Height;
+
+			poofAnimation = new Animation(theContentManager.Load<Texture2D>("Sprites\\Cake\\Poof"), 0.1f, 7, false);
+			idleCake = new Animation(theContentManager.Load<Texture2D>("Sprites\\Cake\\Cake"), 0.1f, 1, true);
+			mCakeAnimator.PlayAnimation(idleCake);
 
             mDimensions = activeProfile.Graphics.Resolution;
             mCenterVector = new Vector2(mDimensions.X / 2 - 100, mDimensions.Y * 3 / 4 - 100);
@@ -82,8 +150,16 @@ namespace Half_Caked
             mAudio = activeProfile.Audio;
             SoundEffect.MasterVolume = mAudio.MasterVolume / 100f;
             MediaPlayer.Volume = mAudio.MasterVolume * mAudio.MusicVolume / 10000f;
-            mExitReached = theContentManager.Load<Song>("Sounds\\ExitReached");
-            mBackgroundMusic = theContentManager.Load<Song>("Sounds\\Level");
+
+            mExitReached = theContentManager.Load<SoundEffect>("Sounds\\ExitReached");
+			try
+			{
+				mBackgroundMusic = theContentManager.Load<Song>(backgroundMusicName);
+			}
+			catch
+			{
+				mBackgroundMusic = theContentManager.Load<Song>("Sounds\\Level");
+			}
             mCheckpointSound = theContentManager.Load<SoundEffect>("Sounds\\Checkpoint");
 
             Portals.LoadContent(theContentManager);
@@ -99,11 +175,13 @@ namespace Half_Caked
                 spr.LoadContent(theContentManager, spr.AssetName);
 
             mGameFont = theContentManager.Load<SpriteFont>("Fonts\\gamefont");
+
+            mLoaded = true;
         }
         #endregion
 
         #region Update and Draw
-        public void Update(GameTime theGameTime, InputState inputState)
+        public void Update(GameTime theGameTime, ScreenManager manager, InputState inputState)
         {
             if (MediaPlayer.State == MediaState.Stopped && mCanPlayerMusic)
                 try
@@ -117,11 +195,11 @@ namespace Half_Caked
             LevelStatistics.TimeElapsed += theGameTime.ElapsedGameTime.TotalSeconds;
 
             Portals.ClearSprites();
+            
+            Player.Update(theGameTime, this, inputState);
 
             foreach (Obstacle spr in Obstacles)
                 spr.Update(theGameTime);
-
-            Player.Update(theGameTime, this, inputState);
 
             foreach (Actor spr in Actors)
             {
@@ -135,12 +213,7 @@ namespace Half_Caked
             }
 
             Portals.Update(theGameTime);
-            
-            Position = mCenterVector - Player.Position;
-            Position = new Vector2(MathHelper.Clamp(Position.X, mDimensions.X - Size.Width, 0), MathHelper.Clamp(Position.Y, mDimensions.Y - Size.Height, 0));
-
-            mBackground.Position = Position;
-            
+                        
             if(Player.IsGrounded())
                 while (Checkpoints[mCheckpointIndex].InBounds(Player.Position))
                 {
@@ -151,29 +224,88 @@ namespace Half_Caked
                     else
                     {
                         mTextEffects.Add(new CheckpointNotification(Player.Position+Position));
+                        if (Checkpoints[mCheckpointIndex - 1].NarrationText != null && Checkpoints[mCheckpointIndex - 1].NarrationText.Length > 0)
+                            mTextEffects.Add(new NarrationEffect(Checkpoints[mCheckpointIndex - 1].NarrationText, manager));
+
                         PlaySoundEffect(mCheckpointSound);
                     }
                 }
-
         }
 
-        public override void Draw(SpriteBatch theSpriteBatch)
+        public override void Draw(SpriteBatch theSpriteBatch, GameTime theGameTime)
         {
-            mBackground.Draw(theSpriteBatch);
+            Vector2 offset = new Vector2(MathHelper.Clamp((mCenterVector - Player.Position).X, mDimensions.X - Size.Width, 0), MathHelper.Clamp((mCenterVector - Player.Position).Y, mDimensions.Y - Size.Height, 0)) - Position;
+            float dist = Vector2.Multiply(offset, new Vector2(1, this.Size.Height / (float)Size.Width)).Length();
+
+            if (dist > LONG_DIST * mDimensions.X || dist < SHORT_DIST * mDimensions.X)
+            {
+                Position += offset;
+                Velocity = Vector2.Zero;
+                Acceleration = Vector2.Zero;
+            }
+            else
+            {
+                offset.Normalize();
+                Velocity = (Velocity.Length() + 15) * offset;
+                base.Update(theGameTime);
+            }
+
+            if (mBackground != null)
+            {
+				float parallax = 0.4f;
+				Vector2 center = new Vector2(mDimensions.X - mBackground.Source.Width,
+					mDimensions.Y - mBackground.Source.Height) * 0.5f;
+				Vector2 parallaxOffset = (center - Position) * (1.0f-parallax);
+
+				// parallax hack, doesn't show whole background, but works 
+				mBackground.Position = Position + parallaxOffset;
+                mBackground.Draw(theSpriteBatch, theGameTime);
+            }
+
             foreach (Obstacle spr in Obstacles)
                 spr.Draw(theSpriteBatch, Position);
 
             foreach (Sprite spr in Actors)
                 spr.Draw(theSpriteBatch, Position);
 
+            //This draws the animated parts of the player
+            Player.AnimatedDraw(theSpriteBatch, Position, theGameTime);
+
+            //This draws non-animated parts of the player
             Player.Draw(theSpriteBatch, Position);
+
             Portals.Draw(theSpriteBatch, Position);
-            
-            base.Draw(theSpriteBatch);
+
+			mCakeAnimator.Draw(theGameTime, theSpriteBatch, 
+				mCakeSprite.Position + Position, 0, mCakeSprite.Center, 
+				mCakeSprite.Scale,SpriteEffects.None);
+
+            //mCakeSprite.Draw(theSpriteBatch, Position);
+            base.Draw(theSpriteBatch, theGameTime);
             Portals.DrawPortals(theSpriteBatch, Position);
 
             foreach (TextEffect effect in mTextEffects)
                 effect.Draw(theSpriteBatch, mGameFont);
+        }
+
+        public void DrawMap(SpriteBatch theSpriteBatch, GameTime theGameTime, Vector2 offset, float scale)
+        {
+			if (mBackground != null)
+			{
+				mBackground.Position = Position;
+				mBackground.Draw(theSpriteBatch, offset - Position * scale, scale);
+			}
+            foreach (Obstacle spr in Obstacles)
+                spr.Draw(theSpriteBatch, offset, scale);
+
+            foreach (Sprite spr in Actors)
+                spr.Draw(theSpriteBatch, offset, scale);
+
+            //This draws non-animated parts of the player
+            Player.Draw(theSpriteBatch, offset, scale);
+            mCakeSprite.Draw(theSpriteBatch, offset, scale);
+
+            base.Draw(theSpriteBatch, offset - Position * scale, scale);
         }
 
         #endregion
@@ -182,10 +314,11 @@ namespace Half_Caked
         public override void Reset()
         {
             base.Reset();
-            LevelStatistics = new Statistics();
-
-            mBackground.Position = Position;
             Portals.Reset();
+            LevelStatistics = new Statistics(mLevelID);
+
+            if(mBackground != null)
+                mBackground.Position = Position;
 
             foreach (Obstacle spr in Obstacles)
                 spr.Reset();
@@ -195,6 +328,7 @@ namespace Half_Caked
             foreach (Actor spr in Actors)
                 spr.Reset();
 
+            mCakeAnimator.PlayAnimation(idleCake);
             mTextEffects.Clear();
             mCheckpointIndex = 1;
         }
@@ -203,6 +337,8 @@ namespace Half_Caked
         {
             LevelStatistics.Deaths++;
             Player.DeathReset();
+            Portals.Reset();
+            mTextEffects.Add(new DeathNotification(Vector2.Clamp(Player.Position, Vector2.Zero, mDimensions)));
             Player.Position = Checkpoints[mCheckpointIndex-1].Location;
         }
 
@@ -215,7 +351,9 @@ namespace Half_Caked
         #region Private Methods
         private void GameOver()
         {
-            MediaPlayer.Play(mExitReached);
+            mCakeAnimator.PlayAnimation(poofAnimation);
+            PlaySoundEffect(mExitReached);
+            Player.GameOver();
             throw new Exception("LevelComplete");
         }
         #endregion
@@ -227,6 +365,27 @@ namespace Half_Caked
             try
             {
                 FileStream fs = new FileStream(@"Content\Levels\Level" + levelIdentifier + ".xml", FileMode.Open);
+                XmlReader reader = new XmlTextReader(fs);
+
+                Level lvl = (Level)serializer.Deserialize(reader);
+
+                fs.Close();
+                reader.Close();
+
+                return lvl;
+            }
+            catch
+            {
+                return null;       
+            }
+        }
+
+        public static Level LoadLevel(string path)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(Level));
+            try
+            {
+                FileStream fs = new FileStream(path, FileMode.Open);
                 XmlReader reader = new XmlTextReader(fs);
 
                 Level lvl = (Level)serializer.Deserialize(reader);
